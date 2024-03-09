@@ -16,7 +16,6 @@
         </div>
       </div>
     </div>
-
     <UsersTable
       v-if="users.data.length"
       :get-data="getData"

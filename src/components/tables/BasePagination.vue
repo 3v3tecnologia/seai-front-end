@@ -17,8 +17,16 @@
     <div class="mb-1">
       <div class="navigation-items">
         <button class="bg-white p-2" @click="setFirstPage">Primeira</button>
-        <button class="bg-white p-2 mx-2" @click="setBeforePage">
-          Anterior
+        <button
+          class="btn-page bg-white p-2"
+          @click="setBeforePage"
+          v-tooltip.bottom="{
+            value: 'Anterior',
+            showDelay: 500,
+            hideDelay: 300,
+          }"
+        >
+          <i class="pi pi-angle-left"></i>
         </button>
         <button
           v-for="page in pagesShowing"
@@ -31,7 +39,17 @@
         >
           {{ page }}
         </button>
-        <button class="bg-white p-2 mx-2" @click="setNextPage">Próxima</button>
+        <button
+          class="btn-page bg-white p-2"
+          @click="setNextPage"
+          v-tooltip.bottom="{
+            value: 'Próxima',
+            showDelay: 500,
+            hideDelay: 300,
+          }"
+        >
+          <i class="pi pi-angle-right"></i>
+        </button>
         <button class="bg-white p-2" @click="setLastPage">Última</button>
       </div>
     </div>
@@ -69,7 +87,7 @@ const props = defineProps({
   },
 });
 
-const pagesButtonsMax = 5;
+const pagesButtonsMax = calculatePagesButtonsMax();
 
 const totalPages = computed(() => {
   const basePagination = props.apiPagination
@@ -97,7 +115,6 @@ const pagesShowing = computed(() =>
     if (leftPagesGap > 0) {
       leftPagesGap = 0;
     }
-
     initialPage = leftPagesGap + currentPage.value;
     initialPage = initialPage - 2 < 1 ? 1 : initialPage - 2;
     finalPage = initialPage + pagesButtonsMax - 1;
@@ -160,6 +177,22 @@ watch(
     }
   }
 );
+
+function calculatePagesButtonsMax() {
+  const screenWidth =
+    window.innerWidth ||
+    document.documentElement.clientWidth ||
+    document.body.clientWidth;
+  if (screenWidth < 550) {
+    return 3;
+  } else if (screenWidth < 650) {
+    return 5;
+  } else if (screenWidth < 1070) {
+    return 7;
+  } else {
+    return 9;
+  }
+}
 </script>
 
 <style lang="scss" scoped>
