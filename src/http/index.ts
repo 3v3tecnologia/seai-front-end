@@ -16,7 +16,7 @@ const urlBase = extractBaseUrl();
 const serverUrlBase = urlBase[2];
 
 const serverPort = 80;
-const baseURL = `${serverUrlBase}:${serverPort}/api/v1/`;
+const baseURL = `${serverUrlBase}:${serverPort}/api/`;
 
 const httpClient: AxiosInstance = axios.create({
   baseURL,

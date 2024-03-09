@@ -28,7 +28,7 @@ export default {
         try {
           const {
             data: { data },
-          } = await http.get(`/news`);
+          } = await http.get(`v1/news`);
 
           const newsletters = data?.Data || [];
 
@@ -56,7 +56,7 @@ export default {
             SendDate: toTimestamp(form.SendDate),
           };
 
-          await http.post(`/news/`, newsletter);
+          await http.post(`v1/news/`, newsletter);
           toast.success("Notícia criada com sucesso.");
         } catch (e) {
           console.error(e);
@@ -76,7 +76,7 @@ export default {
             SendDate: toTimestamp(form.SendDate),
           };
 
-          await http.put(`/news/${form.Id}`, newsletter);
+          await http.put(`v1/news/${form.Id}`, newsletter);
           toast.success("Notícia atualizada com sucesso.");
         } catch (e) {
           console.error(e);
@@ -89,7 +89,7 @@ export default {
       async handler(_, ids) {
         try {
           await Promise.allSettled(
-            ids.map(async (id) => await http.delete(`/news/${id}`))
+            ids.map(async (id) => await http.delete(`v1/news/${id}`))
           );
           toast.success("Sucesso ao deletar notícia(s)");
         } catch (e) {
@@ -104,7 +104,7 @@ export default {
         try {
           let {
             data: { data: newsletter },
-          } = await http.get(`/news/${id}`);
+          } = await http.get(`v1/news/${id}`);
 
           if (!newsletter) {
             throw new Error("Erro ao encontrar notícia.");

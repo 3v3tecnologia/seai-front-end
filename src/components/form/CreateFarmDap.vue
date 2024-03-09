@@ -1,0 +1,168 @@
+<template>
+  <div class="position-relative w-100 mt-4">
+    <label v-if="label" class="font-weight-bold label mb-0">{{ label }} </label>
+    <div class="row mb-2">
+      <div class="col-1">
+        <button
+          type="button"
+          class="btn btn-primary mr-4 w-25"
+          @click="addKC()"
+          v-tooltip.left="{
+            value: 'Adicionar estágio',
+            showDelay: 1000,
+            hideDelay: 300,
+          }"
+          :style="{ minWidth: '50px' }"
+        >
+          <i class="pi pi-plus pr-2e"></i>
+        </button>
+      </div>
+      <div class="col-1">
+        <button
+          type="button"
+          class="btn btn-danger mr-4 w-25"
+          @click="removeKC()"
+          v-tooltip.left="{
+            value: 'Remover estágio',
+            showDelay: 1000,
+            hideDelay: 300,
+          }"
+          :style="{ minWidth: '50px' }"
+        >
+          <i class="pi pi-trash pr-2e"></i>
+        </button>
+      </div>
+      <div class="col-4" v-if="cycleError">
+        <small class="text-danger">Preencha todos os campos obrigatórios</small>
+      </div>
+    </div>
+    <form class="mt-5 formulario" v-for="(kc, i) in KCs" :key="i">
+      <div class="form-group form-group-text p-float-label">
+        <InputText
+          id="estagio"
+          aria-describedby="estagio-help"
+          v-model="kc.Title"
+          :class="`w-100 ${cycleError && !kc.End ? 'invalidInput' : ''}`"
+        />
+        <label for="estagio" class="font-weight-bold">Nome do estágio</label>
+      </div>
+      <div class="form-group form-group-number p-float-label">
+        <InputNumber
+          v-model="kc.Start"
+          id="kc"
+          aria-describedby="kc-help"
+          :class="`w-100 ${cycleError && !kc.End ? 'invalidInput' : ''}`"
+        />
+        <label for="kc" class="font-weight-bold">Dia inicial</label>
+      </div>
+      <div class="form-group form-group-number p-float-label">
+        <InputNumber
+          v-model="kc.End"
+          id="kc"
+          aria-describedby="kc-help"
+          :class="`w-100 ${cycleError && !kc.End ? 'invalidInput' : ''}`"
+        />
+        <label for="kc" class="font-weight-bold">Dia final</label>
+      </div>
+
+      <div class="form-group form-group-number p-float-label">
+        <InputNumber
+          v-model="kc.KC"
+          id="kc"
+          aria-describedby="kc-help"
+          :class="`w-100 ${cycleError && !kc.End ? 'invalidInput' : ''}`"
+        />
+        <label for="kc" class="font-weight-bold">KC</label>
+      </div>
+      <div class="form-group form-group-increment p-float-label">
+        <InputNumber
+          v-model="kc.Increment"
+          id="kc"
+          aria-describedby="kc-help"
+          :class="`w-100 ${cycleError && !kc.End ? 'invalidInput' : ''}`"
+        />
+        <label for="kc" class="font-weight-bold">Incremento</label>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script setup>
+import { defineProps, defineEmits, ref, watch, computed } from "vue";
+
+const emit = defineEmits(["onSaveCycle"]);
+
+const props = defineProps({
+  cycle: {
+    type: Array,
+    required: false,
+    default: () => [],
+  },
+  cycleError: {
+    type: Boolean,
+    default: true,
+  },
+});
+
+const KCs = ref(props.cycle);
+
+addKC();
+
+watch(
+  () => KCs.value,
+  (newValue, oldValue) => {
+    emit("onSaveCycle", newValue);
+  },
+  { deep: true }
+);
+
+function addKC() {
+  const newKC = {
+    Stage: KCs.value.length + 1,
+    Title: "",
+    Start: null,
+    End: null,
+    KC: null,
+    Increment: null,
+  };
+  KCs.value.push(newKC);
+}
+
+function removeKC() {
+  if (KCs.value.length > 1) {
+    KCs.value.pop();
+  }
+}
+</script>
+
+<style lang="scss">
+.formulario {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 9px;
+  .form-group-text {
+    width: 30%;
+    min-width: 300px;
+  }
+  .form-group-number {
+    width: 13%;
+    min-width: 80px;
+    input {
+      width: 50%;
+    }
+  }
+  .form-group-increment {
+    width: 18%;
+    min-width: 120px;
+
+    input {
+      width: 50%;
+    }
+  }
+  .invalidInput {
+    border: 1px solid red !important;
+    border-radius: 5px;
+  }
+}
+</style>

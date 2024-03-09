@@ -64,9 +64,9 @@ export default {
         const showingDataFormatUrl = dataFormatUrl[showingDataFormat];
 
         const responses = await Promise.all([
-          await http.get(`/census/workers/${showingDataFormatUrl}`),
-          await http.get(`/census/captation/${showingDataFormatUrl}`),
-          await http.get(`/census/census-takers/${showingDataFormatUrl}`),
+          await http.get(`v1/census/workers/${showingDataFormatUrl}`),
+          await http.get(`v1/census/captation/${showingDataFormatUrl}`),
+          await http.get(`v1/census/census-takers/${showingDataFormatUrl}`),
         ]);
 
         const [workersCount, captationCount, registeredCount] = responses.map(
@@ -88,8 +88,8 @@ export default {
         const showingDataFormatUrl = dataFormatUrl[showingDataFormat];
 
         const responses = await Promise.all([
-          await http.get(`/census/captation/tank/${showingDataFormatUrl}`),
-          await http.get(`/census/aquaculture/${showingDataFormatUrl}`),
+          await http.get(`v1/census/captation/tank/${showingDataFormatUrl}`),
+          await http.get(`v1/census/aquaculture/${showingDataFormatUrl}`),
         ]);
 
         const [tankCaptation, aquaculture] = responses.map((c) => c.data.data);
@@ -109,13 +109,13 @@ export default {
 
         const responses = await Promise.all([
           await http.get(
-            `/census/indicator/security/water/${showingDataFormatUrl}`
+            `v1/census/indicator/security/water/${showingDataFormatUrl}`
           ),
           await http.get(
-            `/census/indicator/security/social/${showingDataFormatUrl}`
+            `v1/census/indicator/security/social/${showingDataFormatUrl}`
           ),
           await http.get(
-            `/census/indicator/security/economic/${showingDataFormatUrl}`
+            `v1/census/indicator/security/economic/${showingDataFormatUrl}`
           ),
         ]);
 
@@ -148,7 +148,7 @@ export default {
         const currentBasinId = state.currentBasinFilter[0].value;
 
         const responses = await Promise.all([
-          await http.get(`/census/cultures/${currentBasinId}`),
+          await http.get(`v1/census/cultures/${currentBasinId}`),
         ]);
 
         console.log(
@@ -262,8 +262,8 @@ export default {
         const showingDataFormatUrl = dataFormatUrl[showingDataFormat];
 
         const responses = await Promise.all([
-          await http.get(`/census/captation/tank/${showingDataFormatUrl}`),
-          await http.get(`/census/aquaculture/${showingDataFormatUrl}`),
+          await http.get(`v1/census/captation/tank/${showingDataFormatUrl}`),
+          await http.get(`v1/census/aquaculture/${showingDataFormatUrl}`),
         ]);
 
         if (!state.reportsDataAll.hydroResourcesAll) {
@@ -304,7 +304,7 @@ export default {
 
         const {
           data: { data: animals },
-        } = await http.get(`/census/animals/${showingDataFormatUrl}`);
+        } = await http.get(`v1/census/animals/${showingDataFormatUrl}`);
 
         commit("SET_REPORTS_DATA", {
           animals:
@@ -350,7 +350,7 @@ export default {
           }));
         };
 
-        const { data } = await http.get(`/census/locations`);
+        const { data } = await http.get(`v1/census/locations`);
 
         let [basins, cities] = [data.data.Bacia, data.data.Municipio];
         [basins, cities] = [placesDTO(basins), placesDTO(cities)];

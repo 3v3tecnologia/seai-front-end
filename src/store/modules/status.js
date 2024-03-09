@@ -50,7 +50,7 @@ export default {
                 PageLimitRows: pageLimit,
               },
             },
-          } = await http.get(concatUrlFiltersList("/jobs", filters));
+          } = await http.get(concatUrlFiltersList("v1/jobs", filters));
 
           const data = dataRaw.map((c) => {
             return {
@@ -97,7 +97,7 @@ export default {
             retrydelay,
           };
 
-          await http.post(`/jobs`, data);
+          await http.post(`v1/jobs`, data);
           toast.success("Rotina criada com sucesso");
         } catch (e) {
           console.error(e);
@@ -128,7 +128,7 @@ export default {
             retrydelay,
           };
 
-          await http.put(`/jobs`, data);
+          await http.put(`v1/jobs`, data);
           toast.success("Rotina atualizada com sucesso");
         } catch (e) {
           console.error(e);
@@ -170,7 +170,7 @@ export default {
       async handler(_, ids) {
         try {
           await Promise.allSettled(
-            ids.map(async (id) => await http.delete(`/jobs/?id=${id}`))
+            ids.map(async (id) => await http.delete(`v1/jobs/?id=${id}`))
           );
           toast.success("Sucesso ao deletar status de rotina(s)");
         } catch (e) {

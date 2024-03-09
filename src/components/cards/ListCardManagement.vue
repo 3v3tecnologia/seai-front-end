@@ -9,7 +9,6 @@
       get-data-key="GET_CULTURES"
       delete-data-key="DELETE_CULTURES"
     />
-
     <div
       v-for="(item, i) in items"
       :key="getUniqueKey(item)"
@@ -65,27 +64,13 @@ const closeModal = () => {
 
 const cleanStringFilter = (str) => str.split(" ").join("").toLowerCase().trim();
 
-store.dispatch("GET_CULTURES");
-
 const items = computed(() =>
-  store.state.culture.list.data
-    .filter((c) => {
-      if (props.filters.searchFilterTemp) {
-        return (
-          cleanStringFilter(c.Plant_Name).indexOf(
-            cleanStringFilter(props.filters.searchFilterTemp)
-          ) > -1
-        );
-      }
+  store.state.culture.list.data.filter((c) => {
+    if (props.filters.hydrographicBasinTemp?.length) {
+      return mapedBasins.value[c.Basin];
+    }
 
-      return c;
-    })
-    .filter((c) => {
-      if (props.filters.hydrographicBasinTemp?.length) {
-        return mapedBasins.value[c.Basin];
-      }
-
-      return c;
-    })
+    return c;
+  })
 );
 </script>

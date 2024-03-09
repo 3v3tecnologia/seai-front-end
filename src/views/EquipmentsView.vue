@@ -36,7 +36,8 @@ const filtersUsers = ref({});
 
 const getData = () => store.dispatch("GET_EQUIPMENTS");
 
-getData();
+let teste = getData();
+console.log(teste);
 
 const users = computed(() => store.state.users);
 

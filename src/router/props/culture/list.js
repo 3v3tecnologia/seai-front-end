@@ -16,7 +16,7 @@ export default {
   deleteDataKey: "DELETE_CRONS",
   storeDataKey: ["cron", "list"],
   filters: [],
-  titleKey: "Plant_Name",
+  titleKey: "Name",
   searchFilter: searchFilter,
   stateFilters: stateOptionsFilters,
   actionRoutes: {

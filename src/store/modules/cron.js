@@ -54,7 +54,7 @@ export default {
                 PageLimitRows: pageLimit,
               },
             },
-          } = await http.get(concatUrlFiltersList("/jobs/schedule", filters));
+          } = await http.get(concatUrlFiltersList("v1/jobs/schedule", filters));
 
           const data = dataRaw.map((c) => {
             return {
@@ -103,7 +103,7 @@ export default {
             },
           };
 
-          await http.post(`/jobs/schedule`, data);
+          await http.post(`v1/jobs/schedule`, data);
           toast.success("Rotina criada com sucesso");
         } catch (e) {
           console.error(e);
@@ -134,7 +134,7 @@ export default {
             },
           };
 
-          await http.put(`/jobs/schedule/`, data);
+          await http.put(`v1/jobs/schedule/`, data);
           toast.success("Rotina atualizada com sucesso");
         } catch (e) {
           console.error(e);
@@ -162,7 +162,7 @@ export default {
         try {
           await Promise.allSettled(
             ids.map(
-              async (id) => await http.delete(`/jobs/schedule?name=${id}`)
+              async (id) => await http.delete(`v1/jobs/schedule?name=${id}`)
             )
           );
           toast.success("Sucesso ao deletar rotinas(s)");
