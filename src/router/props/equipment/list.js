@@ -72,7 +72,7 @@ export default {
       formatter: "link",
       formatterParams: {
         label: "Acessar leituras",
-        target: "_blank",
+        target: "_self",
         url: function urlFormat(col) {
           const equipRoute =
             col._cell.row.data.Type === "station" ? "station" : "pluviometer";

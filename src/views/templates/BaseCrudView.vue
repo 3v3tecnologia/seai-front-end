@@ -3,7 +3,6 @@
     <div class="crud-page-title d-flex mb-3">
       {{ pageExtraTitle }}
     </div>
-
     <CrudTable
       v-model="filtersUsers"
       :hide-search="hideSearch"
