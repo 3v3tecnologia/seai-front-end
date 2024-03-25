@@ -6,8 +6,11 @@ import router from "./router";
 import { store } from "./store";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import PrimeVue from "primevue/config";
+import InputText from "primevue/inputtext";
+import InputNumber from "primevue/inputnumber";
 import "primevue/resources/themes/lara-light-indigo/theme.css";
 import "primeicons/primeicons.css";
+import Calendar from "primevue/calendar";
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -75,4 +78,7 @@ createApp(App)
     },
   })
   .use(VueApexCharts)
+  .component("InputText", InputText)
+  .component("Calendar", Calendar)
+  .component("InputNumber", InputNumber)
   .mount("#app");

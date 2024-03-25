@@ -164,7 +164,9 @@ seedFiltersDropdown(props.modelValue);
 
 watch(
   () => filtersData.value,
-  (val) => emit("update:modelValue", val),
+  (val) => {
+    emit("update:modelValue", val);
+  },
   { deep: true }
 );
 

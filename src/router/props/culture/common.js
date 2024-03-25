@@ -4,24 +4,17 @@ export const route = {
   fields: [
     {
       label: "Nome",
-      formKey: "Plant_Name",
+      formKey: "Name",
       type: "text",
     },
     {
-      formKey: "CropCycle",
+      formKey: "cycle",
       colSize: 12,
       component: {
-        name: "FarmDap",
+        name: "CreateFarmDap",
         props: {
           label: "",
           columns: [
-            {
-              formatter: "rowSelection",
-              titleFormatter: "",
-              align: "center",
-              headerSort: false,
-              width: 80,
-            },
             {
               title: "Estágio",
               field: "Stage_Title",

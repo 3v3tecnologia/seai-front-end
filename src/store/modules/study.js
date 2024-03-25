@@ -33,7 +33,7 @@ export default {
           //       PageLimitRows: pageLimit,
           //     },
           //   },
-          // } = await http.get(concatUrlFiltersList("/jobs/schedule", filters));
+          // } = await http.get(concatUrlFiltersList("v1/jobs/schedule", filters));
 
           const data = [
             {
@@ -250,7 +250,7 @@ export default {
             },
           };
 
-          await http.put(`/jobs/schedule/`, data);
+          await http.put(`v1/jobs/schedule/`, data);
           toast.success("Pesos atualizados com sucesso");
         } catch (e) {
           console.error(e);

@@ -121,6 +121,9 @@ export const store = createStore({
     ["SET_CURRENT_PROFILE"](state, user) {
       state.profile = user;
     },
+    ["SET_CULTURE"](state, data) {
+      state.culture.data = data;
+    },
   },
   actions: {
     ["SIGN_OUT"]({ commit }) {
@@ -129,7 +132,7 @@ export const store = createStore({
     },
     async ["SEND_EMAIL_CHANGE_PASSWORD"](context, { email }) {
       try {
-        await http.post(`login/password/forgot`, { email });
+        await http.post(`v1/login/password/forgot`, { email });
         toast.success("Email de recuperação enviado com sucesso");
       } catch (e) {
         toast.error("Falha ao enviar email de recuperação");
@@ -139,7 +142,7 @@ export const store = createStore({
     },
     async ["LOGIN_USER"]({ commit }, user) {
       try {
-        const { data } = await http.post(`login/sign-in`, user);
+        const { data } = await http.post(`v1/login/sign-in`, user);
         const token = data?.data?.accessToken;
         const userName = data?.data?.userName;
 
@@ -250,7 +253,7 @@ export const store = createStore({
     },
     async ["CREATE_USER"]({ commit }, user) {
       try {
-        await http.post(`/user/register/`, user);
+        await http.post(`v1/user/register/`, user);
 
         toast.success("Usuário criado com sucesso");
         toast.success(`Email enviado para ${previewEmailCensured(user.email)}`);
@@ -264,7 +267,7 @@ export const store = createStore({
       try {
         const equipment = equipmentFormDTO(form);
 
-        await http.post(`/equipments/`, equipment);
+        await http.post(`v1/equipments/`, equipment);
 
         toast.success("Equipamento criado com sucesso");
       } catch (e) {
@@ -276,7 +279,7 @@ export const store = createStore({
     async ["DELETE_USERS"]({ commit }, ids) {
       try {
         await Promise.allSettled(
-          ids.map(async (id) => await http.delete(`/user/delete?id=${id}`))
+          ids.map(async (id) => await http.delete(`v1/user/delete?id=${id}`))
         );
 
         toast.success("Sucesso ao deletar usuário(s)");
@@ -288,7 +291,7 @@ export const store = createStore({
     async ["DELETE_EQUIPMENTS"]({ commit }, ids) {
       try {
         await Promise.allSettled(
-          ids.map(async (id) => await http.delete(`/equipments/${id}`))
+          ids.map(async (id) => await http.delete(`v1/equipments/${id}`))
         );
 
         toast.success("Sucesso ao deletar equipamento(s)");
@@ -299,7 +302,7 @@ export const store = createStore({
     },
     async ["UPDATE_USER"]({ state }, user) {
       try {
-        await http.put(`/user/${state.currentUser?.id}`, user);
+        await http.put(`v1/user/${state.currentUser?.id}`, user);
 
         toast.success("Dados de usuário atualizados com sucesso");
       } catch (e) {
@@ -317,7 +320,7 @@ export const store = createStore({
         };
 
         await http.put(
-          `/equipments/measures/station/${read?.IdRead}`,
+          `v1/equipments/measures/station/${read?.IdRead}`,
           formattedRead
         );
 
@@ -337,7 +340,7 @@ export const store = createStore({
         };
 
         await http.put(
-          `/equipments/measures/pluviometer/${read?.IdRead}`,
+          `v1/equipments/measures/pluviometer/${read?.IdRead}`,
           formattedRead
         );
 
@@ -350,7 +353,7 @@ export const store = createStore({
     },
     async ["UPDATE_BODY"]({ state }, form) {
       try {
-        // await http.put(`/user/${state.currentUser?.id}`, user);
+        // await http.put(`v1/user/${state.currentUser?.id}`, user);
 
         toast.success(" com sucesso");
       } catch (e) {
@@ -361,7 +364,7 @@ export const store = createStore({
     },
     async ["UPDATE_PROFILE"]({ state, commit }, user) {
       try {
-        await http.put(`/user/profile/`, {
+        await http.put(`v1/user/profile/`, {
           ...state.profile,
           email: user.email,
           name: user.name,
@@ -387,7 +390,7 @@ export const store = createStore({
       try {
         const equipment = equipmentFormDTO(form);
 
-        await http.put(`/equipments/${equipment.Id}`, equipment);
+        await http.put(`v1/equipments/${equipment.Id}`, equipment);
 
         toast.success("Dados do equipamento atualizados com sucesso");
       } catch (e) {
@@ -400,7 +403,7 @@ export const store = createStore({
     async ["CHANGE_PASSWORD"](context, form) {
       try {
         await http.post(
-          `login/password/reset`,
+          `v1/login/password/reset`,
           { ...form, token: `Bearer ${form.token}` },
           formatTemporaryToken(form.token)
         );
@@ -416,7 +419,7 @@ export const store = createStore({
       try {
         const {
           data: { data },
-        } = await http.get(`/user/list?userId=${id}`);
+        } = await http.get(`v1/user/list?userId=${id}`);
         commit("SET_CURRENT_USER", data);
 
         if (!data) {
@@ -442,7 +445,7 @@ export const store = createStore({
       try {
         const {
           data: { data: equipment },
-        } = await http.get(`/equipments?equipmentId=${id}`);
+        } = await http.get(`v1/equipments?equipmentId=${id}`);
 
         commit("SET_CURRENT_EQUIPMENT", unwrapEquip(equipment));
       } catch (e) {
@@ -453,7 +456,7 @@ export const store = createStore({
       try {
         const {
           data: { data: read },
-        } = await http.get(`/equipments/measures/station/${id}`);
+        } = await http.get(`v1/equipments/measures/station/${id}`);
 
         const unWrappedValue = getValue(read, "Value");
         const formattedDateValue = {
@@ -470,7 +473,7 @@ export const store = createStore({
       try {
         const {
           data: { data: read },
-        } = await http.get(`/equipments/measures/pluviometer/${id}`);
+        } = await http.get(`v1/equipments/measures/pluviometer/${id}`);
 
         const unWrappedValue = getValue(read, "Value");
         const formattedDateValue = {
@@ -491,7 +494,7 @@ export const store = createStore({
 
         const {
           data: { data },
-        } = await http.get(`/user/profile`);
+        } = await http.get(`v1/user/profile`);
 
         if (token) {
           const userLogged = {
@@ -513,7 +516,7 @@ export const store = createStore({
       try {
         const {
           data: { data: users },
-        } = await http.get(`/user/list`);
+        } = await http.get(`v1/user/list`);
 
         commit("SET_USERS", {
           data: users,
@@ -532,7 +535,7 @@ export const store = createStore({
           data: {
             data: { Equipments: equipments },
           },
-        } = await http.get(`/equipments/`);
+        } = await http.get(`v1/equipments/`);
 
         equipments.map(unwrapEquip);
 
@@ -570,7 +573,7 @@ export const store = createStore({
             },
           },
         } = await http.get(
-          `/equipments/measures/stations${objectToParams(params)}`
+          `v1/equipments/measures/stations${objectToParams(params)}`
         );
 
         await dispatch("GET_EQUIPMENT_NAME_FORMATTED", params.idEquipment);
@@ -627,7 +630,7 @@ export const store = createStore({
             },
           },
         } = await http.get(
-          `/equipments/measures/pluviometers${objectToParams(params)}`
+          `v1/equipments/measures/pluviometers${objectToParams(params)}`
         );
 
         commit("SET_PLUVIOMETER_READS", {

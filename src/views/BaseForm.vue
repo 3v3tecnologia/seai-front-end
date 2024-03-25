@@ -9,12 +9,20 @@
             class="align-items-end d-flex"
             :key="i"
           >
-            <component
-              v-if="field._typeComponent == 'component'"
-              v-model="form[field.formKey]"
-              v-bind="field.component.props"
-              :is="preBuiltComponents[field.component.name]"
-            />
+            <div v-if="field._typeComponent == 'component'">
+              <CreateFarmDap
+                v-if="field.component.name === 'CreateFarmDap'"
+                :cycleError="cycleError"
+                @on-save-cycle="saveFarmDap"
+                :cycle="farmData.cycle"
+              />
+              <component
+                v-else
+                v-model="form[field.formKey]"
+                v-bind="field.component.props"
+                :is="preBuiltComponents[field.component.name]"
+              />
+            </div>
 
             <BaseDropdown
               v-else-if="field._typeComponent == 'dropdown'"
@@ -111,17 +119,18 @@
 <script setup>
 import PrimaryButton from "@/components/form/PrimaryButton.vue";
 import FormWrapper from "@/components/form/FormWrapper.vue";
-import { computed, ref, watch, defineProps } from "vue";
+import { computed, ref, watch, defineProps, nextTick } from "vue";
 import { useStore } from "vuex";
-import InputText from "primevue/inputtext";
-import InputNumber from "primevue/inputnumber";
 import { useRoute } from "vue-router";
 import BaseDropdown from "@/components/form/BaseDropdown.vue";
 import FilterDate from "@/components/form/FilterDate.vue";
 import FarmDap from "@/components/form/FarmDap.vue";
+import CreateFarmDap from "@/components/form/CreateFarmDap.vue";
 import FieldEditor from "@/components/form/FieldEditor.vue";
 import BaseTable from "@/components/tables/BaseTable.vue";
 import { accessStoreKey } from "@/helpers/dto";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 const form = ref({});
 const oldForm = ref({});
@@ -130,6 +139,7 @@ const preBuiltComponents = {
   FieldEditor,
   BaseTable,
   FarmDap,
+  CreateFarmDap,
 };
 
 const loadedAllOptions = ref(false);
@@ -137,6 +147,7 @@ const loadedAllOptions = ref(false);
 const currentRoute = useRoute();
 const fieldsTmp = ref([]);
 const hasSaved = ref(false);
+const cycleError = ref(false);
 
 const paramId = ref(currentRoute.params.id || "");
 
@@ -379,8 +390,6 @@ const isNewForm = computed(() => {
 });
 
 const setFormWatcher = (value) => {
-  console.log("atualizou os dados do form", value);
-
   form.value = value ? JSON.parse(JSON.stringify(value)) : {};
   oldForm.value = JSON.parse(JSON.stringify(form.value));
 };
@@ -414,7 +423,12 @@ watch(
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-
+  if (router.currentRoute.value.name === "create-culture") {
+    cycleError.value = verifyCycles();
+    if (cycleError.value) {
+      return;
+    }
+  }
   await store
     .dispatch(props.submitDataKey, form.value)
     .then(() => {
@@ -422,6 +436,24 @@ const handleSubmit = async (e) => {
     })
     .catch(console.error);
 };
+
+function saveFarmDap(cycle) {
+  form.value.data = cycle;
+}
+
+function verifyCycles() {
+  let result = false;
+  if (!form.value.data) {
+    result = true;
+  } else {
+    for (const kc of form.value.data) {
+      if (!kc.Title || !kc.Start || !kc.End || !kc.KC || !kc.Increment) {
+        result = true;
+      }
+    }
+  }
+  return result;
+}
 </script>
 
 <style>

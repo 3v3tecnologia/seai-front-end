@@ -43,7 +43,7 @@
       <h5
         class="mb-0"
         v-tooltip="{
-          value: item.Plant_Name,
+          value: item[titleKey],
           showDelay: 1000,
           hideDelay: 300,
         }"

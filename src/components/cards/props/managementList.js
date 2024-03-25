@@ -15,4 +15,8 @@ export default {
     type: Object,
     default: () => ({}),
   },
+  searchTerm: {
+    type: String,
+    default: "",
+  },
 };
