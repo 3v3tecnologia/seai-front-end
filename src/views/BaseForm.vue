@@ -14,7 +14,7 @@
                 v-if="field.component.name === 'CreateFarmDap'"
                 :cycleError="cycleError"
                 @on-save-cycle="saveFarmDap"
-                :cycle="farmData.cycle"
+                :cycle="formData.cycle"
               />
               <component
                 v-else

@@ -86,8 +86,8 @@ export default {
           const culture = await http.get(`v2/management/crop/${id}`);
           const cycle = await http.get(`v2/management/crop/cycles/${id}`);
           const data = {
-            culture: culture.data,
-            cycle: cycle.data,
+            culture: culture.data.data,
+            cycle: cycle.data.data,
           };
           commit("SET_CURRENT_CULTURE", data);
         } catch (e) {

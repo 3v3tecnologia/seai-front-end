@@ -1,6 +1,5 @@
 <template>
   <div class="position-relative w-100 mt-4">
-    <label v-if="label" class="font-weight-bold label mb-0">{{ label }} </label>
     <div class="row mb-2">
       <div class="col-1">
         <button
@@ -88,7 +87,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref, watch, computed } from "vue";
+import { defineProps, defineEmits, ref, watch, onMounted } from "vue";
 
 const emit = defineEmits(["onSaveCycle"]);
 
@@ -104,9 +103,13 @@ const props = defineProps({
   },
 });
 
-const KCs = ref(props.cycle);
+const KCs = ref();
 
-addKC();
+onMounted(() => {
+  console.log(props.cycle);
+  KCs.value = props.cycle;
+  addKC();
+});
 
 watch(
   () => KCs.value,
