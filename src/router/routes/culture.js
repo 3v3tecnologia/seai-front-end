@@ -3,7 +3,7 @@ import ManagementRegister from "../../views/templates/ManagementRegister.vue";
 import cultureList from "@/router/props/culture/list";
 import cultureCreate from "@/router/props/culture/create";
 import cultureUpdate from "@/router/props/culture/update";
-import BaseForm from "@/views/BaseForm.vue";
+import CultureForm from "@/views/CultureForm.vue";
 
 export default [
   {
@@ -25,7 +25,7 @@ export default [
       title: `${actionPrefix.create} cultura`,
       navBarTab: 8,
     },
-    component: BaseForm,
+    component: CultureForm,
     props: cultureCreate,
   },
   {
@@ -36,7 +36,7 @@ export default [
       title: `${actionPrefix.edit} cultura`,
       navBarTab: 8,
     },
-    component: BaseForm,
+    component: CultureForm,
     props: cultureUpdate,
   },
 ];

@@ -1,0 +1,16 @@
+.wrapper-form {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  background: $base-blue;
+
+  @media (min-width: 992px) {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  form {
+    label {
+      font-weight: bold;
+    }
+  }
+}

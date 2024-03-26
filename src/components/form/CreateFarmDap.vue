@@ -1,11 +1,13 @@
 <template>
   <div class="position-relative w-100 mt-4">
-    <label v-if="label" class="font-weight-bold label mb-0">{{ label }} </label>
     <div class="row mb-2">
+      <div class="col-2">
+        <h3 class="text-left">Ciclos</h3>
+      </div>
       <div class="col-1">
         <button
           type="button"
-          class="btn btn-primary mr-4 w-25"
+          class="btn btn-primary w-25"
           @click="addKC()"
           v-tooltip.left="{
             value: 'Adicionar estágio',
@@ -36,13 +38,13 @@
         <small class="text-danger">Preencha todos os campos obrigatórios</small>
       </div>
     </div>
-    <form class="mt-5 formulario" v-for="(kc, i) in KCs" :key="i">
+    <form class="mt-4 formulario" v-for="(kc, i) in KCs" :key="i">
       <div class="form-group form-group-text p-float-label">
         <InputText
           id="estagio"
           aria-describedby="estagio-help"
           v-model="kc.Title"
-          :class="`w-100 ${cycleError && !kc.End ? 'invalidInput' : ''}`"
+          :class="`w-100 ${cycleError && !kc.Title ? 'invalidInput' : ''}`"
         />
         <label for="estagio" class="font-weight-bold">Nome do estágio</label>
       </div>
@@ -51,7 +53,7 @@
           v-model="kc.Start"
           id="kc"
           aria-describedby="kc-help"
-          :class="`w-100 ${cycleError && !kc.End ? 'invalidInput' : ''}`"
+          :class="`w-100 ${cycleError && !kc.Start ? 'invalidInput' : ''}`"
         />
         <label for="kc" class="font-weight-bold">Dia inicial</label>
       </div>
@@ -70,7 +72,7 @@
           v-model="kc.KC"
           id="kc"
           aria-describedby="kc-help"
-          :class="`w-100 ${cycleError && !kc.End ? 'invalidInput' : ''}`"
+          :class="`w-100 ${cycleError && !kc.KC ? 'invalidInput' : ''}`"
         />
         <label for="kc" class="font-weight-bold">KC</label>
       </div>
@@ -79,7 +81,7 @@
           v-model="kc.Increment"
           id="kc"
           aria-describedby="kc-help"
-          :class="`w-100 ${cycleError && !kc.End ? 'invalidInput' : ''}`"
+          :class="`w-100 ${cycleError && !kc.Increment ? 'invalidInput' : ''}`"
         />
         <label for="kc" class="font-weight-bold">Incremento</label>
       </div>
@@ -88,7 +90,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref, watch, computed } from "vue";
+import { defineProps, defineEmits, ref, watch, onMounted } from "vue";
 
 const emit = defineEmits(["onSaveCycle"]);
 
@@ -104,9 +106,14 @@ const props = defineProps({
   },
 });
 
-const KCs = ref(props.cycle);
+const KCs = ref();
 
-addKC();
+onMounted(() => {
+  KCs.value = props.cycle;
+  if (KCs.value.length === 0) {
+    addKC();
+  }
+});
 
 watch(
   () => KCs.value,
