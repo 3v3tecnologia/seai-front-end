@@ -10,14 +10,7 @@
             :key="i"
           >
             <div v-if="field._typeComponent == 'component'">
-              <CreateFarmDap
-                v-if="field.component.name === 'CreateFarmDap'"
-                :cycleError="cycleError"
-                @on-save-cycle="saveFarmDap"
-                :cycle="farmData.cycle"
-              />
               <component
-                v-else
                 v-model="form[field.formKey]"
                 v-bind="field.component.props"
                 :is="preBuiltComponents[field.component.name]"
@@ -423,12 +416,6 @@ watch(
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  if (router.currentRoute.value.name === "create-culture") {
-    cycleError.value = verifyCycles();
-    if (cycleError.value) {
-      return;
-    }
-  }
   await store
     .dispatch(props.submitDataKey, form.value)
     .then(() => {
@@ -436,24 +423,6 @@ const handleSubmit = async (e) => {
     })
     .catch(console.error);
 };
-
-function saveFarmDap(cycle) {
-  form.value.data = cycle;
-}
-
-function verifyCycles() {
-  let result = false;
-  if (!form.value.data) {
-    result = true;
-  } else {
-    for (const kc of form.value.data) {
-      if (!kc.Title || !kc.Start || !kc.End || !kc.KC || !kc.Increment) {
-        result = true;
-      }
-    }
-  }
-  return result;
-}
 </script>
 
 <style>
