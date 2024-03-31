@@ -39,7 +39,7 @@ export const route = {
           columns: [
             {
               title: "Cultura",
-              field: "Plant_Name",
+              field: "Crop",
               mutator: (a) => {
                 if (a && a.length >= 50) {
                   return a.slice(50);
@@ -52,7 +52,7 @@ export const route = {
             },
             {
               title: "Duração da safra (dias)",
-              field: "cultureCycle",
+              field: "HarvestDuration",
               editor: "number",
               mutator: mutatorDays,
               editorParams: {
@@ -66,7 +66,7 @@ export const route = {
             },
             {
               title: "Período de cultivo (dias)",
-              field: "ProductivityPerKilo",
+              field: "CultivationPeriod",
               editor: "number",
               mutator: mutatorDays,
               editorParams: {
@@ -75,7 +75,7 @@ export const route = {
             },
             {
               title: "Produtividade (kg/ha)",
-              field: "ProductivityPerMeters",
+              field: "Productivity",
               editor: "number",
               mutator: mutatorDivisor,
               editorParams: {
@@ -85,7 +85,7 @@ export const route = {
             },
             {
               title: "Consumo hídrico (m³/ha)",
-              field: "ProfitabilityPerHectare",
+              field: "Consuption",
               editor: "number",
               mutator: mutatorDivisor,
               editorParams: {
