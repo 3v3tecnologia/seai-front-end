@@ -2,6 +2,7 @@ import BaseForm from "@/views/BaseForm.vue";
 import BaseCrudView from "@/views/templates/BaseCrudView.vue";
 import { actionPrefix } from "@/constants";
 import routeProps from "@/router/props";
+import Equipments from "@/views/Equipments/Equipments.vue";
 
 export default [
   {
@@ -11,7 +12,7 @@ export default [
       ShowNav: true,
       title: `Equipamentos e leituras`,
     },
-    component: BaseCrudView,
+    component: Equipments,
     props: routeProps.equipments.list,
   },
   {

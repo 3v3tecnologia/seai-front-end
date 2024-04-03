@@ -6,7 +6,7 @@
           <div
             v-for="(field, i) in fieldsTotal"
             :class="field.colSize ? `col-lg-${field.colSize}` : 'col-lg-6'"
-            class="align-items-end d-flex"
+            class="items-end flex"
             :key="i"
           >
             <div v-if="field._typeComponent == 'component'">

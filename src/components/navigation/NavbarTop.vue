@@ -1,14 +1,11 @@
 <template>
-  <div class="d-flex flex-column align-items-start mb-5">
+  <div class="flex flex-col items-start mb-5">
     <div
-      class="p-3 bg-white d-flex align-items-center justify-content-between w-100"
+      class="p-3 w-full bg-white flex flex-row align-items-center justify-between w-100"
     >
       <LogoProject title-size="md" />
       <div class="align-items-center d-flex font-weight-bold pl-3">
-        <div
-          class="d-flex align-items-center justify-content-center"
-          v-if="auth?.login"
-        >
+        <div class="flex items-center justify-center gap-4" v-if="auth?.login">
           <router-link
             to="/profile"
             class="d-flex align-items-center justify-content-center"
@@ -31,7 +28,7 @@
       </div>
     </div>
 
-    <div v-if="auth?.login" class="w-100">
+    <div v-if="auth?.login" class="w-full">
       <TabMenu v-model:activeIndex="active" :model="itemsRoutes" class="mb-2">
         <template #item="{ label, item, props }">
           <router-link

@@ -1,0 +1,63 @@
+<template>
+  <div class="w-full flex flex-row justify-between gap-8">
+    <div class="flex flex-row gap-4">
+      <span class="p-input-icon-right" v-if="!hiddenSearch">
+        <InputText
+          v-model="searchTerm"
+          placeholder="Pesquisar por nome"
+          leftIcon="pi pi-search"
+          class="w-[300px] p-input-icon"
+          @input="onSearchItem"
+        />
+        <i class="pi pi-search" />
+      </span>
+      <Dropdown
+        v-for="(select, i) in selectItems"
+        v-model="selected[i]"
+        :options="select.items"
+        :optionLabel="select.optionLabel"
+        :placeholder="select.placeholder"
+        :key="i"
+        class="w-[200px]"
+        @change="onSelectItem(select, i)"
+      />
+    </div>
+    <slot></slot>
+  </div>
+</template>
+<script setup>
+import { defineProps, defineEmits, ref, onMounted } from "vue";
+
+const props = defineProps({
+  selectItems: {
+    type: Array,
+  },
+  hiddenSearch: {
+    type: Boolean,
+    default: false,
+  },
+  startSelected: {
+    type: Array,
+    default: () => [],
+  },
+});
+
+const selected = ref([]);
+const searchTerm = ref(null);
+const emit = defineEmits(["onSearchItem", "onSelectItem"]);
+
+onMounted(() => {
+  for (let i = 0; i < props.selectItems.length; i++) {
+    selected.value.push(
+      props.startSelected.length > 0 ? props.startSelected[i] : null
+    );
+  }
+});
+
+function onSearchItem() {
+  emit("onSearchItem", searchTerm.value);
+}
+function onSelectItem(select, index) {
+  emit("onSelectItem", select.paramsName, selected.value[index].Id);
+}
+</script>

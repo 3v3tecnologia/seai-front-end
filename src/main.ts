@@ -11,6 +11,13 @@ import InputNumber from "primevue/inputnumber";
 import "primevue/resources/themes/lara-light-indigo/theme.css";
 import "primeicons/primeicons.css";
 import Calendar from "primevue/calendar";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import ProgressSpinner from "primevue/progressspinner";
+import Paginator from "primevue/paginator";
+import Dropdown from "primevue/dropdown";
+import InputSwitch from "primevue/inputswitch";
+import Button from "primevue/button";
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -23,11 +30,22 @@ import {
   faTrash,
   faSignOut,
   faRefresh,
+  faSearch,
+  faPencil,
 } from "@fortawesome/free-solid-svg-icons";
 
 import Tooltip from "primevue/tooltip";
 /* add icons to the library */
-library.add(faUserSecret, faPlus, faRefresh, faPen, faTrash, faSignOut);
+library.add(
+  faUserSecret,
+  faPlus,
+  faRefresh,
+  faPen,
+  faTrash,
+  faSignOut,
+  faSearch,
+  faPencil
+);
 
 createApp(App)
   .component("font-awesome-icon", FontAwesomeIcon)
@@ -81,4 +99,11 @@ createApp(App)
   .component("InputText", InputText)
   .component("Calendar", Calendar)
   .component("InputNumber", InputNumber)
+  .component("DataTable", DataTable)
+  .component("Column", Column)
+  .component("ProgressSpinner", ProgressSpinner)
+  .component("Paginator", Paginator)
+  .component("Dropdown", Dropdown)
+  .component("InputSwitch", InputSwitch)
+  .component("Button", Button)
   .mount("#app");
