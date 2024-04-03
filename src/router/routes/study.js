@@ -1,5 +1,6 @@
 import studyUpdate from "@/router/props/study/update";
 import BaseForm from "@/views/BaseForm.vue";
+import Studies from "@/views/Studies/Studies.vue";
 
 export default [
   {
@@ -10,7 +11,7 @@ export default [
       title: "Estudos",
       navBarTab: 10,
     },
-    component: BaseForm,
+    component: Studies,
     props: studyUpdate,
   },
 ];

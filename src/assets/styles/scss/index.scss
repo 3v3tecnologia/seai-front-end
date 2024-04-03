@@ -1,6 +1,9 @@
 @import "./_variables.scss";
 @import "./form.scss";
-// @import "node_modules/bootstrap/scss/bootstrap";
+@import "./buttons.scss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .margin-top-mob {
   @media (max-width: 991px) {
@@ -18,4 +21,7 @@
   font-family: "Secular One", sans-serif;
   color: #000000c2;
   font-size: 1.5rem;
+}
+.p-progress-spinner-circle {
+  stroke: #003b66 !important;
 }

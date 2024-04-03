@@ -10,4 +10,7 @@ export class CultureRest {
   async update(id: number, data: any): Promise<any> {
     return await http.put(`v2/management/crop/${id}`, data);
   }
+  async getStudiesByBasin(basinId: number): Promise<any> {
+    return await http.get(`v2/management/studies/${basinId}`);
+  }
 }
