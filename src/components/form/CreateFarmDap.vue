@@ -54,8 +54,10 @@
           id="kc"
           aria-describedby="kc-help"
           :class="`w-100 ${cycleError && !kc.Start ? 'invalidInput' : ''}`"
+          showButtons
+          :min="0"
         />
-        <label for="kc" class="font-weight-bold">Dia inicial</label>
+        <label for="kc" class="font-weight-bold">Início</label>
       </div>
       <div class="form-group form-group-number p-float-label">
         <InputNumber
@@ -63,8 +65,10 @@
           id="kc"
           aria-describedby="kc-help"
           :class="`w-100 ${cycleError && !kc.End ? 'invalidInput' : ''}`"
+          showButtons
+          :min="0"
         />
-        <label for="kc" class="font-weight-bold">Dia final</label>
+        <label for="kc" class="font-weight-bold">Fim</label>
       </div>
 
       <div class="form-group form-group-number p-float-label">
@@ -73,6 +77,10 @@
           id="kc"
           aria-describedby="kc-help"
           :class="`w-100 ${cycleError && !kc.KC ? 'invalidInput' : ''}`"
+          showButtons
+          mode="decimal"
+          :minFractionDigits="1"
+          :min="0"
         />
         <label for="kc" class="font-weight-bold">KC</label>
       </div>
@@ -82,6 +90,10 @@
           id="kc"
           aria-describedby="kc-help"
           :class="`w-100 ${cycleError && !kc.Increment ? 'invalidInput' : ''}`"
+          showButtons
+          mode="decimal"
+          :minFractionDigits="1"
+          :min="0"
         />
         <label for="kc" class="font-weight-bold">Incremento</label>
       </div>
@@ -127,10 +139,10 @@ function addKC() {
   const newKC = {
     Stage: KCs.value.length + 1,
     Title: "",
-    Start: null,
-    End: null,
-    KC: null,
-    Increment: null,
+    Start: 0,
+    End: 0,
+    KC: 0,
+    Increment: 0,
   };
   KCs.value.push(newKC);
 }

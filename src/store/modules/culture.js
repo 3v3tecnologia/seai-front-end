@@ -100,7 +100,7 @@ export default {
     DELETE_CULTURES: {
       async handler(_, id) {
         try {
-          await http.delete(`v1/management/crop/${id}`);
+          await http.delete(`v2/management/crop/${id}`);
           toast.success(`Cultura  deletado`);
         } catch (e) {
           console.error(e);
