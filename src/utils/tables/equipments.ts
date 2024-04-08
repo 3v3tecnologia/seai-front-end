@@ -27,7 +27,7 @@ export const equipmentsTable: TableInfo[] = [
     type: "link",
   },
   {
-    header: "Status",
+    header: "Habilitado",
     field: "Enable",
     type: "switch",
   },

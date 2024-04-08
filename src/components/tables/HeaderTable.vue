@@ -31,6 +31,7 @@ import { defineProps, defineEmits, ref, onMounted } from "vue";
 const props = defineProps({
   selectItems: {
     type: Array,
+    default: () => [],
   },
   hiddenSearch: {
     type: Boolean,

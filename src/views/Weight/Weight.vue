@@ -35,35 +35,37 @@
       </HeaderTable>
     </div>
     <ProgressSpinner v-if="loading" />
-    <div
-      v-else
-      class="w-full max-w-[1600px] px-4 min-w-[350px] mt-8 h-[70vh] overflow-auto"
-    >
-      <ProgressSpinner v-if="loadingTable" />
-      <ViewMode v-if="!editMode && !loadingTable" :studies="studies" />
-      <EditMode v-if="editMode && !loadingTable" :studies="studies" />
+    <div v-else class="w-full max-w-[1600px] px-4 min-w-[350px]">
+      <div
+        class="mt-6 h-[56vh] min-h-[500px] max-h-[1000px] bg-white overflow-auto"
+      >
+        <Edition v-if="editMode" :weights="weights" />
+        <ViewMode v-else :weights="weights" />
+      </div>
+      <Legend />
     </div>
   </div>
 </template>
 <script setup>
-import ViewMode from "./Modes/ViewMode.vue";
-import EditMode from "./Modes/EditMode.vue";
+import Legend from "./Legend/legend.vue";
+import Edition from "./Modes/Edition.vue";
+import ViewMode from "./Modes/View.vue";
 import HeaderTable from "@/components/tables/HeaderTable";
 import { ref, onMounted } from "vue";
 import { CultureRest } from "@/services/culture.service";
 import { CensusRest } from "@/services/census.service";
 import { toast } from "vue3-toastify";
 
-const studies = ref([]);
-const currentBasin = ref({});
-const basinSelectsOptions = ref([]);
-const startBasinSelectsOptions = ref([]);
-const basin = ref({});
+const weights = ref([]);
 const loading = ref(false);
 const loadingTable = ref(false);
 const editMode = ref(false);
+const basinSelectsOptions = ref([]);
+const startBasinSelectsOptions = ref([]);
+const currentBasin = ref({});
+const basin = ref({});
 
-const { getStudiesByBasin, createStudiesByBasin } = new CultureRest();
+const { getWeightByBasin, createWeightsByBasin } = new CultureRest();
 const { getLocations } = new CensusRest();
 
 onMounted(() => {
@@ -71,8 +73,38 @@ onMounted(() => {
   getBasin();
 });
 
+function getAllWeights(id) {
+  getWeightByBasin(id).then((res) => {
+    weights.value = res.data ? res.data : [];
+    if (weights.value.length > 0) {
+      weights.value = weights.value.map((weight) => {
+        Object.keys(weight).forEach((key) => {
+          if (weight[key] === null) {
+            weight[key] = 0;
+          }
+        });
+        return weight;
+      });
+    }
+    loading.value = false;
+  });
+}
+function enterEditMode(value) {
+  loadingTable.value = true;
+  editMode.value = value;
+  setTimeout(() => {
+    loadingTable.value = false;
+  }, 100);
+}
+
+function basinSelectsActions(select, index) {
+  loadingTable.value = true;
+  getAllWeights(index);
+}
+
 function getBasin() {
   getLocations().then((res) => {
+    console.log(res);
     const resultBasin = res.data.data.Bacia;
     currentBasin.value = resultBasin[0];
     basin.value = {
@@ -83,50 +115,22 @@ function getBasin() {
     };
     basinSelectsOptions.value.push(basin.value);
     startBasinSelectsOptions.value.push(currentBasin.value);
-    getStudies(currentBasin.value.Id);
+    getAllWeights(currentBasin.value.Id);
   });
 }
-
-function getStudies(id) {
-  getStudiesByBasin(id).then((res) => {
-    studies.value = res.data.data;
-    studies.value = studies.value.map((study) => {
-      Object.keys(study).forEach((key) => {
-        if (study[key] === null) {
-          study[key] = 0;
-        }
-      });
-      return study;
-    });
-    loading.value = false;
-    loadingTable.value = false;
-  });
-}
-
-function basinSelectsActions(select, index) {
-  loadingTable.value = true;
-  getStudies(index);
-}
-function enterEditMode(value) {
-  loadingTable.value = true;
-  editMode.value = value;
-  setTimeout(() => {
-    loadingTable.value = false;
-  }, 100);
-}
-
 function save() {
   loadingTable.value = true;
-  createStudiesByBasin(currentBasin.value.Id, studies.value)
+  createWeightsByBasin(currentBasin.value.Id, weights.value)
     .then(() => {
-      toast.success("Estudos salvos com sucesso!");
+      toast.success("Pesos salvos com sucesso!");
     })
     .catch(() => {
-      toast.error("Não foi possível salvar os estudos!");
+      toast.error("Não foi possível salvar os pesos!");
     })
     .finally(() => {
-      getStudies(currentBasin.value.Id);
+      getAllWeights(currentBasin.value.Id);
       editMode.value = false;
+      loadingTable.value = false;
     });
 }
 </script>

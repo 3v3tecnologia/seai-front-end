@@ -2,76 +2,101 @@
   <form class="formulario bg-white p-4 px-8 rounded-md">
     <div
       class="flex w-full justify-between gap-4 mt-8"
-      v-for="(study, i) in studies"
+      v-for="(weight, i) in weights"
       :key="i"
     >
       <div class="flex justify-start items-center w-[200px]">
-        <h4 class="font-[700]">{{ study.Crop }}:</h4>
+        <h4 class="font-[700]">{{ weight.Crop }}:</h4>
       </div>
       <div class="form-group form-group-number p-float-label">
         <InputNumber
-          v-model="study.HarvestDuration"
+          v-model="weight.ProductivityPerHectare"
           aria-describedby="kc-help"
           showButtons
           mode="decimal"
           :minFractionDigits="1"
           :min="0"
         />
-        <label for="kc" class="font-weight-bold">
-          Duração da safra (dias)
-        </label>
+        <label for="kc" class="font-weight-bold"> SP (kg/ha) </label>
       </div>
 
       <div class="form-group form-group-number p-float-label">
         <InputNumber
-          v-model="study.CultivationPeriod"
+          v-model="weight.ProductivityPerMeters"
           aria-describedby="kc-help"
           showButtons
           mode="decimal"
           :minFractionDigits="1"
           :min="0"
         />
-        <label for="kc" class="font-weight-bold">
-          Período de cultivo (dias)
-        </label>
+        <label for="kc" class="font-weight-bold"> SP (kg/m³) </label>
       </div>
       <div class="form-group form-group-number p-float-label">
         <InputNumber
-          v-model="study.Productivity"
+          v-model="weight.ProfitabilityPerHectare"
           aria-describedby="kc-help"
           showButtons
           mode="decimal"
           :minFractionDigits="1"
           :min="0"
         />
-        <label for="kc" class="font-weight-bold"> Produtividade (kg/ha) </label>
+        <label for="kc" class="font-weight-bold"> SE (R$/ha) </label>
       </div>
       <div class="form-group form-group-number p-float-label">
         <InputNumber
-          v-model="study.Consumption"
+          v-model="weight.ProfitabilityPerMeters"
           aria-describedby="kc-help"
           showButtons
           mode="decimal"
           :minFractionDigits="1"
           :min="0"
         />
-        <label for="kc" class="font-weight-bold">
-          Consumo hídrico (m³/ha)
-        </label>
+        <label for="kc" class="font-weight-bold"> SE (R$/m³) </label>
+      </div>
+      <div class="form-group form-group-number p-float-label">
+        <InputNumber
+          v-model="weight.WaterConsumptionPerMeters"
+          aria-describedby="kc-help"
+          showButtons
+          mode="decimal"
+          :minFractionDigits="1"
+          :min="0"
+        />
+        <label for="kc" class="font-weight-bold"> SH (m³/ha) </label>
+      </div>
+      <div class="form-group form-group-number p-float-label">
+        <InputNumber
+          v-model="weight.JobsPerHectare"
+          aria-describedby="kc-help"
+          showButtons
+          mode="decimal"
+          :minFractionDigits="1"
+          :min="0"
+        />
+        <label for="kc" class="font-weight-bold"> SS (Empregos/ha) </label>
+      </div>
+      <div class="form-group form-group-number p-float-label">
+        <InputNumber
+          v-model="weight.JobsPerMeters"
+          aria-describedby="kc-help"
+          showButtons
+          mode="decimal"
+          :minFractionDigits="1"
+          :min="0"
+        />
+        <label for="kc" class="font-weight-bold"> SS (Empregos/m³) </label>
       </div>
     </div>
   </form>
 </template>
 <script setup>
 import { defineProps } from "vue";
-
 const props = defineProps({
-  studies: {
+  weights: {
     type: Array,
   },
 });
 </script>
-]
 <style lang="scss">
 .formulario {
   display: flex;

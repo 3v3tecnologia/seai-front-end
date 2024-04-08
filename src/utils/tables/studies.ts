@@ -22,8 +22,8 @@ export const studiesTable: TableInfo[] = [
     type: "text",
   },
   {
-    header: "Consumo hídrico (m³/ha",
-    field: "Consuption",
-    type: "link",
+    header: "Consumo hídrico (m³/ha)",
+    field: "Consumption",
+    type: "text",
   },
 ];

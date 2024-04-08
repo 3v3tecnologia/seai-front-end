@@ -1,7 +1,5 @@
 import { route } from "./common";
 
-const getDataKey = "GET_CURRENT_WEIGHT";
-const submitDataKey = "UPDATE_WEIGHT";
 const storeDataKey = ["weight", "update"];
 const headerLabel = "Editando pesos";
 
@@ -11,9 +9,7 @@ const finishedDataButton = {
 };
 
 export default {
-  getDataKey,
   storeDataKey,
-  submitDataKey,
   finishedDataButton,
   headerLabel,
   fields: route.fields,

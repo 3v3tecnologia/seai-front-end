@@ -1,6 +1,9 @@
 <template>
   <div class="w-full flex flex-col justify-center items-center">
-    <div v-if="!loading" class="w-[80%] flex justify-start mt-4">
+    <div
+      v-if="!loading"
+      class="w-full max-w-[1600px] px-4 flex justify-start mt-4"
+    >
       <HeaderTable
         @onSearchItem="searchEquipments"
         :selectItems="equipmentsSelects"
@@ -8,7 +11,7 @@
       />
     </div>
     <ProgressSpinner v-if="loading" />
-    <div v-else class="w-[80%] min-w-[350px]">
+    <div v-else class="w-full max-w-[1600px] px-4 min-w-[350px]">
       <div class="mt-6">
         <Dtable
           :infoTable="equipmentsTable"
@@ -100,10 +103,10 @@ function tradutionType(type) {
 }
 
 function searchEquipments(searchTerm) {
-  if (searchTerm.length >= 3) {
+  if (searchTerm.length >= 3 || searchTerm.length === 0) {
+    params.value.name = searchTerm.length >= 3 ? searchTerm : null;
     params.value.limit = limit.value;
     params.value.pageNumber = 0;
-    params.value.name = searchTerm;
     loadingTable.value = true;
     getAllEquipment();
   }
@@ -123,10 +126,4 @@ function selectEquipments(paramsName, paramsValue) {
 function updateEquipment(equipment) {
   enableEquipment(equipment.Id, equipment.Enable);
 }
-</script>
-
-<script>
-export default {
-  name: "equipment-page",
-};
 </script>
