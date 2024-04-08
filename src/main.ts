@@ -30,6 +30,7 @@ import {
   faTrash,
   faSignOut,
   faRefresh,
+  faClose,
   faSearch,
   faPencil,
 } from "@fortawesome/free-solid-svg-icons";
@@ -44,7 +45,8 @@ library.add(
   faTrash,
   faSignOut,
   faSearch,
-  faPencil
+  faPencil,
+  faClose
 );
 
 createApp(App)

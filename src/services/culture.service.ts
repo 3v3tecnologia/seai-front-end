@@ -13,4 +13,9 @@ export class CultureRest {
   async getStudiesByBasin(basinId: number): Promise<any> {
     return await http.get(`v2/management/studies/${basinId}`);
   }
+  async createStudiesByBasin(basinId: number, studies: any): Promise<any> {
+    return await http.post(`v2/management/studies/${basinId}`, {
+      data: studies,
+    });
+  }
 }
