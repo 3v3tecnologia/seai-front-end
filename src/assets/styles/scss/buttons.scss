@@ -8,8 +8,8 @@
 }
 
 .btn-danger {
-  background-color: #9E2A2B !important;
-  border-color: #9E2A2B !important;
+  background-color: #9e2a2b !important;
+  border-color: #9e2a2b !important;
 }
 .btn-danger:hover {
   background-color: #852325 !important;
@@ -17,14 +17,20 @@
 }
 
 .btn-success {
-  background-color: #018E42 !important;
-  border-color: #018E42!important;
+  background-color: #018e42 !important;
+  border-color: #018e42 !important;
 }
 .btn-success:hover {
   background-color: #007035 !important;
-  border-color: #018E42!important;
+  border-color: #018e42 !important;
 }
-.p-inputnumber-button-up, .p-inputnumber-button-down{
+.p-inputnumber-button-up,
+.p-inputnumber-button-down {
   background-color: #003b66 !important;
   border-color: #003b66 !important;
+}
+.btn-simple {
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0px !important;
 }

@@ -18,6 +18,8 @@ import Paginator from "primevue/paginator";
 import Dropdown from "primevue/dropdown";
 import InputSwitch from "primevue/inputswitch";
 import Button from "primevue/button";
+import ConfirmDialog from "primevue/confirmdialog";
+import ConfirmationService from "primevue/confirmationservice";
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -53,6 +55,7 @@ createApp(App)
   .component("font-awesome-icon", FontAwesomeIcon)
   .use(store)
   .use(router)
+  .use(ConfirmationService)
   .directive("tooltip", Tooltip)
   .use(PrimeVue, {
     locale: {
@@ -108,4 +111,5 @@ createApp(App)
   .component("Dropdown", Dropdown)
   .component("InputSwitch", InputSwitch)
   .component("Button", Button)
+  .component("ConfirmDialog", ConfirmDialog)
   .mount("#app");

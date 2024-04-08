@@ -100,10 +100,10 @@ function tradutionType(type) {
 }
 
 function searchEquipments(searchTerm) {
-  if (searchTerm.length >= 3) {
+  if (searchTerm.length >= 3 || searchTerm.length === 0) {
+    params.value.name = searchTerm.length >= 3 ? searchTerm : null;
     params.value.limit = limit.value;
     params.value.pageNumber = 0;
-    params.value.name = searchTerm;
     loadingTable.value = true;
     getAllEquipment();
   }
@@ -123,10 +123,4 @@ function selectEquipments(paramsName, paramsValue) {
 function updateEquipment(equipment) {
   enableEquipment(equipment.Id, equipment.Enable);
 }
-</script>
-
-<script>
-export default {
-  name: "equipment-page",
-};
 </script>
