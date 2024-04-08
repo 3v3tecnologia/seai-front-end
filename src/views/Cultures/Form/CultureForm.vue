@@ -1,46 +1,63 @@
 <template>
-  <div v-if="loading">
-    <div class="spinner-border text-primary" role="status">
-      <span class="sr-only">Loading...</span>
+  <div class="w-full flex flex-col justify-center items-center">
+    <ProgressSpinner v-if="loading" />
+    <div
+      v-else
+      class="w-[80%] min-w-[350px] flex flex-row gap-8 mt-10 bg-white p-8 rounded-md max-h-[75vh] overflow-auto"
+    >
+      <form class="w-full" @submit="save">
+        <div class="w-full flex justify-between items-center">
+          <h1 class="text-left text-[22px] font-[500]">{{ title }}</h1>
+          <div>
+            <div class="flex gap-4">
+              <Button
+                icon="pi pi-times"
+                label="Sair"
+                class="btn-danger"
+                @click="goTo()"
+                type="button"
+              ></Button>
+              <Button
+                icon="pi pi-save"
+                :label="loadButton ? '' : 'Salvar alterações'"
+                class="btn-success min-w-[200px]"
+                type="submit"
+                :disabled="loadButton"
+              >
+                <ProgressSpinner class="w-[20px] h-[20px]" v-if="loadButton" />
+              </Button>
+            </div>
+          </div>
+        </div>
+        <div class="form-group form-group-text text-left p-float-label mt-8">
+          <InputText
+            id="culture-name"
+            aria-describedby="culture-name-help"
+            v-model="culture.Name"
+            class="w-[30%] min-w-[300px]"
+            required
+          />
+          <label for="culture-name" class="font-weight-bold">Nome</label>
+        </div>
+        <div class="mt-4">
+          <CreateFarmDap
+            :cycleError="cycleError"
+            :cycle="cultureCycle"
+            @onSaveCycle="saveCycle"
+          />
+        </div>
+      </form>
     </div>
-  </div>
-  <div v-else class="container wrapper-form p-2">
-    <form class="p-4 p-lg-5" @submit="save">
-      <h2 class="text-left">{{ title }}</h2>
-      <div class="form-group form-group-text text-left p-float-label mt-4">
-        <InputText
-          id="culture-name"
-          aria-describedby="culture-name-help"
-          v-model="culture.Name"
-          class="w-50"
-          required
-        />
-        <label for="culture-name" class="font-weight-bold">Nome</label>
-      </div>
-      <div class="mt-4">
-        <CreateFarmDap
-          :cycleError="cycleError"
-          :cycle="cultureCycle"
-          @onSaveCycle="saveCycle"
-        />
-      </div>
-      <div class="mt-4">
-        <PrimaryButton
-          :disabled="loadButton"
-          :text="`${loadButton ? 'Salvando...' : 'Salvar'}`"
-        />
-      </div>
-    </form>
   </div>
 </template>
 <script setup>
-import CreateFarmDap from "@/components/form/CreateFarmDap.vue";
-import PrimaryButton from "@/components/form/PrimaryButton.vue";
+import CreateFarmDap from "./Cycles/Cycles.vue";
 import { ref } from "vue";
 import { CultureRest } from "@/services/culture.service";
 import { CycleRest } from "@/services/cycle.service";
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { toast } from "vue3-toastify";
 
 const router = useRouter();
 const cultureRest = new CultureRest();
@@ -107,24 +124,53 @@ function save() {
 }
 
 function createCulture() {
-  cultureRest.create(culture.value).then((response) => {
-    const { data } = response;
-    createCycle(data.data);
-  });
+  cultureRest
+    .create(culture.value)
+    .then((response) => {
+      const { data } = response;
+      createCycle(data.data);
+    })
+    .catch(() => {
+      callErrorToast();
+    });
 }
 
 function updateCulture() {
-  cultureRest.update(cultureId.value, culture.value).then((response) => {
-    createCycle(cultureId.value);
-  });
+  cultureRest
+    .update(cultureId.value, culture.value)
+    .then(() => {
+      createCycle(cultureId.value);
+    })
+    .catch(() => {
+      callErrorToast();
+    });
 }
 
 function createCycle(id) {
-  cycleRest.createByCultureId(id, cultureCycle.value).then((response) => {
-    loadButton.value = false;
+  cycleRest
+    .createByCultureId(id, cultureCycle.value)
+    .then(() => {
+      isEditing.value
+        ? toast.success("Cultura alterada com sucesso!")
+        : toast.success("Cultura criada com sucesso!");
+      setTimeout(() => {
+        loadButton.value = false;
+        goTo();
+      }, 500);
+    })
+    .catch(() => {
+      callErrorToast();
+    });
+}
 
-    router.push({ name: "culture" });
-  });
+function callErrorToast() {
+  isEditing.value
+    ? toast.success("Erro em alterar cultura!")
+    : toast.success("Erro em criar cultura!");
+}
+
+function goTo() {
+  router.push({ name: "culture" });
 }
 
 function verifyCycles() {

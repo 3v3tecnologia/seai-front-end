@@ -1,5 +1,5 @@
 <template>
-  <form class="formulario">
+  <form class="formulario bg-white p-4 px-8 rounded-md">
     <div
       class="flex w-full justify-between gap-4 mt-8"
       v-for="(study, i) in studies"
@@ -21,9 +21,23 @@
           Duração da safra (dias)
         </label>
       </div>
+
       <div class="form-group form-group-number p-float-label">
         <InputNumber
           v-model="study.CultivationPeriod"
+          aria-describedby="kc-help"
+          showButtons
+          mode="decimal"
+          :minFractionDigits="1"
+          :min="0"
+        />
+        <label for="kc" class="font-weight-bold">
+          Período de cultivo (dias)
+        </label>
+      </div>
+      <div class="form-group form-group-number p-float-label">
+        <InputNumber
+          v-model="study.Productivity"
           aria-describedby="kc-help"
           showButtons
           mode="decimal"
@@ -43,19 +57,6 @@
         />
         <label for="kc" class="font-weight-bold">
           Consumo hídrico (m³/ha)
-        </label>
-      </div>
-      <div class="form-group form-group-number p-float-label">
-        <InputNumber
-          v-model="study.CultivationPeriod"
-          aria-describedby="kc-help"
-          showButtons
-          mode="decimal"
-          :minFractionDigits="1"
-          :min="0"
-        />
-        <label for="kc" class="font-weight-bold">
-          Período de cultivo (dias)
         </label>
       </div>
     </div>
