@@ -1,7 +1,7 @@
 <template>
   <BasicContentWrapper>
     <div
-      class="users-count d-flex align-items-center justify-content-between p-lg-5 mb-5"
+      class="users-count flex items-center content-between p-5 mb-5"
     >
       <div
         class="wrapper-counter"
