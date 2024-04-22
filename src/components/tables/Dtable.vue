@@ -27,12 +27,28 @@
           />
         </template>
       </Column>
+      <Column field="actions" header="Ações">
+        <template #body="slotProps">
+          <div class="flex gap-4">
+            <i
+              v-for="(action, i) in slotProps.data.actions"
+              :key="i"
+              :class="['cursor-pointer', getIcon(action)]"
+              @click="getAction(slotProps.data.id, action)"
+            ></i>
+          </div>
+        </template>
+      </Column>
     </DataTable>
   </div>
+  <ConfirmDialog />
 </template>
 <script setup>
 import { defineProps, defineEmits } from "vue";
 import { useRouter } from "vue-router";
+import { useConfirm } from "primevue/useconfirm";
+
+const confirm = useConfirm();
 const router = useRouter();
 const props = defineProps({
   dataValue: {
@@ -48,7 +64,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["onSwitchItem"]);
+const emit = defineEmits(["onSwitchItem", "onEditItem", "onDeleteItem"]);
 
 function getValue(data, field) {
   if (field.includes(".")) {
@@ -74,12 +90,40 @@ function switchItem(item) {
 function goTo(route) {
   router.push(route);
 }
-</script>
-<script>
-export default {
-  name: "d-table",
-  // ...
-};
+
+function getIcon(icon) {
+  let result = "pi pi-check text-black";
+  if (icon === "edit") {
+    result = "pi pi-pencil text-primary";
+  } else if (icon === "delete") {
+    result = "pi pi-trash text-danger";
+  }
+  return result;
+}
+
+function getAction(id, action) {
+  if (action === "edit") {
+    emit("onEditItem", id);
+  } else if (action === "delete") {
+    confirmDelete(id);
+  }
+}
+
+function confirmDelete(id) {
+  confirm.require({
+    message:
+      "Será deletado o usuário selecionado. Este processo não poderá ser desfeito!",
+    header: "Confirmar deleção",
+    icon: "pi pi-exclamation-triangle",
+    rejectClass: "p-button-secondary p-button-outlined",
+    acceptClass: "btn-danger",
+    rejectLabel: "Cancelar",
+    acceptLabel: "Deletar",
+    accept: () => {
+      emit("onDeleteItem", id);
+    },
+  });
+}
 </script>
 <style type="text/css">
 .p-paginator {
