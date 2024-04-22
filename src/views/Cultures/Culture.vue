@@ -18,7 +18,7 @@
     <ProgressSpinner v-if="loading" />
     <div
       v-else
-      class="w-full max-w-[1600px] px-4 min-w-[350px] flex flex-row gap-8 mt-10"
+      class="w-full max-w-[1600px] px-4 min-w-[350px] flex flex-wrap flex-row gap-8 mt-10"
     >
       <CultureCard :cultures="cultures" @onDelete="deleteCulture" />
     </div>

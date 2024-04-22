@@ -92,9 +92,9 @@ function adjustmentUsersValue() {
   users.value.forEach((element) => {
     element.type = tradutionType(element.type);
     element.createdAt = convertDate(element.createdAt);
-    element.actions = ["edit", "delete"];
+    element.actions = ["delete"];
   });
-  users.value[0].actions = ["edit"];
+  users.value[0].actions = [];
 }
 
 function tradutionType(type) {
@@ -129,10 +129,12 @@ function selectUsers(paramsName, paramsValue) {
 function updateEquipment(equipment) {
   //   enableEquipment(equipment.Id, equipment.Enable);
 }
-function goTo(id = 0) {
+function goTo(data = null) {
+  const id = data === null ? 0 : data.id;
   router.push({ name: "create-user", params: { id: id === 0 ? null : id } });
 }
-function deleteUser(id) {
+function deleteUser(data) {
+  const id = data.id;
   usersRest
     .deleteById(id)
     .then(() => {

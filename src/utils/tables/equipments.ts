@@ -22,11 +22,6 @@ export const equipmentsTable: TableInfo[] = [
     type: "text",
   },
   {
-    header: "Leituras",
-    field: "link",
-    type: "link",
-  },
-  {
     header: "Habilitado",
     field: "Enable",
     type: "switch",

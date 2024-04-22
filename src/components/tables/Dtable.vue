@@ -34,7 +34,7 @@
               v-for="(action, i) in slotProps.data.actions"
               :key="i"
               :class="['cursor-pointer', getIcon(action)]"
-              @click="getAction(slotProps.data.id, action)"
+              @click="getAction(slotProps.data, action)"
             ></i>
           </div>
         </template>
@@ -64,7 +64,12 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["onSwitchItem", "onEditItem", "onDeleteItem"]);
+const emit = defineEmits([
+  "onSwitchItem",
+  "onEditItem",
+  "onDeleteItem",
+  "onOpenModal",
+]);
 
 function getValue(data, field) {
   if (field.includes(".")) {
@@ -97,19 +102,23 @@ function getIcon(icon) {
     result = "pi pi-pencil text-primary";
   } else if (icon === "delete") {
     result = "pi pi-trash text-danger";
+  } else if (icon === "modal") {
+    result = "pi pi-eye text-primary";
   }
   return result;
 }
 
-function getAction(id, action) {
+function getAction(data, action) {
   if (action === "edit") {
-    emit("onEditItem", id);
+    emit("onEditItem", data);
   } else if (action === "delete") {
-    confirmDelete(id);
+    confirmDelete(data);
+  } else if (action === "modal") {
+    emit("onOpenModal", data);
   }
 }
 
-function confirmDelete(id) {
+function confirmDelete(data) {
   confirm.require({
     message:
       "Será deletado o usuário selecionado. Este processo não poderá ser desfeito!",
@@ -120,14 +129,8 @@ function confirmDelete(id) {
     rejectLabel: "Cancelar",
     acceptLabel: "Deletar",
     accept: () => {
-      emit("onDeleteItem", id);
+      emit("onDeleteItem", data);
     },
   });
 }
 </script>
-<style type="text/css">
-.p-paginator {
-  width: 104% !important;
-  margin-left: -30px;
-}
-</style>
