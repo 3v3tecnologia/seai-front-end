@@ -20,6 +20,7 @@ import InputSwitch from "primevue/inputswitch";
 import Button from "primevue/button";
 import ConfirmDialog from "primevue/confirmdialog";
 import ConfirmationService from "primevue/confirmationservice";
+import Dialog from "primevue/dialog";
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -112,4 +113,5 @@ createApp(App)
   .component("InputSwitch", InputSwitch)
   .component("Button", Button)
   .component("ConfirmDialog", ConfirmDialog)
+  .component("Dialog", Dialog)
   .mount("#app");

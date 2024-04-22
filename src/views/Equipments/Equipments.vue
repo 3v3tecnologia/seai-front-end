@@ -1,5 +1,6 @@
 <template>
   <div class="w-full flex flex-col justify-center items-center">
+    <ReadModal v-if="showModal" :showModal="showModal" />
     <div
       v-if="!loading"
       class="w-full max-w-[1600px] px-4 flex justify-start mt-4"
@@ -15,13 +16,14 @@
       <div class="mt-6">
         <Dtable
           :infoTable="equipmentsTable"
-          :dataValue="equipments?.Equipments"
+          :dataValue="equipments?.Items"
           :loadingTable="loadingTable"
           @onSwitchItem="updateEquipment"
+          @onOpenModal="openModal"
         />
         <Pagination
-          :rows="equipments?.PageLimitRows"
-          :totalRecords="equipments?.QtdRows"
+          :rows="numberResultsFound"
+          :totalRecords="equipments?.TotalItems"
           @onHandlePageChange="handlePageChange"
         />
       </div>
@@ -32,6 +34,7 @@
 import Dtable from "@/components/tables/Dtable";
 import HeaderTable from "@/components/tables/HeaderTable";
 import Pagination from "@/components/pagination/pagination.vue";
+import ReadModal from "./Modals/Read.vue";
 import { ref, onMounted } from "vue";
 import { equipmentsTable } from "@/utils/tables/equipments";
 import { EquipmentRest } from "@/services/equipment.service";
@@ -39,9 +42,13 @@ import { EquipmentRest } from "@/services/equipment.service";
 const limit = ref(7);
 const equipments = ref({});
 const equipmentsSelects = ref([]);
+const currentEquipment = ref({});
+const numberResultsFound = ref(0);
+const reads = ref({});
 const organs = ref({});
 const loading = ref(false);
 const loadingTable = ref(false);
+const showModal = ref(false);
 const equipmentTypes = ref({
   placeholder: "Filtrar por tipo",
   optionLabel: "Name",
@@ -52,7 +59,7 @@ const equipmentTypes = ref({
     { Name: "Pluviômetro", Id: 2 },
   ],
 });
-const { getAll, getAllOrgans, enableEquipment } = new EquipmentRest();
+const equipmentRest = new EquipmentRest();
 const params = ref({
   pageNumber: 0,
   limit: limit.value,
@@ -66,8 +73,12 @@ onMounted(() => {
 });
 
 function getAllEquipment() {
-  getAll(params.value).then((res) => {
-    equipments.value = res.data.data;
+  equipmentRest.getAll(params.value).then((res) => {
+    equipments.value = res.data;
+    numberResultsFound.value =
+      equipments.value !== null && equipments.value.Items
+        ? equipments.value.Items.length
+        : 0;
     adjustmentEquipmentValue();
     loading.value = false;
     loadingTable.value = false;
@@ -75,7 +86,7 @@ function getAllEquipment() {
 }
 
 function getOrgans() {
-  getAllOrgans().then((res) => {
+  equipmentRest.getAllOrgans().then((res) => {
     organs.value = {
       placeholder: "Filtrar por orgãos",
       optionLabel: "Name",
@@ -88,14 +99,16 @@ function getOrgans() {
   });
 }
 function adjustmentEquipmentValue() {
-  equipments.value.Equipments.forEach((element) => {
-    element.Type.Name = tradutionType(element.Type.Name);
-    element.link = "Acessar leituras";
-    element.router = {
-      name: "station-reads",
-      params: { id: element.Id },
-    };
-  });
+  if (equipments.value !== null && equipments.value.Items)
+    equipments.value.Items.forEach((element) => {
+      element.Type.Name = tradutionType(element.Type.Name);
+      element.link = "Acessar leituras";
+      element.actions = ["modal"];
+      element.router = {
+        name: "station-reads",
+        params: { id: element.Id },
+      };
+    });
 }
 
 function tradutionType(type) {
@@ -124,6 +137,23 @@ function selectEquipments(paramsName, paramsValue) {
   getAllEquipment();
 }
 function updateEquipment(equipment) {
-  enableEquipment(equipment.Id, equipment.Enable);
+  equipmentRest.enableEquipment(equipment.Id, equipment.Enable);
+}
+function openModal(data) {
+  showModal.value = true;
+  currentEquipment.value = data;
+  getReads();
+}
+function getReads() {
+  equipmentRest
+    .getLatestEquipmentMeasurements(
+      currentEquipment.value.Id,
+      currentEquipment.value.Type.Name
+    )
+    .then((res) => {
+      reads.value = res.data;
+      console.log(reads.value);
+      loadingTable.value = false;
+    });
 }
 </script>
