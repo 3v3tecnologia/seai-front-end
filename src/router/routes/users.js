@@ -1,4 +1,6 @@
 import BaseCrudView from "@/views/templates/BaseCrudView.vue";
+import Users from "@/views/Users/Users.vue";
+import CreateUsers from "@/views/Users/Form/Main.vue";
 import CreateUserView from "@/views/UserRegisterView.vue";
 import { actionPrefix, modulesSystem, modulesSystemLevel } from "@/constants";
 import routeProps from "@/router/props";
@@ -12,26 +14,16 @@ export default [
       ShowNav: true,
       modulesNeeded: [modulesSystem.user, modulesSystemLevel.read],
     },
-    component: BaseCrudView,
-    props: routeProps.user,
+    component: Users,
   },
   {
-    path: "/users/create",
+    path: "/users/form/:id?",
     name: "create-user",
     meta: {
       title: `${actionPrefix.create} usuário`,
       modulesNeeded: [modulesSystem.user, modulesSystemLevel.write],
     },
-    component: CreateUserView,
-  },
-  {
-    path: "/users/edit/:id",
-    name: "edit-user",
-    meta: {
-      title: `${actionPrefix.edit} usuário`,
-      modulesNeeded: [modulesSystem.user, modulesSystemLevel.write],
-    },
-    component: CreateUserView,
+    component: CreateUsers,
   },
 ].map((r) => {
   r.meta.navBarTab = 0;

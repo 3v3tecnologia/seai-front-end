@@ -26,6 +26,32 @@ export const key = Symbol();
 export const store = createStore({
   modules,
   state: {
+    user: {
+      email: "",
+      type: "standard",
+      modules: {
+        jobs: {
+          id: 1,
+          read: false,
+          write: false,
+        },
+        news: {
+          id: 1,
+          read: false,
+          write: false,
+        },
+        register: {
+          id: 1,
+          read: false,
+          write: false,
+        },
+        user: {
+          id: 1,
+          read: false,
+          write: false,
+        },
+      },
+    },
     auth: null,
     currentTab: 0,
     currentBody: null,
@@ -75,6 +101,9 @@ export const store = createStore({
     profile: null,
   },
   mutations: {
+    ["SET_USER_CREATE"](state, newUser) {
+      state.user = newUser;
+    },
     ["SET_BODIES_OPTIONS"](state, options) {
       state.metereologicalBodies = options;
     },
@@ -683,6 +712,9 @@ export const store = createStore({
     },
   },
   getters: {
+    getUser(state) {
+      return state.user;
+    },
     bodiesOptions(state) {
       const bodiesDTO = (bodies) => {
         return bodies.map((bodie) => ({
