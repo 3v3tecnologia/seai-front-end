@@ -55,7 +55,7 @@
       </div>
       <div class="form-group form-group-number p-float-label">
         <InputNumber
-          v-model="weight.WaterConsumptionPerMeters"
+          v-model="weight.WaterConsumption"
           aria-describedby="kc-help"
           showButtons
           mode="decimal"

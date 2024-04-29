@@ -1,8 +1,10 @@
 import http from "@/http";
+import QueryParams from "@/interfaces/queryParams.interface";
 
 export class UsersRest {
-  async getAll(): Promise<any> {
-    return await http.get(`v1/user/list`);
+  async getAll(params: QueryParams): Promise<any> {
+    const result = await http.get(`v1/user/list`, { params });
+    return result.data;
   }
   async create(data: any): Promise<any> {
     return await http.post(`v1/user/register`, data);

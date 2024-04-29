@@ -49,12 +49,12 @@ const user = ref({
       write: false,
     },
     register: {
-      id: 2,
+      id: 3,
       read: false,
       write: false,
     },
     user: {
-      id: 3,
+      id: 2,
       read: false,
       write: false,
     },

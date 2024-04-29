@@ -33,7 +33,7 @@ export const weightsTable: TableInfo[] = [
   {
     header: "SH (m³/ha)",
     tooltip: "Segurança Hídrica (m³/ha)",
-    field: "WaterConsumptionPerMeters",
+    field: "WaterConsumption",
     type: "text",
   },
   {
