@@ -92,9 +92,9 @@ function adjustmentUsersValue() {
   users.value.forEach((element) => {
     element.type = tradutionType(element.type);
     element.createdAt = convertDate(element.createdAt);
-    element.actions = ["edit", "delete"];
+    element.actions = ["delete"];
   });
-  users.value[0].actions = ["edit"];
+  users.value[0].actions = [];
 }
 
 function tradutionType(type) {

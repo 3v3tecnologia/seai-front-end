@@ -1,6 +1,15 @@
 <template>
   <div class="w-full flex flex-col justify-center items-center">
-    <ReadModal v-if="showModal" :showModal="showModal" />
+    <ReadModal
+      v-if="showModal"
+      :read-data="reads"
+      :id-equipment="currentEquipment.Id"
+      :showModal="showModal"
+      :title="currentEquipment.Name"
+      :loading-button="loadingRead"
+      @on-close-modal="showModal = false"
+      @on-save-read="updateRead"
+    />
     <div
       v-if="!loading"
       class="w-full max-w-[1600px] px-4 flex justify-start mt-4"
@@ -38,6 +47,7 @@ import ReadModal from "./Modals/Read.vue";
 import { ref, onMounted } from "vue";
 import { equipmentsTable } from "@/utils/tables/equipments";
 import { EquipmentRest } from "@/services/equipment.service";
+import { toast } from "vue3-toastify";
 
 const limit = ref(7);
 const equipments = ref({});
@@ -47,6 +57,7 @@ const numberResultsFound = ref(0);
 const reads = ref({});
 const organs = ref({});
 const loading = ref(false);
+const loadingRead = ref(false);
 const loadingTable = ref(false);
 const showModal = ref(false);
 const equipmentTypes = ref({
@@ -140,11 +151,11 @@ function updateEquipment(equipment) {
   equipmentRest.enableEquipment(equipment.Id, equipment.Enable);
 }
 function openModal(data) {
-  showModal.value = true;
   currentEquipment.value = data;
   getReads();
 }
 function getReads() {
+  loadingRead.value = true;
   equipmentRest
     .getLatestEquipmentMeasurements(
       currentEquipment.value.Id,
@@ -152,8 +163,23 @@ function getReads() {
     )
     .then((res) => {
       reads.value = res.data;
-      console.log(reads.value);
       loadingTable.value = false;
+      loadingRead.value = false;
+      showModal.value = true;
+    });
+}
+function updateRead(data) {
+  loadingRead.value = true;
+  equipmentRest
+    .updateRead(currentEquipment.value.Id, data)
+    .then(() => {
+      toast.success("Leitura salva com sucesso!");
+    })
+    .catch(() => {
+      toast.error("Erro ao salvar leitura!");
+    })
+    .finally(() => {
+      loadingRead.value = false;
     });
 }
 </script>
