@@ -22,6 +22,7 @@ import ConfirmDialog from "primevue/confirmdialog";
 import ConfirmationService from "primevue/confirmationservice";
 import Dialog from "primevue/dialog";
 import Password from "primevue/password";
+import Editor from "primevue/editor";
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -116,4 +117,5 @@ createApp(App)
   .component("ConfirmDialog", ConfirmDialog)
   .component("Dialog", Dialog)
   .component("Password", Password)
+  .component("Editor", Editor)
   .mount("#app");

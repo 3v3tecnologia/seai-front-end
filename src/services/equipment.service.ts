@@ -13,10 +13,6 @@ export class EquipmentRest {
   ): Promise<EquipmentsWithPagination> {
     return await http.put(`v1/equipments/${id}`, { Enable: enable });
   }
-  async getAllOrgans(): Promise<EquipmentsWithPagination> {
-    const result = await http.get(`v1/equipments/organ`);
-    return result.data;
-  }
   async getLatestEquipmentMeasurements(
     equipmentId: number,
     equipmentsType: string
@@ -38,6 +34,11 @@ export class EquipmentRest {
       AtmosphericPressure: 11.4,
       Et0: 11.4,
     });
+    return result.data;
+  }
+
+  async getAllOrgans(): Promise<EquipmentsWithPagination> {
+    const result = await http.get(`v1/equipments/organ`);
     return result.data;
   }
   async createOrgan(data: any): Promise<any> {

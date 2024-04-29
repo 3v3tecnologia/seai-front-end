@@ -8,7 +8,8 @@
     >
       <template #start="slotProps">
         <p class="hidden md:block">
-          Exibindo {{ slotProps.state.rows }} de {{ totalRecords }} equipamentos
+          Exibindo {{ slotProps.state.rows }} de {{ totalRecords }}
+          {{ itemsName }}
         </p>
         <p class="block md:hidden">
           {{ slotProps.state.rows }}/ {{ totalRecords }}
@@ -30,6 +31,10 @@ const props = defineProps({
     type: Number,
     required: false,
     default: 1,
+  },
+  itemsName: {
+    type: String,
+    default: "items",
   },
 });
 

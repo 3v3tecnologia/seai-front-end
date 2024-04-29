@@ -2,6 +2,8 @@ import BaseForm from "@/views/BaseForm.vue";
 import { actionPrefix, modulesSystem, modulesSystemLevel } from "@/constants";
 import BaseCrudView from "@/views/templates/BaseCrudView.vue";
 import routeProps from "@/router/props";
+import News from "@/views/News/News.vue";
+import NewsForm from "@/views/News/Form/Main.vue";
 
 export default [
   {
@@ -12,17 +14,17 @@ export default [
       title: `Notícias`,
       modulesNeeded: [modulesSystem.news, modulesSystemLevel.read],
     },
-    component: BaseCrudView,
+    component: News,
     props: routeProps.newsletter.list,
   },
   {
-    path: "/newsletter/edit/:id",
-    name: "edit-newsletter",
+    path: "/newsletter/form/:id?",
+    name: "form-newsletter",
     meta: {
-      title: `${actionPrefix.edit} notícia`,
+      title: `Formulário de notícia`,
       modulesNeeded: [modulesSystem.news, modulesSystemLevel.write],
     },
-    component: BaseForm,
+    component: NewsForm,
     props: routeProps.newsletter.update,
   },
   {
