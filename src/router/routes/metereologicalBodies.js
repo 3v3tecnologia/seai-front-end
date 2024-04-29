@@ -2,6 +2,8 @@ import BaseForm from "@/views/BaseForm.vue";
 import BaseCrudView from "@/views/templates/BaseCrudView.vue";
 import { actionPrefix } from "@/constants";
 import routeProps from "@/router/props";
+import Organs from "@/views/Organs/Organs.vue";
+import FormOrgans from "@/views/Organs/Form/Main.vue";
 
 export default [
   {
@@ -11,16 +13,16 @@ export default [
       ShowNav: true,
       title: `Órgãos meteorológicos`,
     },
-    component: BaseCrudView,
+    component: Organs,
     props: routeProps.metereologicalBodies.list,
   },
   {
-    path: "/meteorological-bodies/edit/:id",
-    name: "edit-body",
+    path: "/meteorological-bodies/form-organs/:id?",
+    name: "form-organs",
     meta: {
-      title: `${actionPrefix.edit} órgão meteorológico`,
+      title: `Formulário órgão meteorológico`,
     },
-    component: BaseForm,
+    component: FormOrgans,
     props: routeProps.metereologicalBodies.update,
   },
   {
