@@ -24,16 +24,16 @@
       <div class="mt-6">
         <Dtable
           :infoTable="usersTable"
-          :dataValue="users"
+          :dataValue="users.Items"
           :loadingTable="loadingTable"
           @onEditItem="goTo"
           @onDeleteItem="deleteUser"
         />
-        <!-- <Pagination
-          :rows="equipments?.PageLimitRows"
-          :totalRecords="equipments?.QtdRows"
+        <Pagination
+          :rows="numberResultsFound"
+          :totalRecords="users.TotalItems"
           @onHandlePageChange="handlePageChange"
-        /> -->
+        />
       </div>
     </div>
   </div>
@@ -52,6 +52,7 @@ import { toast } from "vue3-toastify";
 const router = useRouter();
 
 const limit = ref(7);
+const numberResultsFound = ref(0);
 const users = ref({});
 const usersSelects = ref([]);
 const loading = ref(false);
@@ -59,11 +60,11 @@ const loadingTable = ref(false);
 const usersTypes = ref({
   placeholder: "Filtrar por tipo",
   optionLabel: "Name",
-  paramsName: "idType",
+  paramsName: "type",
   items: [
-    { Name: "Todos", Id: 0 },
-    { Name: "Básico", Id: 1 },
-    { Name: "Admin", Id: 2 },
+    { Name: "Todos", Id: "" },
+    { Name: "Básico", Id: "standard" },
+    { Name: "Admin", Id: "admin" },
   ],
 });
 const usersRest = new UsersRest();
@@ -81,7 +82,7 @@ onMounted(() => {
 
 function getAllUsers() {
   usersRest.getAll(params.value).then((res) => {
-    users.value = res.data.data;
+    users.value = res.data;
     loading.value = false;
     loadingTable.value = false;
     adjustmentUsersValue();
@@ -89,12 +90,15 @@ function getAllUsers() {
 }
 
 function adjustmentUsersValue() {
-  users.value.forEach((element) => {
-    element.type = tradutionType(element.type);
-    element.createdAt = convertDate(element.createdAt);
-    element.actions = ["delete"];
-  });
-  users.value[0].actions = [];
+  if (users.value !== null && users.value.Items.length > 0) {
+    users.value.Items.forEach((element) => {
+      element.type = tradutionType(element.type);
+      element.createdAt = convertDate(element.createdAt);
+      element.actions = ["edit", "delete"];
+    });
+    users.value.Items[0].actions = [];
+    numberResultsFound.value = users.value.Items.length;
+  }
 }
 
 function tradutionType(type) {
@@ -123,12 +127,11 @@ function handlePageChange(page) {
 function selectUsers(paramsName, paramsValue) {
   params.value.limit = limit.value;
   params.value.pageNumber = 0;
-  params.value[paramsName] = paramsValue > 0 ? paramsValue : null;
+  params.value[paramsName] = paramsValue != "" ? paramsValue : null;
+  loadingTable.value = true;
   getAllUsers();
 }
-function updateEquipment(equipment) {
-  //   enableEquipment(equipment.Id, equipment.Enable);
-}
+
 function goTo(data = null) {
   const id = data === null ? 0 : data.id;
   router.push({ name: "create-user", params: { id: id === 0 ? null : id } });
