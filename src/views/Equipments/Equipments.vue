@@ -33,6 +33,7 @@
         <Pagination
           :rows="numberResultsFound"
           :totalRecords="equipments?.TotalItems"
+          :items-name="'equipamentos'"
           @onHandlePageChange="handlePageChange"
         />
       </div>

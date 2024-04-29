@@ -4,7 +4,7 @@
       <span class="p-input-icon-right" v-if="!hiddenSearch">
         <InputText
           v-model="searchTerm"
-          placeholder="Pesquisar por nome"
+          :placeholder="searchPlaceholder"
           leftIcon="pi pi-search"
           class="w-[300px] p-input-icon"
           @input="onSearchItem"
@@ -40,6 +40,10 @@ const props = defineProps({
   startSelected: {
     type: Array,
     default: () => [],
+  },
+  searchPlaceholder: {
+    type: String,
+    default: "Pesquisar por nome",
   },
 });
 

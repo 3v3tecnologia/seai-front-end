@@ -32,6 +32,7 @@
         <Pagination
           :rows="numberResultsFound"
           :totalRecords="users.TotalItems"
+          :items-name="'usuários'"
           @onHandlePageChange="handlePageChange"
         />
       </div>
