@@ -1,9 +1,5 @@
 <template>
-  <Dtable
-    :infoTable="studiesTable"
-    :dataValue="studies"
-    :hiddenPagination="true"
-  />
+  <Dtable :infoTable="studiesTable" :dataValue="studies" />
 </template>
 <script setup>
 import Dtable from "@/components/tables/Dtable";

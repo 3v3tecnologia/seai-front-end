@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-white w-[25%] min-w-[320px] p-4 pb-2 shadow-md rounded-tl-xl rounded-br-xl"
+    class="bg-white w-[23.45%] min-w-[320px] p-4 pb-2 shadow-md rounded-tl-xl rounded-br-xl"
     v-for="(culture, i) in cultures"
     :key="i"
   >

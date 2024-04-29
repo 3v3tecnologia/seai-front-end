@@ -3,8 +3,12 @@ import store from "../store";
 import { retrieveToken } from "@/helpers/auth";
 import { toast } from "vue3-toastify";
 import tempRoute from "./routes";
+import tempRouteFaq from "./routes/faq";
 
 const routes: any = tempRoute;
+
+routes.push(tempRouteFaq[0]);
+console.log(routes);
 
 const router = createRouter({
   history: createWebHashHistory(),
