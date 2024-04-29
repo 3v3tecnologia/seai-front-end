@@ -102,7 +102,7 @@ function getOrgans() {
       placeholder: "Filtrar por orgãos",
       optionLabel: "Name",
       paramsName: "idOrgan",
-      items: [{ Name: "Todos", Id: 0 }, ...res.data.data],
+      items: [{ Name: "Todos", Id: 0 }, ...res.data],
     };
 
     equipmentsSelects.value.push(organs.value);
