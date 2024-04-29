@@ -154,7 +154,6 @@ function updateUser() {
       }, 200);
     })
     .catch((err) => {
-      console.log(err);
       toast.error(err.response.data.error);
     })
     .finally(() => (loading.value = false));

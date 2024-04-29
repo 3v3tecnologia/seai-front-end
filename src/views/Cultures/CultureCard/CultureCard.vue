@@ -52,7 +52,6 @@ function goTo(id) {
 }
 
 function confirmDelete(id) {
-  console.log(id);
   confirm.require({
     message:
       "Será deletada a cultura selecionada. Este processo não poderá ser desfeito!",

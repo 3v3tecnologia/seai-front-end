@@ -266,8 +266,6 @@ export default {
 
           const culture = state.list.data;
 
-          console.log("pedi os dados do peso atual", basin);
-
           commit("SET_CURRENT_WEIGHT", {
             currentBasin: basin,
             Weights: culture.map((culture) => {

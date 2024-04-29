@@ -92,7 +92,6 @@ export default {
           commit("SET_CURRENT_CULTURE", data);
         } catch (e) {
           commit("SET_CURRENT_CULTURE", {});
-          console.log("errou aqui");
           toast.error(e);
         }
       },

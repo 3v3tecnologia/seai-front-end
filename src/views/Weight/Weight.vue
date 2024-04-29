@@ -104,7 +104,6 @@ function basinSelectsActions(select, index) {
 
 function getBasin() {
   getLocations().then((res) => {
-    console.log(res);
     const resultBasin = res.data.data.Bacia;
     currentBasin.value = resultBasin[0];
     basin.value = {
