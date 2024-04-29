@@ -7,7 +7,7 @@
     :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
     @hide="closeModal()"
   >
-    <div class="w-full flex justify-between items-center">
+    <div v-if="!isEmpty" class="w-full flex justify-between items-center">
       <h1>
         Data: <strong>{{ convertDate(read.Time) }}</strong>
       </h1>
@@ -39,127 +39,34 @@
         </div>
       </div>
     </div>
-    <form class="flex mt-12 flex-wrap gap-8 w-full">
-      <div class="flex w-full gap-4">
-        <div class="form-group form-group-text p-float-label w-1/2">
-          <InputNumber
-            id="kc"
-            aria-describedby="kc-help"
-            v-model="read.Altitude.Value"
-            class="w-full"
-            :disabled="!editMode"
-            showButtons
-            :min="0"
-          />
-          <label for="estagio" class="font-weight-bold">
-            Altitude ({{ read.Altitude.Unit }})
-          </label>
-        </div>
-        <div class="form-group form-group-text p-float-label w-1/2">
-          <InputNumber
-            id="kc"
-            aria-describedby="kc-help"
-            v-model="read.TotalRadiation.Value"
-            class="w-full"
-            :disabled="!editMode"
-            showButtons
-            :min="0"
-          />
-          <label for="estagio" class="font-weight-bold">
-            Radiação total ({{ read.TotalRadiation.Unit }})
-          </label>
-        </div>
-      </div>
-      <div class="flex w-full gap-4">
-        <div class="form-group form-group-text p-float-label w-1/2">
-          <InputNumber
-            id="kc"
-            aria-describedby="kc-help"
-            v-model="read.AverageRelativeHumidity.Value"
-            class="w-full"
-            :disabled="!editMode"
-            showButtons
-            :min="0"
-          />
-          <label for="estagio" class="font-weight-bold">
-            Umidade relativa média ({{ read.AverageRelativeHumidity.Unit }})
-          </label>
-        </div>
-        <div class="form-group form-group-text p-float-label w-1/2">
-          <InputNumber
-            id="kc"
-            aria-describedby="kc-help"
-            v-model="read.AverageAtmosphericTemperature.Value"
-            class="w-full"
-            :disabled="!editMode"
-            showButtons
-            :min="0"
-          />
-
-          <label for="estagio" class="font-weight-bold">
-            Temperatura atmosférica média ({{
-              read.AverageAtmosphericTemperature.Unit
-            }})
-          </label>
-        </div>
-      </div>
-      <div class="flex w-full gap-4">
-        <div class="form-group form-group-text p-float-label w-1/2">
-          <InputNumber
-            id="kc"
-            aria-describedby="kc-help"
-            v-model="read.AtmosphericPressure.Value"
-            class="w-full"
-            :disabled="!editMode"
-            showButtons
-            :min="0"
-          />
-
-          <label for="estagio" class="font-weight-bold">
-            Pressão atmosférica ({{ read.AtmosphericPressure.Unit }})
-          </label>
-        </div>
-        <div class="form-group form-group-text p-float-label w-1/2">
-          <InputNumber
-            id="kc"
-            aria-describedby="kc-help"
-            v-model="read.WindVelocity.Value"
-            class="w-full"
-            :disabled="!editMode"
-            showButtons
-            :min="0"
-          />
-          <label for="estagio" class="font-weight-bold">
-            Velocidade do vento ({{ read.WindVelocity.Unit }})
-          </label>
-        </div>
-      </div>
-      <div class="form-group form-group-text p-float-label w-full">
-        <InputNumber
-          id="kc"
-          aria-describedby="kc-help"
-          v-model="read.Et0.Value"
-          class="w-full"
-          :disabled="true"
-          showButtons
-          :min="0"
-        />
-        <label for="estagio" class="font-weight-bold">
-          ET0 ({{ read.Et0.Unit }})
-        </label>
-      </div>
-    </form>
+    <div v-if="!isEmpty">
+      <Station
+        v-if="type === 'station'"
+        :readData="readData"
+        :editMode="editMode"
+      />
+      <Pluv
+        v-else
+        :readData="readData"
+        :editMode="editMode"
+        :date="read.Time"
+      />
+    </div>
+    <div v-else>
+      <p>Nada encontrado!</p>
+    </div>
   </Dialog>
 </template>
 <script setup>
 import { ref, onMounted, defineProps, defineEmits } from "vue";
 import moment from "moment";
-import { toast } from "vue3-toastify";
-import { useRouter } from "vue-router";
+import Station from "./Station.vue";
+import Pluv from "./Pluv.vue";
 
 const emit = defineEmits(["onCloseModal", "onSaveRead"]);
 
 const editMode = ref(false);
+const isEmpty = ref(false);
 
 const read = ref({});
 
@@ -168,6 +75,9 @@ const props = defineProps({
     type: Boolean,
   },
   title: {
+    type: String,
+  },
+  type: {
     type: String,
   },
   readData: {
@@ -186,65 +96,13 @@ const visible = ref(false);
 
 onMounted(() => {
   visible.value = props.showModal;
-  console.log(props.readData);
   if (props.readData === null) {
-    getDefaultRead();
+    read.value.Time = getYesterday();
+    isEmpty.value = true;
   } else {
-    read.value = props.readData;
+    read.value.Time = props.readData.Time;
   }
 });
-
-function getDefaultRead() {
-  read.value = {
-    IdEquipment: props.idEquipment,
-    Time: getYesterday(),
-    Hour: null,
-    Altitude: {
-      Unit: "m",
-      Value: 0.0,
-    },
-    TotalRadiation: {
-      Unit: "W/m",
-      Value: 0.0,
-    },
-    AverageRelativeHumidity: {
-      Unit: "%",
-      Value: 0.0,
-    },
-    MinRelativeHumidity: {
-      Unit: "%",
-      Value: 0.0,
-    },
-    MaxRelativeHumidity: {
-      Unit: "%",
-      Value: 0.0,
-    },
-    AverageAtmosphericTemperature: {
-      Unit: "°C",
-      Value: 0.0,
-    },
-    MaxAtmosphericTemperature: {
-      Unit: "°C",
-      Value: 0.0,
-    },
-    MinAtmosphericTemperature: {
-      Unit: "°C",
-      Value: 0.0,
-    },
-    AtmosphericPressure: {
-      Unit: "°C",
-      Value: 0.0,
-    },
-    WindVelocity: {
-      Unit: "m/s",
-      Value: 0.0,
-    },
-    Et0: {
-      Unit: "mm",
-      Value: 0.0,
-    },
-  };
-}
 
 function convertDate(date) {
   return moment(date).format("DD/MM/YYYY");
@@ -260,6 +118,6 @@ function closeModal() {
 }
 
 function saveRead() {
-  emit("onSaveRead", read.value);
+  emit("onSaveRead", props.readData);
 }
 </script>

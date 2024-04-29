@@ -22,18 +22,18 @@ export class EquipmentRest {
     });
     return result.data;
   }
-  async updateRead(id: number, data: any): Promise<any> {
-    const result = await http.put(`v1/equipments/measurements/${id}`, {
-      TotalRadiation: 1,
-      AverageRelativeHumidity: 11.4,
-      MinRelativeHumidity: 11.4,
-      MaxRelativeHumidity: 11.4,
-      AverageAtmosphericTemperature: 11.4,
-      MaxAtmosphericTemperature: 11.4,
-      MinAtmosphericTemperature: 11.4,
-      AtmosphericPressure: 11.4,
-      Et0: 11.4,
-    });
+  async updatePluvRead(id: number, data: any): Promise<any> {
+    const result = await http.put(
+      `v1/equipments/measurements/pluviometer/${id}`,
+      data
+    );
+    return result.data;
+  }
+  async updateStationRead(id: number, data: any): Promise<any> {
+    const result = await http.put(
+      `v1/equipments/measurements/station/${id}`,
+      data
+    );
     return result.data;
   }
 

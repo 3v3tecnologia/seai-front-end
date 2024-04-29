@@ -10,6 +10,7 @@ import businessInteligence from "@/router/routes/businessInteligence";
 import metereologicalBodies from "@/router/routes/metereologicalBodies";
 import equipments from "@/router/routes/equipments";
 import account from "@/router/routes/account";
+import faq from "./faq";
 
 export default [
   ...account,
@@ -23,6 +24,7 @@ export default [
   ...status,
   ...weights,
   ...study,
+  ...faq,
   {
     path: "/:catchAll(.*)",
     meta: {

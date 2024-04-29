@@ -150,11 +150,6 @@ export default {
         const responses = await Promise.all([
           await http.get(`v1/census/cultures/${currentBasinId}`),
         ]);
-
-        console.log(
-          "waaaaw",
-          responses.map((c) => c.data.data[0].Cultures)
-        );
         const [securityWater, securitySocial, securityEconomic] = responses.map(
           (c) => c.data.data.map(getValueBasic).map(formatLocation)
         );
@@ -222,13 +217,6 @@ export default {
       if (!currentBasinFilter?.length) {
         commit("SET_CURRENT_BASIN_NAME", [firstBasin]);
       }
-
-      console.log(
-        "pedindo o bixo pra setar o basin",
-        hydrographicBasin,
-        currentBasinFilter,
-        firstBasin
-      );
     },
     async ["FETCH_SINGLE_BASIN"]({ state, commit, dispatch }, filters) {
       const currentReportData = filters.currentReportData;

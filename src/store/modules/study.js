@@ -23,12 +23,10 @@ export default {
   actions: {
     GET_STUDYS: {
       async handler({ commit }, basin) {
-        console.log(basin);
         try {
           const { data } = await http.get(
             `v2/management/studies/${basin.value}`
           );
-          console.log(data);
           // const apiPagination = {
           //   pages,
           //   total,
@@ -79,11 +77,9 @@ export default {
     GET_CURRENT_STUDY: {
       async handler({ commit, dispatch, state }, basin) {
         try {
-          console.log("pediu os dados de estudo viu ", basin);
           await dispatch("GET_STUDYS", basin);
 
           const culture = state.list.data;
-          console.log(culture);
 
           commit("SET_CURRENT_STUDY", {
             currentBasin: basin,

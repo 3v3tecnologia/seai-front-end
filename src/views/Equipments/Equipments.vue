@@ -9,6 +9,7 @@
       :loading-button="loadingRead"
       @on-close-modal="showModal = false"
       @on-save-read="updateRead"
+      :type="currentType"
     />
     <div
       v-if="!loading"
@@ -61,6 +62,7 @@ const loading = ref(false);
 const loadingRead = ref(false);
 const loadingTable = ref(false);
 const showModal = ref(false);
+const currentType = ref("");
 const equipmentTypes = ref({
   placeholder: "Filtrar por tipo",
   optionLabel: "Name",
@@ -127,6 +129,10 @@ function tradutionType(type) {
   return type === "station" ? "Estação" : "Pluviômetro";
 }
 
+function tradutionTypePTEN(type) {
+  return type === "Estação" ? "station" : "pluviometer";
+}
+
 function searchEquipments(searchTerm) {
   if (searchTerm.length >= 3 || searchTerm.length === 0) {
     params.value.name = searchTerm.length >= 3 ? searchTerm : null;
@@ -157,10 +163,11 @@ function openModal(data) {
 }
 function getReads() {
   loadingRead.value = true;
+  currentType.value = tradutionTypePTEN(currentEquipment.value.Type.Name);
   equipmentRest
     .getLatestEquipmentMeasurements(
       currentEquipment.value.Id,
-      currentEquipment.value.Type.Name
+      currentType.value
     )
     .then((res) => {
       reads.value = res.data;
@@ -171,13 +178,57 @@ function getReads() {
 }
 function updateRead(data) {
   loadingRead.value = true;
+  if (tradutionTypePTEN(currentEquipment.value.Type.Name) === "station") {
+    updateStationRead(data);
+  } else {
+    updatePluvRead(data);
+  }
+}
+
+function updatePluvRead(data) {
+  const pluv = {
+    IdRead: data.IdRead,
+    Time: data.Time,
+    Hour: data.Hour,
+    Precipitation: data.Precipitation.Value,
+  };
   equipmentRest
-    .updateRead(currentEquipment.value.Id, data)
+    .updatePluvRead(currentEquipment.value.Id, pluv)
     .then(() => {
       toast.success("Leitura salva com sucesso!");
     })
-    .catch(() => {
-      toast.error("Erro ao salvar leitura!");
+    .catch((e) => {
+      toast.error(e.response.data.error);
+    })
+    .finally(() => {
+      loadingRead.value = false;
+    });
+}
+function updateStationRead(data) {
+  const station = {
+    IdRead: data.IdRead,
+    IdEquipment: data.IdEquipment,
+    Time: data.Time,
+    Hour: data.Hour,
+    Altitude: data.Altitude.Value,
+    TotalRadiation: data.TotalRadiation.Value,
+    AverageRelativeHumidity: data.AverageRelativeHumidity.Value,
+    MinRelativeHumidity: data.MinRelativeHumidity.Value,
+    MaxRelativeHumidity: data.MaxRelativeHumidity.Value,
+    AverageAtmosphericTemperature: data.AverageAtmosphericTemperature.Value,
+    MaxAtmosphericTemperature: data.MaxAtmosphericTemperature.Value,
+    MinAtmosphericTemperature: data.MinAtmosphericTemperature.Value,
+    AtmosphericPressure: data.AtmosphericPressure.Value,
+    WindVelocity: data.WindVelocity.Value,
+    Et0: data.Et0.Value,
+  };
+  equipmentRest
+    .updateStationRead(currentEquipment.value.Id, station)
+    .then(() => {
+      toast.success("Leitura salva com sucesso!");
+    })
+    .catch((e) => {
+      toast.error(e.response.data.error);
     })
     .finally(() => {
       loadingRead.value = false;
