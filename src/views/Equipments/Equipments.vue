@@ -187,9 +187,6 @@ function updateRead(data) {
 
 function updatePluvRead(data) {
   const pluv = {
-    IdRead: data.IdRead,
-    Time: data.Time,
-    Hour: data.Hour,
     Precipitation: data.Precipitation.Value,
   };
   equipmentRest

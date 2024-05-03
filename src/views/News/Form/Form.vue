@@ -26,9 +26,9 @@
           :manualInput="false"
           showIcon
           class="w-full"
-          :max-date="new Date()"
+          :min-date="new Date()"
         />
-        <label class="font-weight-bold">Data da notícia</label>
+        <label class="font-weight-bold">Data para envio</label>
       </div>
     </div>
     <div class="w-full flex gap-4 mt-4">
@@ -63,6 +63,5 @@ const info = ref({});
 onMounted(() => {
   info.value = props.item;
   info.value.CreatedAt = new Date();
-  info.value.FK_Author = 5;
 });
 </script>

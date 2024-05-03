@@ -23,15 +23,17 @@
       <div class="mt-6">
         <Dtable
           :infoTable="newsTable"
-          :dataValue="items"
+          :dataValue="items.Items"
           :loadingTable="loadingTable"
           @onDeleteItem="deleteItem"
+          @onEditItem="goTo"
         />
-        <!-- <Pagination
-            :rows="numberResultsFound"
-            :totalRecords="equipments?.TotalItems"
-            @onHandlePageChange="handlePageChange"
-          /> -->
+        <Pagination
+          :rows="numberResultsFound"
+          :totalRecords="items.TotalItems"
+          :items-name="'notícias'"
+          @onHandlePageChange="handlePageChange"
+        />
       </div>
     </div>
   </div>
@@ -66,7 +68,7 @@ onMounted(() => {
 
 function getAll() {
   service
-    .getAll()
+    .getAll(params.value)
     .then((res) => {
       items.value = res.data;
       adjustmentItemsValue();
@@ -77,18 +79,21 @@ function getAll() {
 }
 
 function adjustmentItemsValue() {
-  if (items.value !== null)
-    items.value.forEach((element) => {
+  if (items.value !== null) {
+    items.value.Items.forEach((element) => {
       element.actions = ["edit", "delete"];
     });
+    numberResultsFound.value = items.value.Items.length;
+  }
 }
 
 function searchItems(searchTerm) {
   if (searchTerm.length >= 3 || searchTerm.length === 0) {
-    params.value.name = searchTerm.length >= 3 ? searchTerm : null;
+    params.value.title = searchTerm.length >= 3 ? searchTerm : null;
     params.value.limit = limit.value;
     params.value.pageNumber = 0;
     loadingTable.value = true;
+    getAll();
   }
 }
 
@@ -98,7 +103,7 @@ function handlePageChange(page) {
 }
 
 function goTo(data = null) {
-  const id = data === null ? 0 : data.id;
+  const id = data === null ? 0 : data.Id;
   router.push({
     name: "form-newsletter",
     params: { id: id === 0 ? null : id },
@@ -106,14 +111,15 @@ function goTo(data = null) {
 }
 function deleteItem(data) {
   const id = data.Id;
+  loading.value = true;
   service
-    .deleteOrganById(id)
+    .deleteById(id)
     .then(() => {
-      toast.success("Órgão Metereológico deletado");
+      toast.success("Notícia deletada!");
       getAll();
     })
     .catch(() => {
-      toast.error("Não foi possível deletar Órgão Metereológico");
+      toast.error("Não foi possível deletar a notícia!");
     });
 }
 </script>

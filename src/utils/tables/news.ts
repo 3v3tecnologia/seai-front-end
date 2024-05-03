@@ -3,11 +3,11 @@ import TableInfo from "@/interfaces/table.interface";
 export const newsTable: TableInfo[] = [
   {
     header: "Título",
-    field: "Name",
+    field: "Title",
     type: "text",
   },
   {
-    header: "Data de envio",
+    header: "Data para envio",
     field: "CreatedAt",
     type: "date",
   },

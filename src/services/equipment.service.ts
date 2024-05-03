@@ -24,14 +24,14 @@ export class EquipmentRest {
   }
   async updatePluvRead(id: number, data: any): Promise<any> {
     const result = await http.put(
-      `v1/equipments/measurements/pluviometer/${id}`,
+      `v1/equipments/pluviometer/measurements/${id}`,
       data
     );
     return result.data;
   }
   async updateStationRead(id: number, data: any): Promise<any> {
     const result = await http.put(
-      `v1/equipments/measurements/station/${id}`,
+      `v1/equipments/station/measurements/${id}`,
       data
     );
     return result.data;

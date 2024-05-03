@@ -4,16 +4,7 @@
       v-if="!loading"
       class="w-full max-w-[1600px] px-4 flex justify-start mt-4"
     >
-      <HeaderTable @onSearchItem="searchEquipments">
-        <div>
-          <Button
-            icon="pi pi-plus"
-            label="Criar"
-            class="btn-primary"
-            @click="goTo()"
-          ></Button>
-        </div>
-      </HeaderTable>
+      <HeaderTable @onSearchItem="searchEquipments"> </HeaderTable>
     </div>
     <ProgressSpinner v-if="loading" />
     <div v-else class="w-full max-w-[1600px] px-4 min-w-[350px]">
@@ -67,7 +58,6 @@ function getOrgans() {
     .getAllOrgans()
     .then((res) => {
       organs.value = res.data;
-      adjustmentOrgansValue();
     })
     .finally(() => {
       loading.value = false;
