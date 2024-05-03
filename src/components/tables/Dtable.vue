@@ -11,6 +11,9 @@
           <p v-if="col.type === 'text'" class="truncate ...">
             {{ getValue(slotProps.data, col.field) }}
           </p>
+          <p v-if="col.type === 'date'" class="truncate ...">
+            {{ convertDate(getValue(slotProps.data, col.field)) }}
+          </p>
           <button class="bg-black text-white" v-else-if="col.type === 'button'">
             {{ getValue(slotProps.data, col.field) }}
           </button>
@@ -18,8 +21,9 @@
             class="text-blue-400 cursor-pointer hover:text-blue-700"
             v-else-if="col.type === 'link'"
             @click="goTo(slotProps.data.router)"
-            >{{ getValue(slotProps.data, col.field) }}</a
           >
+            {{ getValue(slotProps.data, col.field) }}
+          </a>
           <InputSwitch
             v-else-if="col.type === 'switch'"
             v-model="slotProps.data[col.field]"
@@ -47,6 +51,7 @@
 import { defineProps, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useConfirm } from "primevue/useconfirm";
+import moment from "moment";
 
 const confirm = useConfirm();
 const router = useRouter();
@@ -61,6 +66,10 @@ const props = defineProps({
     type: Boolean,
     required: false,
     default: false,
+  },
+  infoName: {
+    type: String,
+    default: "O item",
   },
 });
 
@@ -120,8 +129,7 @@ function getAction(data, action) {
 
 function confirmDelete(data) {
   confirm.require({
-    message:
-      "Será deletado o usuário selecionado. Este processo não poderá ser desfeito!",
+    message: `${props.infoName} selecionado será deletado. Este processo não poderá ser desfeito!`,
     header: "Confirmar deleção",
     icon: "pi pi-exclamation-triangle",
     rejectClass: "p-button-secondary p-button-outlined",
@@ -132,5 +140,8 @@ function confirmDelete(data) {
       emit("onDeleteItem", data);
     },
   });
+}
+function convertDate(date) {
+  return moment(date).format("DD/MM/YYYY");
 }
 </script>

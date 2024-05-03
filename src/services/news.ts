@@ -1,8 +1,16 @@
 import http from "@/http";
 
 export class NewsRest {
-  async getAll(): Promise<any> {
-    const result = await http.get(`v1/news`);
+  async getAll(params: any): Promise<any> {
+    const result = await http.get(`v1/news`, { params });
+    return result.data;
+  }
+  async getById(id: number): Promise<any> {
+    const result = await http.get(`v1/news/${id}`);
+    return result.data;
+  }
+  async deleteById(id: number): Promise<any> {
+    const result = await http.delete(`v1/news/${id}`);
     return result.data;
   }
   async create(data: any): Promise<any> {

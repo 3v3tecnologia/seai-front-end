@@ -37,17 +37,15 @@ import Form from "./Form.vue";
 import { toast } from "vue3-toastify";
 import { useRouter } from "vue-router";
 import { NewsRest } from "@/services/news";
+import store from "@/store";
 
+const profile = store.state.profile;
 const router = useRouter();
-
 const item = ref({});
-
 const loading = ref(false);
-const emailError = ref({ text: "", data: false });
 const currentId = ref(0);
 const isEditing = ref(false);
 const title = ref("Criar notícia");
-
 const service = new NewsRest();
 
 onMounted(() => {
@@ -74,11 +72,20 @@ function getItemById(id) {
     .getById(id)
     .then((response) => {
       item.value = response.data;
+      console.log(item.value);
       loading.value = false;
+      convertBuffer(item.value.Data.data);
     })
     .catch(() => {
       goTo("form-newsletter");
     });
+}
+
+function convertBuffer(preBuffer) {
+  const buffer = new Uint8Array(preBuffer);
+  const decoder = new TextDecoder("utf-8");
+  const result = decoder.decode(buffer);
+  item.value.Data = result;
 }
 
 function save() {
@@ -95,6 +102,7 @@ function goTo(routeName) {
 }
 
 function createItem() {
+  item.value.FK_Author = profile.id;
   service
     .create(item.value)
     .then(() => {
