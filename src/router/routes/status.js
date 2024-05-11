@@ -2,6 +2,7 @@ import BaseForm from "@/views/BaseForm.vue";
 import BaseCrudView from "@/views/templates/BaseCrudView.vue";
 import { actionPrefix, modulesSystem, modulesSystemLevel } from "@/constants";
 import routeProps from "@/router/props";
+import RoutineStatus from "@/views/RoutineStatus/RoutineStatus.vue";
 
 export default [
   {
@@ -12,7 +13,7 @@ export default [
       title: `Status de rotina`,
       modulesNeeded: [modulesSystem.jobs, modulesSystemLevel.read],
     },
-    component: BaseCrudView,
+    component: RoutineStatus,
     props: routeProps.status.list,
   },
   {

@@ -13,7 +13,7 @@
           icon="pi pi-times"
           label="Sair"
           class="btn-danger"
-          @click="goTo('newsletter')"
+          @click="goTo('cron')"
         ></Button>
         <Button
           icon="pi pi-save"
@@ -27,7 +27,7 @@
       v-if="!loading"
       class="w-full xl:w-[65%] flex flex-col justify-start bg-white p-4 px-8 pb-8 rounded-md mt-8 min-h-[25vh] max-h-[70vh] overflow-auto overflow-x-auto"
     >
-      <Form v-if="item" :item="item" />
+      <Form v-if="item" :item="item" :edit-mode="isEditing" />
     </div>
   </div>
 </template>
@@ -36,7 +36,7 @@ import { ref, onMounted } from "vue";
 import Form from "./Form.vue";
 import { toast } from "vue3-toastify";
 import { useRouter } from "vue-router";
-import { NewsRest } from "@/services/news";
+import { RoutineRest } from "@/services/routine.service";
 import store from "@/store";
 
 const profile = store.state.profile;
@@ -45,8 +45,8 @@ const item = ref({});
 const loading = ref(false);
 const currentId = ref(0);
 const isEditing = ref(false);
-const title = ref("Criar notícia");
-const service = new NewsRest();
+const title = ref("Criar rotina");
+const service = new RoutineRest();
 
 onMounted(() => {
   verifyId();
@@ -54,15 +54,20 @@ onMounted(() => {
 
 function verifyId() {
   if (router.currentRoute.value.params.id) {
-    const idAsNumber = Number(router.currentRoute.value.params.id);
-    if (!isNaN(idAsNumber)) {
-      currentId.value = idAsNumber;
-      isEditing.value = true;
-      title.value = "Editar notícia";
-      getItemById(currentId.value);
-    } else {
-      goTo("form-newsletter");
-    }
+    console.log(router.currentRoute.value.params.id);
+    currentId.value = router.currentRoute.value.params.id;
+    isEditing.value = true;
+    title.value = "Editar rotina";
+    getItemById(currentId.value);
+    // const idAsNumber = Number(router.currentRoute.value.params.id);
+    // if (!isNaN(idAsNumber)) {
+    //   currentId.value = idAsNumber;
+    //   isEditing.value = true;
+    //   title.value = "Editar rotina";
+    //   getItemById(currentId.value);
+    // } else {
+    //   goTo("form-routine");
+    // }
   }
 }
 
@@ -74,18 +79,10 @@ function getItemById(id) {
       item.value = response.data;
       console.log(item.value);
       loading.value = false;
-      convertBuffer(item.value.Data.data);
     })
     .catch(() => {
-      goTo("form-newsletter");
+      goTo("cron");
     });
-}
-
-function convertBuffer(preBuffer) {
-  const buffer = new Uint8Array(preBuffer);
-  const decoder = new TextDecoder("utf-8");
-  const result = decoder.decode(buffer);
-  item.value.Data = result;
 }
 
 function save() {
@@ -102,13 +99,13 @@ function goTo(routeName) {
 }
 
 function createItem() {
-  item.value.FK_Author = profile.id;
+  item.value.FK_Author = profile.name;
   service
     .create(item.value)
     .then(() => {
-      goTo("newsletter");
+      goTo("cron");
       setTimeout(() => {
-        toast.success("Notícia cadastrada com sucesso");
+        toast.success("Rotina criada com sucesso");
       }, 200);
     })
     .finally(() => (loading.value = false));
@@ -119,7 +116,7 @@ function updateItem() {
     .update(currentId.value, item.value)
     .then(() => {
       setTimeout(() => {
-        toast.success("Notícia atualizado com sucesso");
+        toast.success("Rotina atualizado com sucesso");
       }, 200);
     })
     .finally(() => (loading.value = false));

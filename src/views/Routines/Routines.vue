@@ -22,18 +22,18 @@
     <div v-else class="w-full max-w-[1600px] px-4 min-w-[350px]">
       <div class="mt-6">
         <Dtable
-          :infoTable="newsTable"
-          :dataValue="items.Items"
+          :infoTable="routineTable"
+          :dataValue="items"
           :loadingTable="loadingTable"
           @onDeleteItem="deleteItem"
           @onEditItem="goTo"
         />
-        <Pagination
+        <!-- <Pagination
           :rows="numberResultsFound"
           :totalRecords="items.TotalItems"
           :items-name="'notícias'"
           @onHandlePageChange="handlePageChange"
-        />
+        /> -->
       </div>
     </div>
   </div>
@@ -43,10 +43,10 @@ import Dtable from "@/components/tables/Dtable";
 import HeaderTable from "@/components/tables/HeaderTable";
 import Pagination from "@/components/pagination/pagination.vue";
 import { ref, onMounted } from "vue";
-import { newsTable } from "@/utils/tables/news";
+import { routineTable } from "@/utils/tables/routine";
 import { toast } from "vue3-toastify";
 import { useRouter } from "vue-router";
-import { NewsRest } from "@/services/news";
+import { RoutineRest } from "@/services/routine.service";
 
 const router = useRouter();
 const limit = ref(7);
@@ -54,7 +54,7 @@ const numberResultsFound = ref(0);
 const items = ref([]);
 const loading = ref(false);
 const loadingTable = ref(false);
-const service = new NewsRest();
+const service = new RoutineRest();
 const params = ref({
   pageNumber: 0,
   limit: limit.value,
@@ -68,9 +68,9 @@ onMounted(() => {
 
 function getAll() {
   service
-    .getAll(params.value)
+    .getAllSchedule(params.value)
     .then((res) => {
-      items.value = res.data;
+      items.value = res.data.Data;
       adjustmentItemsValue();
     })
     .finally(() => {
@@ -80,11 +80,18 @@ function getAll() {
 
 function adjustmentItemsValue() {
   if (items.value !== null) {
-    items.value.Items.forEach((element) => {
-      element.actions = ["edit", "delete"];
+    items.value.forEach((element) => {
+      element.actions = ["edit"];
+      element.cron = convertCron(element.cron);
     });
-    numberResultsFound.value = items.value.Items.length;
+    numberResultsFound.value = items.value.length;
   }
+}
+
+function convertCron(cron) {
+  const result =
+    cron === "0 0 * * *" ? "Diariamente (00:00)" : "A cada início de hora";
+  return result;
 }
 
 function searchItems(searchTerm) {
@@ -103,9 +110,9 @@ function handlePageChange(page) {
 }
 
 function goTo(data = null) {
-  const id = data === null ? 0 : data.Id;
+  const id = data === null ? 0 : data.name;
   router.push({
-    name: "form-newsletter",
+    name: "form-routine",
     params: { id: id === 0 ? null : id },
   });
 }
@@ -113,7 +120,7 @@ function deleteItem(data) {
   const id = data.Id;
   loading.value = true;
   service
-    .deleteById(id)
+    .deleteScheduleById(id)
     .then(() => {
       toast.success("Notícia deletada!");
     })
