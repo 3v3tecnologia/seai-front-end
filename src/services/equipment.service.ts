@@ -17,21 +17,21 @@ export class EquipmentRest {
     equipmentId: number,
     equipmentsType: string
   ): Promise<any> {
-    const result = await http.get(`v1/equipments/measurements/${equipmentId}`, {
+    const result = await http.get(`v1/equipments/${equipmentId}/measurements`, {
       params: { type: equipmentsType },
     });
     return result.data;
   }
-  async updatePluvRead(id: number, data: any): Promise<any> {
+  async updatePluvRead(readId: number, data: any): Promise<any> {
     const result = await http.put(
-      `v1/equipments/pluviometer/measurements/${id}`,
+      `v1/equipments/pluviometer/measurements/${readId}`,
       data
     );
     return result.data;
   }
-  async updateStationRead(id: number, data: any): Promise<any> {
+  async updateStationRead(readId: number, data: any): Promise<any> {
     const result = await http.put(
-      `v1/equipments/station/measurements/${id}`,
+      `v1/equipments/station/measurements/${readId}`,
       data
     );
     return result.data;

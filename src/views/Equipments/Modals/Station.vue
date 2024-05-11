@@ -7,7 +7,7 @@
           aria-describedby="kc-help"
           v-model="read.Altitude.Value"
           class="w-full"
-          :disabled="!editMode"
+          :disabled="true"
           showButtons
           :min="0"
         />

@@ -190,7 +190,7 @@ function updatePluvRead(data) {
     Precipitation: data.Precipitation.Value,
   };
   equipmentRest
-    .updatePluvRead(currentEquipment.value.Id, pluv)
+    .updatePluvRead(data.IdRead, pluv)
     .then(() => {
       toast.success("Leitura salva com sucesso!");
     })
@@ -220,7 +220,7 @@ function updateStationRead(data) {
     Et0: data.Et0.Value,
   };
   equipmentRest
-    .updateStationRead(currentEquipment.value.Id, station)
+    .updateStationRead(data.IdRead, station)
     .then(() => {
       toast.success("Leitura salva com sucesso!");
     })

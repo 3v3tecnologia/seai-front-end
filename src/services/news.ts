@@ -18,7 +18,7 @@ export class NewsRest {
     return result.data;
   }
   async update(id: number, data: any): Promise<any> {
-    const result = await http.put(`v1/news?id=${id}`, data);
+    const result = await http.put(`v1/news/${id}`, data);
     return result.data;
   }
 }
