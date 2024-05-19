@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column align-items-start">
+  <div class="flex flex-col items-start">
     <span class="label-access"> Acessar </span>
     <div class="wrapper-routes d-flex mt-2">
       <router-link
