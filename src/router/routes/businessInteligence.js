@@ -1,4 +1,5 @@
 import ReportsView from "@/views/ReportsView/PageView.vue";
+import Reports from "@/views/Reports/Reports.vue";
 
 export default [
   {
@@ -9,7 +10,7 @@ export default [
       navBarTab: 4,
       title: `Relatórios`,
     },
-    component: ReportsView,
+    component: Reports,
   },
   {
     path: "/charts",

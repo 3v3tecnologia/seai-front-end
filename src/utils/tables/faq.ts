@@ -8,18 +8,17 @@ export const faqTable: TableInfo[] = [
   },
   {
     header: "Resposta",
-    field: "Answer",
+    field: "answer",
     type: "text",
   },
   {
     header: "Categoria",
-    field: "categories",
-    subField: "title",
-    type: "category",
+    field: "category.title",
+    type: "text",
   },
   {
     header: "Criação",
     field: "created_at",
-    type: "text",
+    type: "date",
   },
 ];

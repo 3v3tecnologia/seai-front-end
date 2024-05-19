@@ -1,8 +1,11 @@
 <template>
-  <div class="d-flex flex-column justify-content-center">
+  <div class="flex flex-col justify-center mt-4">
     <PrimaryButton :text="mainItem.text" />
-    <div class="d-flex align-items-center justify-content-center pt-4">
-      <router-link :to="secondaryItem.routeName" class="ml-3 text-dark">
+    <div class="flex align-items-center justify-center mt-2">
+      <router-link
+        :to="secondaryItem.routeName"
+        class="text-[#002040] text-[12px] hover:text-[#355b81]"
+      >
         {{ secondaryItem.text }}
       </router-link>
       <!-- <router-link to="/" class="ml-3 text-dark">

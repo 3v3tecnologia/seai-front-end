@@ -5,7 +5,9 @@
     <div class="py-3"></div>
 
     <AuthForm :is-logging="isLogging">
-      <ButtonsAuth :is-logging="isLogging" />
+      <div class="w-full flex justify-end">
+        <ButtonsAuth :is-logging="isLogging" />
+      </div>
     </AuthForm>
   </div>
 

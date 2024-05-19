@@ -1,6 +1,6 @@
 <template>
-  <div class="px-4">
-    <div class="wrapper-form">
+  <div class="px-4 container mx-auto flex items-center justify-center">
+    <div class="bg-white shadow-md w-[50%] p-8 rounded-md">
       <form @submit="handleSubmit" class="text-left p-4 p-lg-5">
         <h2>{{ props.title }}</h2>
 

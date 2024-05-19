@@ -3,7 +3,7 @@ import QueryParams from "@/interfaces/queryParams.interface";
 
 export class UsersRest {
   async getAll(params: QueryParams): Promise<any> {
-    const result = await http.get(`v1/user/list`, { params });
+    const result = await http.get(`v1/user`, { params });
     return result.data;
   }
   async create(data: any): Promise<any> {

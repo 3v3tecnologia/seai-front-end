@@ -11,16 +11,23 @@
         />
         <i class="pi pi-search" />
       </span>
-      <Dropdown
+      <span v-if="selectItems.length === 0"></span>
+      <div
+        class="form-group form-group-text p-float-label w-full"
+        v-else
         v-for="(select, i) in selectItems"
-        v-model="selected[i]"
-        :options="select.items"
-        :optionLabel="select.optionLabel"
-        :placeholder="select.placeholder"
         :key="i"
-        class="w-[200px]"
-        @change="onSelectItem(select, i)"
-      />
+      >
+        <Dropdown
+          v-model="selected[i]"
+          :options="select.items"
+          :optionLabel="select.optionLabel"
+          :placeholder="select.placeholder"
+          class="w-[200px]"
+          @change="onSelectItem(select, i)"
+        />
+        <label class="font-weight-bold"> {{ select.placeholder }} </label>
+      </div>
     </div>
     <slot></slot>
   </div>
