@@ -1,37 +1,35 @@
 <template>
-  <div class="mb-5 pb-lg-5">
-    <BasicContentWrapper>
-      <FiltersData
-        v-model="filtersData"
-        :filters-dropdown="filtersDropdown"
-        :filters-checkbox="filtersCheckbox"
-        :disabled-submit="isLoadingReport"
-        @tempValues="setTempValues"
-      />
-
-      <div class="my-5 mb-lg-4">
-        <SubRouting :routes="currentRouteAccess" />
-      </div>
-
-      <div class="mt-4 mt-lg-5">
-        <ChartReports
-          v-if="showingTab === 'charts'"
-          :showing-data-format="showingDataFormat"
-          :data="reportsData"
-          :current-report="groupReports"
-          :current-data-format="showingDataFormat"
+  <div class="w-full flex flex-col justify-center items-center">
+    <div class="w-full max-w-[1600px] flex flex-col justify-start mt-4">
+      <BasicContentWrapper>
+        <FiltersData
+          v-model="filtersData"
+          :filters-dropdown="filtersDropdown"
+          :filters-checkbox="filtersCheckbox"
+          :disabled-submit="isLoadingReport"
+          @tempValues="setTempValues"
         />
-        <ExportData
-          v-else
-          :show-cities="showCities"
-          :show-consuming="showConsuming"
-          :show-basin="showBasin"
-          :data="reportsData"
-          :current-report="groupReports"
-          :current-data-format="showingDataFormat"
-        />
-      </div>
-    </BasicContentWrapper>
+
+        <div class="flex flex-col px-4 mt-8">
+          <ChartReports
+            v-if="showingTab === 'charts'"
+            :showing-data-format="showingDataFormat"
+            :data="reportsData"
+            :current-report="groupReports"
+            :current-data-format="showingDataFormat"
+          />
+          <ExportData
+            v-else
+            :show-cities="showCities"
+            :show-consuming="showConsuming"
+            :show-basin="showBasin"
+            :data="reportsData"
+            :current-report="groupReports"
+            :current-data-format="showingDataFormat"
+          />
+        </div>
+      </BasicContentWrapper>
+    </div>
   </div>
 </template>
 

@@ -3,7 +3,7 @@
     class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center"
     @keydown.enter="applyFilters"
   >
-    <div class="d-lg-flex align-items-center ml-n3 mt-n4 mt-lg-0">
+    <div class="flex items-center px-4 gap-2">
       <BaseInput
         v-if="searchFilter"
         remove-margin
@@ -11,7 +11,7 @@
         :placeholder="searchFilter.label || 'Buscar'"
         input-type="text"
         show-icon
-        class="mb-lg-0 ml-3 mt-3 mt-lg-0"
+        class=""
       />
 
       <BaseDropdown
@@ -20,7 +20,6 @@
         :key="filter.key"
         :options="filter.options"
         :placeholder="filter.label"
-        class="d-flex ml-3 mt-4 mt-lg-0"
       />
 
       <BaseCheckBox
@@ -32,17 +31,16 @@
         :options="filterDependsOn(filter)"
         :label="filter.label"
         :placeholder="filter.label"
-        class="ml-3 mt-3 mt-lg-0"
       />
 
-      <div class="d-flex ml-3 mt-4 mt-lg-0">
-        <button
+      <div class="flex ml-3 w-full items-center">
+        <Button
           @click="applyFilters"
           :disabled="isDisabledButton"
-          class="btn btn-success px-2 py-2"
+          class="btn-primary px-2 py-2 h-[50px]"
         >
           Buscar dados
-        </button>
+        </Button>
       </div>
     </div>
   </div>
