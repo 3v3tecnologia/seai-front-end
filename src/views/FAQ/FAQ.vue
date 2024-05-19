@@ -4,15 +4,35 @@
       v-if="!loading"
       class="w-full max-w-[1600px] px-4 flex justify-start mt-4"
     >
-      <HeaderTable :hiddenSearch="true" />
+      <HeaderTable
+        @onSearchItem="searchItems"
+        :searchPlaceholder="'Pesquisar por título'"
+      >
+        <div>
+          <Button
+            icon="pi pi-plus"
+            label="Criar"
+            class="btn-primary"
+            @click="goTo()"
+          ></Button>
+        </div>
+      </HeaderTable>
     </div>
     <ProgressSpinner v-if="loading" />
     <div v-else class="w-full max-w-[1600px] px-4 min-w-[350px]">
       <div class="mt-6">
         <Dtable
           :infoTable="faqTable"
-          :dataValue="faq"
+          :dataValue="items.Items"
           :loadingTable="loadingTable"
+          @on-edit-item="goTo"
+          @on-delete-item="deleteItem"
+        />
+        <Pagination
+          :rows="numberResultsFound"
+          :totalRecords="items.TotalItems"
+          :items-name="'perguntas'"
+          @onHandlePageChange="handlePageChange"
         />
       </div>
     </div>
@@ -26,24 +46,15 @@ import { ref, onMounted } from "vue";
 import { faqTable } from "@/utils/tables/faq";
 import { FAQRest } from "@/services/faq.service";
 import { toast } from "vue3-toastify";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 const limit = ref(7);
-const faq = ref([]);
-const equipmentsSelects = ref([]);
-const numberResultsFound = ref(0);
+const items = ref([]);
 const loading = ref(false);
 const loadingTable = ref(false);
-const equipmentTypes = ref({
-  placeholder: "Filtrar por tipo",
-  optionLabel: "Name",
-  paramsName: "idType",
-  items: [
-    { Name: "Todos", Id: 0 },
-    { Name: "Estação", Id: 1 },
-    { Name: "Pluviômetro", Id: 2 },
-  ],
-});
-const faqRest = new FAQRest();
+const numberResultsFound = ref(0);
+const service = new FAQRest();
 const params = ref({
   pageNumber: 0,
   limit: limit.value,
@@ -56,33 +67,55 @@ onMounted(() => {
 });
 
 function getAllFAQ() {
-  faqRest.getAll().then((res) => {
-    faq.value = res.data;
-    console.log(faq.value);
+  service.getAll(params.value).then((res) => {
+    items.value = res.data;
+    adjustmentItemsValue();
     loading.value = false;
   });
 }
 
-function adjustmentEquipmentValue() {
-  if (faq.value !== null && faq.value.Items)
-    faq.value.Items.forEach((element) => {
-      element.Type.Name = tradutionType(element.Type.Name);
-      element.link = "Acessar leituras";
-      element.actions = ["modal"];
-      element.router = {
-        name: "station-reads",
-        params: { id: element.Id },
-      };
+function adjustmentItemsValue() {
+  if (items.value !== null && items.value.Items) {
+    items.value.Items.forEach((element) => {
+      element.actions = ["edit", "delete"];
     });
+    numberResultsFound.value = items.value.Items.length;
+  }
 }
 
-function tradutionType(type) {
-  return type === "station" ? "Estação" : "Pluviômetro";
+function goTo(data = null) {
+  const id = data === null ? 0 : data.id;
+  router.push({
+    name: "form-faq",
+    params: { id: id === 0 ? null : id },
+  });
 }
-
 function handlePageChange(page) {
   params.value.pageNumber = page;
   loadingTable.value = true;
   getAllFAQ();
+}
+
+function searchItems(searchTerm) {
+  if (searchTerm.length >= 3 || searchTerm.length === 0) {
+    params.value.question = searchTerm.length >= 3 ? searchTerm : null;
+    params.value.limit = limit.value;
+    params.value.pageNumber = 0;
+    loadingTable.value = true;
+    getAllFAQ();
+  }
+}
+
+function deleteItem(data) {
+  const id = data.id;
+  loading.value = true;
+  service
+    .deleteById(id)
+    .then(() => {
+      toast.success("Pergunta deletada!");
+    })
+    .finally(() => {
+      getAllFAQ();
+    });
 }
 </script>

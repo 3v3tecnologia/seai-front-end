@@ -23,6 +23,8 @@ import ConfirmationService from "primevue/confirmationservice";
 import Dialog from "primevue/dialog";
 import Password from "primevue/password";
 import Editor from "primevue/editor";
+import AutoComplete from "primevue/autocomplete";
+import Textarea from "primevue/textarea";
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -118,4 +120,6 @@ createApp(App)
   .component("Dialog", Dialog)
   .component("Password", Password)
   .component("Editor", Editor)
+  .component("AutoComplete", AutoComplete)
+  .component("Textarea", Textarea)
   .mount("#app");

@@ -1,11 +1,10 @@
 <template>
-  <button
+  <Button
     @click="handleClick"
     type="submit"
-    class="btn btn-success px-4 py-2 btn-block"
-  >
-    {{ props.text }}
-  </button>
+    class="btn-primary px-4 py-2 text-white w-[200px]"
+    :label="props.text"
+  />
 </template>
 
 <script lang="ts" setup>

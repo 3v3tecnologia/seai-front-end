@@ -1,6 +1,5 @@
-import studyUpdate from "@/router/props/study/update";
-import BaseForm from "@/views/BaseForm.vue";
 import FAQ from "@/views/FAQ/FAQ.vue";
+import FormFaq from "@/views/FAQ/Form/Main.vue";
 
 export default [
   {
@@ -12,5 +11,10 @@ export default [
       navBarTab: 12,
     },
     component: FAQ,
+  },
+  {
+    path: "/form-faq/:id?",
+    name: "form-faq",
+    component: FormFaq,
   },
 ];

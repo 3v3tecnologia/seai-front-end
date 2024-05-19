@@ -171,7 +171,7 @@ export const store = createStore({
     },
     async ["LOGIN_USER"]({ commit }, user) {
       try {
-        const { data } = await http.post(`v1/login/sign-in`, user);
+        const { data } = await http.post(`v1/user/sign-in`, user);
         const token = data?.data?.accessToken;
         const userName = data?.data?.userName;
 
@@ -432,7 +432,7 @@ export const store = createStore({
     async ["CHANGE_PASSWORD"](context, form) {
       try {
         await http.post(
-          `v1/login/password/reset`,
+          `v1/user/password/reset`,
           { ...form, token: `Bearer ${form.token}` },
           formatTemporaryToken(form.token)
         );

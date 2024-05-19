@@ -3,12 +3,43 @@
   <FormWrapper @submit="handleSubmit">
     <template v-slot:content>
       <span v-if="isLogging">
-        <BaseInut label="Login" v-model="form.login" :input-required="isLogging" placeholder="Seu login" />
-        <BaseInut label="Senha" v-model="form.password" input-type="password" placeholder="Sua senha" />
+        <div
+          class="form-group form-group-text text-left p-float-label mt-2 w-full"
+        >
+          <InputText
+            name="email"
+            aria-describedby="culture-name-help"
+            v-model="form.login"
+            :class="`w-full`"
+            required
+          />
+          <label class="font-weight-bold">Login</label>
+        </div>
+        <div
+          class="form-group form-group-text text-left p-float-label mt-8 w-full"
+        >
+          <Password
+            class="password w-full"
+            v-model="form.password"
+            toggleMask
+          />
+          <label for="e-mail" class="font-weight-bold">Senha</label>
+        </div>
       </span>
 
       <span v-else>
-        <BaseInut label="Email" v-model="form.email" input-type="email" placeholder="Seu email" />
+        <div
+          class="form-group form-group-text text-left p-float-label mt-2 w-full"
+        >
+          <InputText
+            name="email"
+            aria-describedby="culture-name-help"
+            v-model="form.login"
+            :class="`w-full`"
+            required
+          />
+          <label class="font-weight-bold">Login</label>
+        </div>
       </span>
     </template>
 
@@ -51,6 +82,6 @@ const handleSubmit = (e) => {
         router.push({ path: "/users" });
       }
     })
-    .catch(console.error);
+    .catch();
 };
 </script>
