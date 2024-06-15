@@ -20,7 +20,7 @@
     </div>
     <ProgressSpinner v-if="loading" />
     <div v-else class="w-full max-w-[1600px] px-4 min-w-[350px]">
-      <div class="mt-6">
+      <div class="mt-6" v-if="items.Items > 0">
         <Dtable
           :infoTable="faqTable"
           :dataValue="items.Items"
@@ -34,6 +34,14 @@
           :items-name="'perguntas'"
           @onHandlePageChange="handlePageChange"
         />
+      </div>
+      <div class="mt-6" v-else>
+        <p>Nenhuma pergunta cadastrada!</p>
+        <Button
+          label="Criar Pergunta"
+          class="btn-primary mt-4"
+          @click="goTo()"
+        ></Button>
       </div>
     </div>
   </div>
