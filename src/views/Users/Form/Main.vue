@@ -98,6 +98,7 @@ function getUserById(id) {
     .getById(id)
     .then((response) => {
       user.value = response.data;
+      user.value.emailDisabled = true;
       loading.value = false;
     })
     .catch(() => {

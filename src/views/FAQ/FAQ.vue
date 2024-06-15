@@ -1,4 +1,9 @@
 <template>
+  <Categories
+    v-if="showCategories"
+    :show="showCategories"
+    @on-close-modal="closeModal"
+  />
   <div class="w-full flex flex-col justify-center items-center">
     <div
       v-if="!loading"
@@ -8,7 +13,16 @@
         @onSearchItem="searchItems"
         :searchPlaceholder="'Pesquisar por título'"
       >
-        <div>
+        <div class="flex gap-3">
+          <Button
+            icon="pi pi-eye"
+            label="Categorias"
+            class="btn"
+            @click="
+              showCategories = true;
+              loading = true;
+            "
+          ></Button>
           <Button
             icon="pi pi-plus"
             label="Criar"
@@ -18,7 +32,9 @@
         </div>
       </HeaderTable>
     </div>
-    <ProgressSpinner v-if="loading" />
+    <div v-if="loading" class="container mx-auto h-[50vh] flex items-end">
+      <ProgressSpinner />
+    </div>
     <div v-else class="w-full max-w-[1600px] px-4 min-w-[350px]">
       <div class="mt-6" v-if="items.Items && items.Items.length > 0">
         <Dtable
@@ -52,6 +68,7 @@
 import Dtable from "@/components/tables/Dtable";
 import HeaderTable from "@/components/tables/HeaderTable";
 import Pagination from "@/components/pagination/pagination.vue";
+import Categories from "./Categories/Main.vue";
 import { ref, onMounted } from "vue";
 import { faqTable } from "@/utils/tables/faq";
 import { FAQRest } from "@/services/faq.service";
@@ -64,6 +81,7 @@ const items = ref([]);
 const loading = ref(false);
 const hiddenPagination = ref(false);
 const loadingTable = ref(false);
+const showCategories = ref(false);
 const numberResultsFound = ref(0);
 const service = new FAQRest();
 const params = ref({
@@ -135,5 +153,9 @@ function resetPagination() {
   setTimeout(() => {
     hiddenPagination.value = false;
   }, 1);
+}
+function closeModal() {
+  showCategories.value = false;
+  loading.value = false;
 }
 </script>

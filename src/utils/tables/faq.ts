@@ -22,3 +22,16 @@ export const faqTable: TableInfo[] = [
     type: "date",
   },
 ];
+
+export const faqCategoriesTable: TableInfo[] = [
+  {
+    header: "Nome",
+    field: "title",
+    type: "text",
+  },
+  {
+    header: "Descrição",
+    field: "description",
+    type: "text",
+  },
+];

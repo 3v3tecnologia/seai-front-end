@@ -134,7 +134,6 @@ const selectModule = ref([
 
 onMounted(() => {
   userInfo.value = props.user;
-  userInfo.value.emailDisabled = props.user.type === "admin" ? true : false;
 
   newsModule.value = props.user.modules.news;
   newsModule.value.name = "Notícias";
