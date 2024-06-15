@@ -26,8 +26,20 @@ export class FAQRest {
     const result = await http.get(`v1/faq/categories`);
     return result.data;
   }
+  async getCategoryById(): Promise<any> {
+    const result = await http.get(`v1/faq/categories`);
+    return result.data;
+  }
   async createCategories(data: any): Promise<any> {
     const result = await http.post(`v1/faq/categories`, data);
+    return result.data;
+  }
+  async deleteCategoriesById(id: number): Promise<any> {
+    const result = await http.delete(`v1/faq/categories/${id}`);
+    return result.data;
+  }
+  async updateCategory(id: number, data: any): Promise<any> {
+    const result = await http.put(`v1/faq/categories/${id}`, data);
     return result.data;
   }
 }

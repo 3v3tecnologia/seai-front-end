@@ -128,6 +128,7 @@ function getAction(data, action) {
 }
 
 function confirmDelete(data) {
+  console.log(data);
   confirm.require({
     message: `${props.infoName} selecionado será deletado. Este processo não poderá ser desfeito!`,
     header: "Confirmar deleção",
