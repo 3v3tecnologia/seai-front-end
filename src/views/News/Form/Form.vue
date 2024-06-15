@@ -20,7 +20,7 @@
         class="form-group form-group-text text-left p-float-label mt-2 w-[50%]"
       >
         <Calendar
-          v-model="info.CreatedAt"
+          v-model="info.SendDate"
           inputId="date-range-read"
           dateFormat="dd/mm/yy"
           :manualInput="false"
@@ -62,6 +62,6 @@ const info = ref({});
 
 onMounted(() => {
   info.value = props.item;
-  info.value.CreatedAt = new Date();
+  info.value.SendDate = new Date();
 });
 </script>

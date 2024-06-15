@@ -20,7 +20,7 @@
     </div>
     <ProgressSpinner v-if="loading" />
     <div v-else class="w-full max-w-[1600px] px-4 min-w-[350px]">
-      <div class="mt-6" v-if="items.Items > 0">
+      <div class="mt-6" v-if="items.Items && items.Items.length > 0">
         <Dtable
           :infoTable="faqTable"
           :dataValue="items.Items"
@@ -29,7 +29,9 @@
           @on-delete-item="deleteItem"
         />
         <Pagination
-          :rows="numberResultsFound"
+          v-if="!hiddenPagination"
+          :rows="params.limit"
+          :current-total="numberResultsFound"
           :totalRecords="items.TotalItems"
           :items-name="'perguntas'"
           @onHandlePageChange="handlePageChange"
@@ -60,6 +62,7 @@ const router = useRouter();
 const limit = ref(7);
 const items = ref([]);
 const loading = ref(false);
+const hiddenPagination = ref(false);
 const loadingTable = ref(false);
 const numberResultsFound = ref(0);
 const service = new FAQRest();
@@ -106,9 +109,8 @@ function handlePageChange(page) {
 
 function searchItems(searchTerm) {
   if (searchTerm.length >= 3 || searchTerm.length === 0) {
+    resetPagination();
     params.value.question = searchTerm.length >= 3 ? searchTerm : null;
-    params.value.limit = limit.value;
-    params.value.pageNumber = 0;
     loadingTable.value = true;
     getAllFAQ();
   }
@@ -125,5 +127,13 @@ function deleteItem(data) {
     .finally(() => {
       getAllFAQ();
     });
+}
+function resetPagination() {
+  hiddenPagination.value = true;
+  params.value.limit = limit.value;
+  params.value.pageNumber = 0;
+  setTimeout(() => {
+    hiddenPagination.value = false;
+  }, 1);
 }
 </script>

@@ -34,6 +34,7 @@
         <Pagination
           v-if="!hiddenPagination"
           :rows="params.limit"
+          :current-total="numberResultsFound"
           :totalRecords="equipments?.TotalItems"
           :items-name="'equipamentos'"
           @onHandlePageChange="handlePageChange"

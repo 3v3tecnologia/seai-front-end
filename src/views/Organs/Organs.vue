@@ -16,7 +16,9 @@
           @onDeleteItem="deleteItem"
         />
         <!-- <Pagination
-          :rows="numberResultsFound"
+          v-if="!hiddenPagination"
+          :rows="params.limit"
+          :current-total="numberResultsFound"
           :totalRecords="equipments?.TotalItems"
           @onHandlePageChange="handlePageChange"
         /> -->

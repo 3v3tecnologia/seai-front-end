@@ -8,7 +8,7 @@
     >
       <template #start="slotProps">
         <p class="hidden md:block">
-          Exibindo {{ slotProps.state.rows }} de {{ totalRecords }}
+          Exibindo {{ currentTotal }} de {{ totalRecords }}
           {{ itemsName }}
         </p>
         <p class="block md:hidden">
@@ -35,6 +35,11 @@ const props = defineProps({
   itemsName: {
     type: String,
     default: "items",
+  },
+  currentTotal: {
+    type: Number,
+    required: false,
+    default: 1,
   },
 });
 

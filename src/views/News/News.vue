@@ -29,7 +29,9 @@
           @onEditItem="goTo"
         />
         <Pagination
-          :rows="numberResultsFound"
+          v-if="!hiddenPagination"
+          :rows="params.limit"
+          :current-total="numberResultsFound"
           :totalRecords="items.TotalItems"
           :items-name="'notícias'"
           @onHandlePageChange="handlePageChange"
@@ -111,6 +113,7 @@ function searchItems(searchTerm) {
 function handlePageChange(page) {
   params.value.pageNumber = page;
   loadingTable.value = true;
+  getAll();
 }
 
 function goTo(data = null) {
