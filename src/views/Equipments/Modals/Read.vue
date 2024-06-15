@@ -33,24 +33,35 @@
             icon="pi pi-save"
             label="Salvar dados"
             class="btn-success"
-            @click="saveRead()"
-            :disabled="loadingButton"
+            @click="handleSave()"
+            :disabled="loadingButton || !isFormValid"
           ></Button>
         </div>
       </div>
     </div>
     <div v-if="!isEmpty">
-      <Station
-        v-if="type === 'station'"
-        :readData="readData"
-        :editMode="editMode"
-      />
-      <Pluv
-        v-else
-        :readData="readData"
-        :editMode="editMode"
-        :date="read.Time"
-      />
+      <div
+        class="min-h-[500px] flex justify-center items-center"
+        v-if="loadingButton"
+      >
+        <ProgressSpinner />
+      </div>
+
+      <span v-else>
+        <Station
+          v-if="type === 'station'"
+          :readData="readData"
+          :editMode="editMode"
+          @update:isFormValid="isFormValid = $event"
+          ref="stationComponent"
+        />
+        <Pluv
+          v-else
+          :readData="readData"
+          :editMode="editMode"
+          :date="read.Time"
+        />
+      </span>
     </div>
     <div v-else>
       <p>Nada encontrado!</p>
@@ -67,6 +78,7 @@ const emit = defineEmits(["onCloseModal", "onSaveRead"]);
 
 const editMode = ref(false);
 const isEmpty = ref(false);
+const isFormValid = ref(false);
 
 const read = ref({});
 
@@ -100,7 +112,7 @@ onMounted(() => {
     read.value.Time = getYesterday();
     isEmpty.value = true;
   } else {
-    read.value.Time = props.readData.Time;
+    read.value.Time = props.readData.Time.slice(0, -1);
   }
 });
 
@@ -119,5 +131,10 @@ function closeModal() {
 
 function saveRead() {
   emit("onSaveRead", props.readData);
+}
+function handleSave() {
+  if (this.$refs.stationComponent.validateForm()) {
+    saveRead();
+  }
 }
 </script>

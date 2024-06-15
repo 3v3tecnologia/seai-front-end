@@ -232,12 +232,10 @@ function updateStationRead(data) {
     .updateStationRead(data.IdRead, station)
     .then(() => {
       toast.success("Leitura salva com sucesso!");
+      getReads();
     })
     .catch((e) => {
       toast.error(e.response.data.error);
-    })
-    .finally(() => {
-      loadingRead.value = false;
     });
 }
 </script>
