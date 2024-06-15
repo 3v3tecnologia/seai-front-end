@@ -20,20 +20,30 @@
     </div>
     <ProgressSpinner v-if="loading" />
     <div v-else class="w-full max-w-[1600px] px-4 min-w-[350px]">
-      <div class="mt-6">
+      <div class="mt-6" v-if="items.Items">
         <Dtable
           :infoTable="newsTable"
-          :dataValue="items.Items"
+          :dataValue="items.Items ?? []"
           :loadingTable="loadingTable"
           @onDeleteItem="deleteItem"
           @onEditItem="goTo"
         />
         <Pagination
-          :rows="numberResultsFound"
+          v-if="!hiddenPagination"
+          :rows="params.limit"
+          :current-total="numberResultsFound"
           :totalRecords="items.TotalItems"
           :items-name="'notícias'"
           @onHandlePageChange="handlePageChange"
         />
+      </div>
+      <div class="mt-6" v-else>
+        <p>Nenhuma notícia cadastrada!</p>
+        <Button
+          label="Criar Notícia"
+          class="btn-primary mt-4"
+          @click="goTo()"
+        ></Button>
       </div>
     </div>
   </div>
@@ -70,8 +80,11 @@ function getAll() {
   service
     .getAll(params.value)
     .then((res) => {
-      items.value = res.data;
-      adjustmentItemsValue();
+      console.log(items.value);
+      if (res.data) {
+        items.value = res.data;
+        adjustmentItemsValue();
+      }
     })
     .finally(() => {
       loading.value = false;
@@ -100,6 +113,7 @@ function searchItems(searchTerm) {
 function handlePageChange(page) {
   params.value.pageNumber = page;
   loadingTable.value = true;
+  getAll();
 }
 
 function goTo(data = null) {

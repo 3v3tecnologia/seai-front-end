@@ -2,7 +2,7 @@ import http from "@/http";
 
 export class CultureRest {
   async getAll(params: any): Promise<any> {
-    return await http.get(`v2/management/crop`, { params });
+    return await http.get(`v2/management/crops`, { params });
   }
   async getById(id: number): Promise<any> {
     return await http.get(`v2/management/crop/${id}`);

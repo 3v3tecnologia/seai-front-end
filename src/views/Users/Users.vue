@@ -30,7 +30,9 @@
           @onDeleteItem="deleteUser"
         />
         <Pagination
-          :rows="numberResultsFound"
+          v-if="!hiddenPagination"
+          :rows="params.limit"
+          :current-total="numberResultsFound"
           :totalRecords="users.TotalItems"
           :items-name="'usuários'"
           @onHandlePageChange="handlePageChange"

@@ -32,7 +32,9 @@
           @onOpenModal="openModal"
         />
         <Pagination
-          :rows="numberResultsFound"
+          v-if="!hiddenPagination"
+          :rows="params.limit"
+          :current-total="numberResultsFound"
           :totalRecords="equipments?.TotalItems"
           :items-name="'equipamentos'"
           @onHandlePageChange="handlePageChange"
@@ -62,6 +64,7 @@ const loading = ref(false);
 const loadingRead = ref(false);
 const loadingTable = ref(false);
 const showModal = ref(false);
+const hiddenPagination = ref(false);
 const currentType = ref("");
 const equipmentTypes = ref({
   placeholder: "Filtrar por tipo",
@@ -135,9 +138,8 @@ function tradutionTypePTEN(type) {
 
 function searchEquipments(searchTerm) {
   if (searchTerm.length >= 3 || searchTerm.length === 0) {
+    resetPagination();
     params.value.name = searchTerm.length >= 3 ? searchTerm : null;
-    params.value.limit = limit.value;
-    params.value.pageNumber = 0;
     loadingTable.value = true;
     getAllEquipment();
   }
@@ -149,10 +151,17 @@ function handlePageChange(page) {
   getAllEquipment();
 }
 function selectEquipments(paramsName, paramsValue) {
-  params.value.limit = limit.value;
-  params.value.pageNumber = 0;
+  resetPagination();
   params.value[paramsName] = paramsValue > 0 ? paramsValue : null;
   getAllEquipment();
+}
+function resetPagination() {
+  hiddenPagination.value = true;
+  params.value.limit = limit.value;
+  params.value.pageNumber = 0;
+  setTimeout(() => {
+    hiddenPagination.value = false;
+  }, 1);
 }
 function updateEquipment(equipment) {
   equipmentRest.enableEquipment(equipment.Id, equipment.Enable);
@@ -223,12 +232,10 @@ function updateStationRead(data) {
     .updateStationRead(data.IdRead, station)
     .then(() => {
       toast.success("Leitura salva com sucesso!");
+      getReads();
     })
     .catch((e) => {
       toast.error(e.response.data.error);
-    })
-    .finally(() => {
-      loadingRead.value = false;
     });
 }
 </script>
