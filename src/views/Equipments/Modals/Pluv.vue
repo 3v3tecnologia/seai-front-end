@@ -10,6 +10,7 @@
           class="w-full"
           :disabled="!editMode"
           showButtons
+          mode="decimal"
           :min="0"
         />
         <label for="estagio" class="font-weight-bold">

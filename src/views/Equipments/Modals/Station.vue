@@ -8,8 +8,9 @@
           v-model="read.Altitude.Value"
           class="w-full"
           :disabled="true"
-          showButtons
+          mode="decimal"
           :min="0"
+          :useGrouping="false"
         />
         <label for="altitude" class="font-weight-bold"
           >Altitude ({{ read.Altitude.Unit }})</label
@@ -23,8 +24,9 @@
           class="w-full"
           :class="{ 'p-invalid': !read.TotalRadiation.Value }"
           :disabled="!editMode"
-          showButtons
+          mode="decimal"
           :min="0"
+          :useGrouping="false"
           required
         />
         <label for="totalRadiation" class="font-weight-bold"
@@ -46,8 +48,9 @@
             'p-invalid': !read.AverageRelativeHumidity.Value,
           }"
           :disabled="!editMode"
-          showButtons
+          mode="decimal"
           :min="0"
+          :useGrouping="false"
           required
         />
         <label for="averageRelativeHumidity" class="font-weight-bold"
@@ -69,8 +72,9 @@
             'p-invalid': !read.AverageAtmosphericTemperature.Value,
           }"
           :disabled="!editMode"
-          showButtons
+          mode="decimal"
           :min="0"
+          :useGrouping="false"
           required
         />
         <label for="averageAtmosphericTemperature" class="font-weight-bold"
@@ -92,8 +96,9 @@
           class="w-full"
           :class="{ 'p-invalid': !read.AtmosphericPressure.Value }"
           :disabled="!editMode"
-          showButtons
+          mode="decimal"
           :min="0"
+          :useGrouping="false"
           required
         />
         <label for="atmosphericPressure" class="font-weight-bold"
@@ -111,8 +116,9 @@
           class="w-full"
           :class="{ 'p-invalid': !read.WindVelocity.Value }"
           :disabled="!editMode"
-          showButtons
+          mode="decimal"
           :min="0"
+          :useGrouping="false"
           required
         />
         <label for="windVelocity" class="font-weight-bold"
@@ -134,8 +140,9 @@
             'p-invalid': !read.MinAtmosphericTemperature.Value,
           }"
           :disabled="!editMode"
-          showButtons
+          mode="decimal"
           :min="0"
+          :useGrouping="false"
           required
         />
         <label for="minAtmosphericTemperature" class="font-weight-bold"
@@ -157,8 +164,9 @@
             'p-invalid': !read.MaxAtmosphericTemperature.Value,
           }"
           :disabled="!editMode"
-          showButtons
+          mode="decimal"
           :min="0"
+          :useGrouping="false"
           required
         />
         <label for="maxAtmosphericTemperature" class="font-weight-bold"
@@ -180,8 +188,9 @@
           class="w-full"
           :class="{ 'p-invalid': !read.MinRelativeHumidity.Value }"
           :disabled="!editMode"
-          showButtons
+          mode="decimal"
           :min="0"
+          :useGrouping="false"
           required
         />
         <label for="minRelativeHumidity" class="font-weight-bold"
@@ -199,8 +208,9 @@
           class="w-full"
           :class="{ 'p-invalid': !read.MaxRelativeHumidity.Value }"
           :disabled="!editMode"
-          showButtons
+          mode="decimal"
           :min="0"
+          :useGrouping="false"
           required
         />
         <label for="maxRelativeHumidity" class="font-weight-bold"
@@ -218,8 +228,9 @@
         v-model="read.Et0.Value"
         class="w-full"
         :disabled="true"
-        showButtons
+        mode="decimal"
         :min="0"
+        :useGrouping="false"
       />
       <label for="et0" class="font-weight-bold"
         >ET0 ({{ read.Et0.Unit }})</label
