@@ -8,7 +8,7 @@ export const newsTable: TableInfo[] = [
   },
   {
     header: "Data para envio",
-    field: "SentAt",
+    field: "SendDate",
     type: "date",
   },
   {

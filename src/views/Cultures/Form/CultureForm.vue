@@ -5,7 +5,7 @@
       v-else
       class="w-[80%] min-w-[350px] flex flex-row gap-8 mt-10 bg-white p-8 rounded-md max-h-[75vh] overflow-auto"
     >
-      <form class="w-full" @submit="save">
+      <form class="w-full" @submit.prevent="save">
         <div class="w-full flex justify-between items-center">
           <h1 class="text-left text-[22px] font-[500]">{{ title }}</h1>
           <div>
@@ -24,7 +24,10 @@
                 type="submit"
                 :disabled="loadButton"
               >
-                <ProgressSpinner class="w-[20px] h-[20px]" v-if="loadButton" />
+                <ProgressSpinner
+                  style="width: 20px; height: 20px"
+                  v-if="loadButton"
+                />
               </Button>
             </div>
           </div>
@@ -112,6 +115,7 @@ function saveCycle(cycle) {
 function save() {
   loadButton.value = true;
   cycleError.value = verifyCycles();
+  console.log(cycleError.value);
   if (cycleError.value) {
     loadButton.value = false;
     return;
@@ -179,13 +183,15 @@ function verifyCycles() {
     result = true;
   } else {
     for (const cycle of cultureCycle.value) {
+      console.log(cycle);
       if (
         !cycle.Title ||
-        !cycle.Start ||
-        !cycle.End ||
-        !cycle.KC ||
-        !cycle.Increment
+        cycle.Start === null ||
+        cycle.End === null ||
+        cycle.KC === null ||
+        cycle.Increment === null
       ) {
+        console.log("entrou no if");
         result = true;
       }
     }

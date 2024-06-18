@@ -72,7 +72,6 @@ function getItemById(id) {
     .getById(id)
     .then((response) => {
       item.value = response.data;
-      item.value.SendDate = item.value.SentAt ? item.value.SentAt : new Date();
       loading.value = false;
       convertBuffer(item.value.Data.data);
     })
@@ -103,8 +102,6 @@ function goTo(routeName) {
 
 function createItem() {
   item.value.FK_Author = profile.id;
-  // let dateItem = new Date(item.value.SendDate);
-  // item.value.SendDate = dateItem.getTime();
   service
     .create(item.value)
     .then(() => {
