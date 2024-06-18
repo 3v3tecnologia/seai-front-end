@@ -62,6 +62,8 @@ const info = ref({});
 
 onMounted(() => {
   info.value = props.item;
-  info.value.SendDate = new Date();
+  info.value.SendDate = info.value.SendDate
+    ? new Date(info.value.SendDate)
+    : new Date();
 });
 </script>

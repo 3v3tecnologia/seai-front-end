@@ -52,7 +52,9 @@
           v-model="kc.Start"
           id="kc"
           aria-describedby="kc-help"
-          :class="`w-100 ${cycleError && !kc.Start ? 'invalidInput' : ''}`"
+          :class="`w-100 ${
+            cycleError && kc.Start === null ? 'invalidInput' : ''
+          }`"
           showButtons
           :min="0"
         />
@@ -63,7 +65,9 @@
           v-model="kc.End"
           id="kc"
           aria-describedby="kc-help"
-          :class="`w-100 ${cycleError && !kc.End ? 'invalidInput' : ''}`"
+          :class="`w-100 ${
+            cycleError && kc.End === null ? 'invalidInput' : ''
+          }`"
           showButtons
           :min="0"
         />
@@ -74,7 +78,7 @@
           v-model="kc.KC"
           id="kc"
           aria-describedby="kc-help"
-          :class="`w-100 ${cycleError && !kc.KC ? 'invalidInput' : ''}`"
+          :class="`w-100 ${cycleError && kc.KC === null ? 'invalidInput' : ''}`"
           showButtons
           mode="decimal"
           :minFractionDigits="1"
@@ -87,7 +91,9 @@
           v-model="kc.Increment"
           id="kc"
           aria-describedby="kc-help"
-          :class="`w-100 ${cycleError && !kc.Increment ? 'invalidInput' : ''}`"
+          :class="`w-100 ${
+            cycleError && kc.Increment === null ? 'invalidInput' : ''
+          }`"
           showButtons
           mode="decimal"
           :minFractionDigits="1"
@@ -135,7 +141,6 @@ watch(
 
 function addKC() {
   const newKC = {
-    Stage: KCs.value.length + 1,
     Title: "",
     Start: 0,
     End: 0,
