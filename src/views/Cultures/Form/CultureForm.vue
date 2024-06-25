@@ -115,7 +115,6 @@ function saveCycle(cycle) {
 function save() {
   loadButton.value = true;
   cycleError.value = verifyCycles();
-  console.log(cycleError.value);
   if (cycleError.value) {
     loadButton.value = false;
     return;
@@ -134,8 +133,8 @@ function createCulture() {
       const { data } = response;
       createCycle(data.data);
     })
-    .catch(() => {
-      callErrorToast();
+    .finally(() => {
+      loadButton.value = false;
     });
 }
 
@@ -145,8 +144,8 @@ function updateCulture() {
     .then(() => {
       createCycle(cultureId.value);
     })
-    .catch(() => {
-      callErrorToast();
+    .finally(() => {
+      loadButton.value = false;
     });
 }
 
@@ -158,19 +157,12 @@ function createCycle(id) {
         ? toast.success("Cultura alterada com sucesso!")
         : toast.success("Cultura criada com sucesso!");
       setTimeout(() => {
-        loadButton.value = false;
         goTo();
       }, 500);
     })
-    .catch(() => {
-      callErrorToast();
+    .finally(() => {
+      loadButton.value = false;
     });
-}
-
-function callErrorToast() {
-  isEditing.value
-    ? toast.success("Erro em alterar cultura!")
-    : toast.success("Erro em criar cultura!");
 }
 
 function goTo() {
