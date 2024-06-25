@@ -56,7 +56,8 @@
             cycleError && kc.Start === null ? 'invalidInput' : ''
           }`"
           showButtons
-          :min="0"
+          :min="i - 1 < 0 ? 0 : KCs[i - 1].End + 1"
+          :disabled="i > 0"
         />
         <label for="kc" class="font-weight-bold">Início</label>
       </div>
@@ -69,7 +70,7 @@
             cycleError && kc.End === null ? 'invalidInput' : ''
           }`"
           showButtons
-          :min="0"
+          :min="kc.Start + 1"
         />
         <label for="kc" class="font-weight-bold">Fim</label>
       </div>
@@ -81,7 +82,7 @@
           :class="`w-100 ${cycleError && kc.KC === null ? 'invalidInput' : ''}`"
           showButtons
           mode="decimal"
-          :minFractionDigits="1"
+          :min-fraction-digits="1"
           :min="0"
         />
         <label for="kc" class="font-weight-bold">KC</label>
@@ -91,13 +92,12 @@
           v-model="kc.Increment"
           id="kc"
           aria-describedby="kc-help"
-          :class="`w-100 ${
+          :class="` ${
             cycleError && kc.Increment === null ? 'invalidInput' : ''
           }`"
           showButtons
+          :min-fraction-digits="1"
           mode="decimal"
-          :minFractionDigits="1"
-          :min="0"
         />
         <label for="kc" class="font-weight-bold">Incremento</label>
       </div>
@@ -135,18 +135,39 @@ watch(
   () => KCs.value,
   (newValue, oldValue) => {
     emit("onSaveCycle", newValue);
+    updateStartValues();
   },
   { deep: true }
 );
 
+function updateStartValues() {
+  for (let i = 0; i < KCs.value.length; i++) {
+    if (i > 0) {
+      const previousEnd = KCs.value[i - 1].End;
+      if (KCs.value[i].Start <= previousEnd) {
+        KCs.value[i].Start = previousEnd + 1;
+      }
+    }
+    if (KCs.value[i].End <= KCs.value[i].Start) {
+      KCs.value[i].End = KCs.value[i].Start + 1;
+    }
+  }
+}
+
 function addKC() {
+  let i = KCs.value.length - 1;
+  console.log(KCs.value);
   const newKC = {
     Title: "",
-    Start: 0,
+    Start: i < 0 ? 0 : KCs.value[i].End + 1,
     End: 0,
     KC: 0,
     Increment: 0,
   };
+  if (newKC.End <= newKC.Start) {
+    newKC.End = newKC.Start + 1;
+  }
+  console.log(newKC);
   KCs.value.push(newKC);
 }
 
@@ -169,9 +190,9 @@ function removeKC() {
   }
   .form-group-number {
     width: 13%;
-    min-width: 80px;
+    min-width: 50px;
     input {
-      width: 50%;
+      width: 10%;
     }
   }
   .form-group-increment {

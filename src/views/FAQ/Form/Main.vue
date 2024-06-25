@@ -17,7 +17,7 @@
         ></Button>
         <Button
           icon="pi pi-save"
-          label="Salvar notícia"
+          label="Salvar pergunta"
           class="btn-success"
           @click="save()"
         ></Button>
@@ -97,13 +97,6 @@ function getItemById(id) {
       console.log("Failed to get item");
       goTo("form-faq");
     });
-}
-
-function convertBuffer(preBuffer) {
-  const buffer = new Uint8Array(preBuffer);
-  const decoder = new TextDecoder("utf-8");
-  const result = decoder.decode(buffer);
-  item.value.Data = result;
 }
 
 function save() {

@@ -8,6 +8,7 @@
           v-model="read.Altitude.Value"
           class="w-full"
           :disabled="true"
+          :min-fraction-digits="1"
           mode="decimal"
           :min="0"
           :useGrouping="false"
@@ -24,6 +25,7 @@
           class="w-full"
           :class="{ 'p-invalid': !read.TotalRadiation.Value }"
           :disabled="!editMode"
+          :min-fraction-digits="1"
           mode="decimal"
           :min="0"
           :useGrouping="false"
@@ -48,6 +50,7 @@
             'p-invalid': !read.AverageRelativeHumidity.Value,
           }"
           :disabled="!editMode"
+          :min-fraction-digits="1"
           mode="decimal"
           :min="0"
           :useGrouping="false"
@@ -72,6 +75,7 @@
             'p-invalid': !read.AverageAtmosphericTemperature.Value,
           }"
           :disabled="!editMode"
+          :min-fraction-digits="1"
           mode="decimal"
           :min="0"
           :useGrouping="false"
@@ -96,6 +100,7 @@
           class="w-full"
           :class="{ 'p-invalid': !read.AtmosphericPressure.Value }"
           :disabled="!editMode"
+          :min-fraction-digits="1"
           mode="decimal"
           :min="0"
           :useGrouping="false"
@@ -116,6 +121,7 @@
           class="w-full"
           :class="{ 'p-invalid': !read.WindVelocity.Value }"
           :disabled="!editMode"
+          :min-fraction-digits="1"
           mode="decimal"
           :min="0"
           :useGrouping="false"
@@ -140,6 +146,7 @@
             'p-invalid': !read.MinAtmosphericTemperature.Value,
           }"
           :disabled="!editMode"
+          :min-fraction-digits="1"
           mode="decimal"
           :min="0"
           :useGrouping="false"
@@ -164,6 +171,7 @@
             'p-invalid': !read.MaxAtmosphericTemperature.Value,
           }"
           :disabled="!editMode"
+          :min-fraction-digits="1"
           mode="decimal"
           :min="0"
           :useGrouping="false"
@@ -188,6 +196,7 @@
           class="w-full"
           :class="{ 'p-invalid': !read.MinRelativeHumidity.Value }"
           :disabled="!editMode"
+          :min-fraction-digits="1"
           mode="decimal"
           :min="0"
           :useGrouping="false"
@@ -209,6 +218,7 @@
           :class="{ 'p-invalid': !read.MaxRelativeHumidity.Value }"
           :disabled="!editMode"
           mode="decimal"
+          :min-fraction-digits="1"
           :min="0"
           :useGrouping="false"
           required
@@ -229,6 +239,7 @@
         class="w-full"
         :disabled="true"
         mode="decimal"
+        :min-fraction-digits="1"
         :min="0"
         :useGrouping="false"
       />
