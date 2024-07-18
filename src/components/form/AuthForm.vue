@@ -22,6 +22,7 @@
             class="password w-full"
             v-model="form.password"
             toggleMask
+            :feedback="false"
           />
           <label for="e-mail" class="font-weight-bold">Senha</label>
         </div>
@@ -79,7 +80,7 @@ const handleSubmit = (e) => {
     .dispatch(action, form.value)
     .then((r) => {
       if (props.isLogging && !(r instanceof Error) && r) {
-        router.push({ path: "/users" });
+        router.push({ path: "/home" });
       }
     })
     .catch();

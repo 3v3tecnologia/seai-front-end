@@ -11,6 +11,7 @@ import metereologicalBodies from "@/router/routes/metereologicalBodies";
 import equipments from "@/router/routes/equipments";
 import account from "@/router/routes/account";
 import faq from "./faq";
+import home from "./home";
 
 export default [
   ...account,
@@ -23,6 +24,7 @@ export default [
   ...weights,
   ...study,
   ...faq,
+  ...home,
   {
     path: "/:catchAll(.*)",
     meta: {

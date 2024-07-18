@@ -42,7 +42,7 @@ router.beforeEach(async (to: any, from, next) => {
       toast.error("Sem permissão para acessar este módulo");
 
       setTimeout(() => {
-        router.push("reports");
+        router.push("home");
       }, 3000);
     }
   } else if (!openRoutes[to.name] && !auth) {

@@ -147,16 +147,7 @@ onMounted(() => {
   userModule.value.name = "Usuários";
   userModule.value.disabled = true;
 
-  jobsModule.value = props.user.modules.jobs;
-  jobsModule.value.name = "Rotina de dados";
-  jobsModule.value.disabled = true;
-
-  modules.value = [
-    newsModule.value,
-    registerModule.value,
-    userModule.value,
-    jobsModule.value,
-  ];
+  modules.value = [newsModule.value, registerModule.value, userModule.value];
 });
 
 function setAdmin() {
