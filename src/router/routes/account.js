@@ -8,7 +8,7 @@ import routeProps from "@/router/props";
 export default [
   {
     path: "/",
-    redirect: { path: "/users" },
+    redirect: { path: "/home" },
   },
   {
     path: "/login",
@@ -44,7 +44,7 @@ export default [
     component: RetrieveAccount,
   },
   {
-    path: "/initial-register-infos",
+    path: "/initial-register-infos/:token",
     name: "initial-register-infos",
     meta: {
       title: `Concluir cadastro`,

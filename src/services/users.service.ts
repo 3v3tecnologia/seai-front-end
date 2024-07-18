@@ -9,6 +9,9 @@ export class UsersRest {
   async create(data: any): Promise<any> {
     return await http.post(`v1/user`, data);
   }
+  async completeRegister(data: any, code: string): Promise<any> {
+    return await http.patch(`v1/user/complete-registration/${code}`, data);
+  }
   async update(id: number, data: any): Promise<any> {
     return await http.patch(`v1/user/${id}`, data);
   }
