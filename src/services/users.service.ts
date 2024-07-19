@@ -20,7 +20,7 @@ export class UsersRest {
     return result.data;
   }
   async deleteById(id: number): Promise<any> {
-    const result = await http.delete(`v1/user/delete/${id}`);
+    const result = await http.delete(`v1/user/${id}`);
     return result.data;
   }
 }
