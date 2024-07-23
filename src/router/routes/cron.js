@@ -12,7 +12,6 @@ export default [
     meta: {
       ShowNav: true,
       title: `Rotina de dados`,
-      modulesNeeded: [modulesSystem.jobs, modulesSystemLevel.read],
     },
     component: Routines,
     props: routeProps.cron.list,

@@ -7,7 +7,7 @@ export default [
     meta: {
       ShowNav: false,
       title: "FAQ",
-      navBarTab: 0,
+      navBarTab: 15,
     },
     component: Home,
   },

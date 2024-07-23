@@ -1,6 +1,5 @@
 import BaseForm from "@/views/BaseForm.vue";
-import BaseCrudView from "@/views/templates/BaseCrudView.vue";
-import { actionPrefix } from "@/constants";
+import { actionPrefix, modulesSystem, modulesSystemLevel } from "@/constants";
 import routeProps from "@/router/props";
 import Equipments from "@/views/Equipments/Equipments.vue";
 
@@ -11,6 +10,7 @@ export default [
     meta: {
       ShowNav: true,
       title: `Equipamentos e leituras`,
+      modulesNeeded: [modulesSystem.equipments, modulesSystemLevel.read],
     },
     component: Equipments,
     props: routeProps.equipments.list,
@@ -20,6 +20,7 @@ export default [
     name: "edit-equipment",
     meta: {
       title: `${actionPrefix.edit} equipamento`,
+      modulesNeeded: [modulesSystem.equipments, modulesSystemLevel.write],
     },
     component: BaseForm,
     props: routeProps.equipments.update,
@@ -29,48 +30,13 @@ export default [
     name: "create-equipment",
     meta: {
       title: `${actionPrefix.create} equipamento`,
+      modulesNeeded: [modulesSystem.equipments, modulesSystemLevel.write],
     },
     component: BaseForm,
     props: routeProps.equipments.create,
   },
-  {
-    path: "/station-reads/:id",
-    name: "station-reads",
-    meta: {
-      title: `Leituras de estação`,
-    },
-    component: BaseCrudView,
-    props: routeProps.reads.station.list,
-  },
-  {
-    path: "/station-reads-edit/:id",
-    name: "station-reads-edit",
-    meta: {
-      title: `${actionPrefix.edit} leituras de estação`,
-    },
-    component: BaseForm,
-    props: routeProps.reads.station.update,
-  },
-  {
-    path: "/pluviometer-reads/:id",
-    name: "pluviometer-reads",
-    meta: {
-      title: `Leituras de pluviômetro`,
-    },
-    component: BaseCrudView,
-    props: routeProps.reads.pluviometer.list,
-  },
-  {
-    path: "/pluviometer-reads/edit/:id",
-    name: "pluviometer-reads-edit",
-    meta: {
-      title: `${actionPrefix.edit} leituras de pluviômetros`,
-    },
-    component: BaseForm,
-    props: routeProps.reads.pluviometer.update,
-  },
 ].map((r) => {
-  r.meta.navBarTab = 2;
+  r.meta.navBarTab = 1;
 
   return r;
 });

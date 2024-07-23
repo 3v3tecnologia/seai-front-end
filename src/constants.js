@@ -100,10 +100,13 @@ export const actionPrefix = {
 };
 
 export const modulesSystem = {
-  jobs: "jobs",
-  register: "register",
   user: "user",
-  news: "news",
+  weights: "weights",
+  faq: "faq",
+  crop: "crop",
+  equipments: "equipments",
+  studies: "studies",
+  newsletter: "newsletter",
 };
 
 export const modulesSystemLevel = {

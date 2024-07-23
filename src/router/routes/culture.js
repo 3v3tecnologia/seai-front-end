@@ -1,5 +1,4 @@
-import { actionPrefix } from "@/constants";
-import ManagementRegister from "../../views/templates/ManagementRegister.vue";
+import { actionPrefix, modulesSystem, modulesSystemLevel } from "@/constants";
 import cultureList from "@/router/props/culture/list";
 import cultureCreate from "@/router/props/culture/create";
 import cultureUpdate from "@/router/props/culture/update";
@@ -14,6 +13,7 @@ export default [
       ShowNav: true,
       title: `Culturas`,
       navBarTab: 8,
+      modulesNeeded: [modulesSystem.crop, modulesSystemLevel.read],
     },
     component: Culture,
     props: cultureList,
@@ -24,7 +24,7 @@ export default [
     meta: {
       ShowNav: false,
       title: `${actionPrefix.create} cultura`,
-      navBarTab: 8,
+      modulesNeeded: [modulesSystem.crop, modulesSystemLevel.write],
     },
     component: CultureForm,
     props: cultureCreate,
@@ -35,9 +35,13 @@ export default [
     meta: {
       ShowNav: false,
       title: `${actionPrefix.edit} cultura`,
-      navBarTab: 8,
+      modulesNeeded: [modulesSystem.crop, modulesSystemLevel.write],
     },
     component: CultureForm,
     props: cultureUpdate,
   },
-];
+].map((r) => {
+  r.meta.navBarTab = 8;
+
+  return r;
+});

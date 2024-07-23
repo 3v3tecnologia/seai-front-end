@@ -1,9 +1,6 @@
-import BaseCrudView from "@/views/templates/BaseCrudView.vue";
 import Users from "@/views/Users/Users.vue";
 import CreateUsers from "@/views/Users/Form/Main.vue";
-import CreateUserView from "@/views/UserRegisterView.vue";
 import { actionPrefix, modulesSystem, modulesSystemLevel } from "@/constants";
-import routeProps from "@/router/props";
 
 export default [
   {

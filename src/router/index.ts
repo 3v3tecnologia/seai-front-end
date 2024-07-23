@@ -38,9 +38,8 @@ router.beforeEach(async (to: any, from, next) => {
     modulesNeeded &&
     !profile?.modules?.[modulesNeeded[0]][modulesNeeded[1]]
   ) {
+    toast.error("Sem permissão para acessar este módulo");
     if (from.path == "/") {
-      toast.error("Sem permissão para acessar este módulo");
-
       setTimeout(() => {
         router.push("home");
       }, 3000);

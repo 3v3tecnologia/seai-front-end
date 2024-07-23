@@ -6,16 +6,16 @@ import Organs from "@/views/Organs/Organs.vue";
 import FormOrgans from "@/views/Organs/Form/Main.vue";
 
 export default [
-  {
-    path: "/meteorological-bodies",
-    name: "meteorological-bodies",
-    meta: {
-      ShowNav: true,
-      title: `Órgãos meteorológicos`,
-    },
-    component: Organs,
-    props: routeProps.metereologicalBodies.list,
-  },
+  // {
+  //   path: "/meteorological-bodies",
+  //   name: "meteorological-bodies",
+  //   meta: {
+  //     ShowNav: true,
+  //     title: `Órgãos meteorológicos`,
+  //   },
+  //   component: Organs,
+  //   props: routeProps.metereologicalBodies.list,
+  // },
   {
     path: "/meteorological-bodies/form-organs/:id?",
     name: "form-organs",

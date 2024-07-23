@@ -41,7 +41,7 @@
     </div>
 
     <div
-      class="w-full flex justify-between mt-2"
+      class="w-full flex gap-5 items-center mt-2"
       v-for="(module, i) in modules"
       :key="i"
     >
@@ -58,33 +58,13 @@
         />
         <label for="e-mail" class="font-weight-bold">Módulo</label>
       </div>
-      <div
-        class="form-group form-group-text text-left p-float-label mt-2 w-[33%]"
-      >
-        <Dropdown
-          id="user-type"
-          v-model="module.read"
-          :options="selectModule"
-          optionLabel="name"
-          optionValue="value"
-          placeholder="Tipo de usuário"
-          :disabled="module.disabled"
-          class="w-full"
-        />
-        <label for="e-mail" class="font-weight-bold">Leitura</label>
+      <div class="mt-2 flex gap-2">
+        <Checkbox v-model="module.read" :disabled="module.disabled" binary />
+        <label for="user-type-read" class="font-weight-bold">Leitura</label>
       </div>
-      <div class="text-left p-float-label mt-2 w-[33%]">
-        <Dropdown
-          id="user-type"
-          v-model="module.write"
-          :options="selectModule"
-          optionLabel="name"
-          optionValue="value"
-          placeholder="Tipo de usuário"
-          :disabled="module.disabled"
-          class="w-full"
-        />
-        <label for="e-mail" class="font-weight-bold">Escrita</label>
+      <div class="mt-2 flex gap-2">
+        <Checkbox v-model="module.write" :disabled="module.disabled" binary />
+        <label for="user-type-write" class="font-weight-bold">Escrita</label>
       </div>
     </div>
   </form>
@@ -104,11 +84,17 @@ const props = defineProps({
 });
 
 const userInfo = ref({});
-const newsModule = ref({});
-const jobsModule = ref({});
-const registerModule = ref({});
-const userModule = ref({});
+
 const modules = ref([]);
+const moduleTranslations = ref({
+  user: "Usuário",
+  weights: "Pesos",
+  faq: "FAQ",
+  crop: "Cultura",
+  equipments: "Equipamentos",
+  studies: "Estudos",
+  newsletter: "Newsletter",
+});
 
 const select = ref([
   {
@@ -121,47 +107,28 @@ const select = ref([
   },
 ]);
 
-const selectModule = ref([
-  {
-    name: "Sim",
-    value: true,
-  },
-  {
-    name: "Não",
-    value: false,
-  },
-]);
-
 onMounted(() => {
   userInfo.value = props.user;
 
-  newsModule.value = props.user.modules.news;
-  newsModule.value.name = "Notícias";
-  newsModule.value.disabled = props.user.type === "admin" ? true : false;
-
-  registerModule.value = props.user.modules.register;
-  registerModule.value.name = "Cadastro";
-  registerModule.value.disabled = props.user.type === "admin" ? true : false;
-
-  userModule.value = props.user.modules.user;
-  userModule.value.name = "Usuários";
-  userModule.value.disabled = true;
-
-  modules.value = [newsModule.value, registerModule.value, userModule.value];
+  for (const [key, item] of Object.entries(props.user.modules)) {
+    item.name = getModuleName(key);
+    item.disabled = false;
+    modules.value.push(item);
+  }
 });
+
+function getModuleName(key) {
+  return moduleTranslations.value[key] || key;
+}
 
 function setAdmin() {
   modules.value.forEach((module) => {
     if (userInfo.value.type === "admin") {
       module.write = true;
       module.read = true;
-      module.disabled = true;
     } else {
       module.write = false;
       module.read = false;
-      module.disabled = false;
-      userModule.value.disabled = true;
-      jobsModule.value.disabled = true;
     }
   });
 }
