@@ -25,6 +25,7 @@ import Password from "primevue/password";
 import Editor from "primevue/editor";
 import AutoComplete from "primevue/autocomplete";
 import Textarea from "primevue/textarea";
+import Checkbox from "primevue/checkbox";
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -122,4 +123,5 @@ createApp(App)
   .component("Editor", Editor)
   .component("AutoComplete", AutoComplete)
   .component("Textarea", Textarea)
+  .component("Checkbox", Checkbox)
   .mount("#app");

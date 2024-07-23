@@ -88,7 +88,7 @@ function getAll() {
 function adjustmentItemsValue() {
   if (items.value !== null) {
     items.value.forEach((element) => {
-      element.actions = ["delete"];
+      element.actions = ["delete", "edit"];
     });
     numberResultsFound.value = items.value.length;
   }

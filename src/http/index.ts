@@ -33,6 +33,7 @@ httpClient.interceptors.response.use(
     return response;
   },
   function (error) {
+    console.log(error);
     if (error.response.status == 401) {
       toast.error("Sem permissão de acesso para este recurso");
     } else if (error.response.status == 404) {

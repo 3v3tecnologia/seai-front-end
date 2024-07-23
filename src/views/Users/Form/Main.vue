@@ -39,34 +39,9 @@ import { toast } from "vue3-toastify";
 import { useRouter } from "vue-router";
 const router = useRouter();
 
-const user = ref({
-  email: "",
-  type: "standard",
-  modules: {
-    news: {
-      id: 1,
-      read: false,
-      write: false,
-    },
-    register: {
-      id: 3,
-      read: false,
-      write: false,
-    },
-    user: {
-      id: 2,
-      read: false,
-      write: false,
-    },
-    jobs: {
-      id: 4,
-      read: false,
-      write: false,
-    },
-  },
-});
+const user = ref();
 
-const loading = ref(false);
+const loading = ref(true);
 const emailError = ref({ text: "", data: false });
 const userId = ref(0);
 const isEditing = ref(false);
@@ -79,8 +54,10 @@ onMounted(() => {
 });
 
 function verifyId() {
+  console.log("mds", router.currentRoute.value.params.id);
   if (router.currentRoute.value.params.id) {
     const idAsNumber = Number(router.currentRoute.value.params.id);
+    console.log(idAsNumber);
     if (!isNaN(idAsNumber)) {
       userId.value = idAsNumber;
       isEditing.value = true;
@@ -94,6 +71,7 @@ function verifyId() {
 
 function getUserById(id) {
   loading.value = true;
+  console.log(id);
   userRest
     .getById(id)
     .then((response) => {
@@ -150,13 +128,13 @@ function updateUser() {
   userRest
     .update(userId.value, user.value)
     .then(() => {
+      toast.success("Usuário atualizado com sucesso");
       setTimeout(() => {
-        toast.success("Usuário atualizado com sucesso");
-      }, 200);
+        location.reload();
+      }, 1000);
     })
     .catch((err) => {
       toast.error(err.response.data.error);
-    })
-    .finally(() => (loading.value = false));
+    });
 }
 </script>

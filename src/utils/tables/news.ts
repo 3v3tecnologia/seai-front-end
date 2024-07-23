@@ -11,9 +11,4 @@ export const newsTable: TableInfo[] = [
     field: "SendDate",
     type: "date",
   },
-  {
-    header: "Autor",
-    field: "Author.Email",
-    type: "text",
-  },
 ];

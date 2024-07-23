@@ -1,6 +1,6 @@
 <template>
   <form
-    class="flex w-full max-w-[1600px] min-w-[700px] gap-4 flex-col items-start"
+    class="flex news-form w-full max-w-[1600px] min-w-[700px] gap-4 flex-col items-start"
     v-if="item"
   >
     <div class="w-full flex gap-4 mt-4">
@@ -23,7 +23,6 @@
           v-model="info.SendDate"
           inputId="date-range-read"
           dateFormat="dd/mm/yy"
-          :manualInput="false"
           showIcon
           class="w-full"
           :min-date="new Date()"
@@ -45,7 +44,12 @@
         <label class="font-weight-bold">Descrição</label>
       </div>
     </div>
-    <Editor class="w-full" v-model="info.Data" editorStyle="height: 320px" />
+    <Editor
+      class="w-full"
+      v-model="info.Data"
+      editorStyle="height: 320px"
+      :modules="editorModules"
+    />
   </form>
 </template>
 <script setup>
@@ -57,6 +61,23 @@ const props = defineProps({
     required: true,
   },
 });
+const editorModules = ref({
+  toolbar: [
+    ["bold", "italic", "underline", "strike"], // toggled buttons
+    ["blockquote"], // remove 'code-block' to remove the code button
+    [{ header: 1 }, { header: 2 }], // custom button values
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ script: "sub" }, { script: "super" }], // superscript/subscript
+    [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+    [{ direction: "rtl" }], // text direction
+    [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    [{ font: [] }],
+    [{ align: [] }],
+    ["clean"], // remove formatting button
+  ],
+});
 
 const info = ref({});
 
@@ -67,3 +88,10 @@ onMounted(() => {
     : new Date();
 });
 </script>
+<style lang="scss">
+.news-form {
+  .p-editor-toolbar {
+    display: none;
+  }
+}
+</style>

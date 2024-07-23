@@ -24,7 +24,14 @@
     <ProgressSpinner v-if="loading" />
     <div v-else class="w-full max-w-[1600px] px-4 min-w-[350px]">
       <div class="mt-6">
+        <div
+          v-if="loadingTable"
+          class="w-full h-[400px] bg-white flex items-center justify-center"
+        >
+          <ProgressSpinner />
+        </div>
         <Dtable
+          v-else
           :infoTable="equipmentsTable"
           :dataValue="equipments?.Items"
           :loadingTable="loadingTable"
@@ -32,7 +39,6 @@
           @onOpenModal="openModal"
         />
         <Pagination
-          v-if="!hiddenPagination"
           :rows="params.limit"
           :current-total="numberResultsFound"
           :totalRecords="equipments?.TotalItems"
@@ -76,6 +82,17 @@ const equipmentTypes = ref({
     { Name: "Pluviômetro", Id: 2 },
   ],
 });
+const et0Types = ref({
+  placeholder: "Filtrar por medição",
+  optionLabel: "Name",
+  paramsName: "only_with_measurements",
+  disabled: true,
+  items: [
+    { Name: "Todos", Id: 0 },
+    { Name: "Somente com medição", Id: "true" },
+    { Name: "Sem medição", Id: "false" },
+  ],
+});
 const equipmentRest = new EquipmentRest();
 const params = ref({
   pageNumber: 0,
@@ -86,10 +103,12 @@ const params = ref({
 onMounted(() => {
   loading.value = true;
   getAllEquipment();
-  getOrgans();
+  equipmentsSelects.value.push(equipmentTypes.value);
+  equipmentsSelects.value.push(et0Types.value);
 });
 
 function getAllEquipment() {
+  loadingTable.value = true;
   equipmentRest.getAll(params.value).then((res) => {
     equipments.value = res.data;
     numberResultsFound.value =
@@ -102,30 +121,32 @@ function getAllEquipment() {
   });
 }
 
-function getOrgans() {
-  equipmentRest.getAllOrgans().then((res) => {
-    organs.value = {
-      placeholder: "Filtrar por orgãos",
-      optionLabel: "Name",
-      paramsName: "idOrgan",
-      items: [{ Name: "Todos", Id: 0 }, ...res.data],
-    };
-
-    equipmentsSelects.value.push(organs.value);
-    equipmentsSelects.value.push(equipmentTypes.value);
-  });
-}
 function adjustmentEquipmentValue() {
   if (equipments.value !== null && equipments.value.Items)
     equipments.value.Items.forEach((element) => {
       element.Type.Name = tradutionType(element.Type.Name);
       element.link = "Acessar leituras";
       element.actions = ["modal"];
+      element.Name = capitalizeText(element.Name);
       element.router = {
         name: "station-reads",
         params: { id: element.Id },
       };
     });
+}
+function capitalizeText(text) {
+  console.log(text);
+  return text
+    .split(" ")
+    .map((word) =>
+      word.toLowerCase() === "de" || word.toLowerCase() === "do"
+        ? word.toLowerCase()
+        : capitalize(word)
+    )
+    .join(" ");
+}
+function capitalize(word) {
+  return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 }
 
 function tradutionType(type) {
@@ -152,7 +173,10 @@ function handlePageChange(page) {
 }
 function selectEquipments(paramsName, paramsValue) {
   resetPagination();
-  params.value[paramsName] = paramsValue > 0 ? paramsValue : null;
+  params.value[paramsName] = paramsValue != 0 ? paramsValue : null;
+  if (paramsName === equipmentTypes.value.paramsName) {
+    et0Types.value.disabled = paramsValue != 0 ? false : true;
+  }
   getAllEquipment();
 }
 function resetPagination() {

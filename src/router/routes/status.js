@@ -11,7 +11,6 @@ export default [
     meta: {
       ShowNav: true,
       title: `Status de rotina`,
-      modulesNeeded: [modulesSystem.jobs, modulesSystemLevel.read],
     },
     component: RoutineStatus,
     props: routeProps.status.list,
@@ -21,7 +20,6 @@ export default [
     name: "edit-status",
     meta: {
       title: `${actionPrefix.edit} status`,
-      modulesNeeded: [modulesSystem.jobs, modulesSystemLevel.write],
     },
     component: BaseForm,
     props: routeProps.status.update,
@@ -31,7 +29,6 @@ export default [
     name: "create-status",
     meta: {
       title: `${actionPrefix.create} status`,
-      modulesNeeded: [modulesSystem.jobs, modulesSystemLevel.write],
     },
     component: BaseForm,
     props: routeProps.status.create,

@@ -23,7 +23,8 @@
           :options="select.items"
           :optionLabel="select.optionLabel"
           :placeholder="select.placeholder"
-          class="w-[200px]"
+          class="min-w-[200px]"
+          :disabled="select.disabled ? true : false"
           @change="onSelectItem(select, i)"
         />
         <label class="font-weight-bold"> {{ select.placeholder }} </label>
