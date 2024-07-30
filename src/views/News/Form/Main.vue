@@ -19,7 +19,7 @@
           icon="pi pi-save"
           label="Salvar notícia"
           class="btn-success"
-          @click="save()"
+          @click="isToday()"
         ></Button>
       </div>
     </div>
@@ -30,6 +30,7 @@
       <Form v-if="item" :item="item" />
     </div>
   </div>
+  <ConfirmDialog />
 </template>
 <script setup>
 import { ref, onMounted } from "vue";
@@ -38,6 +39,7 @@ import { toast } from "vue3-toastify";
 import { useRouter } from "vue-router";
 import { NewsRest } from "@/services/news";
 import store from "@/store";
+import { useConfirm } from "primevue/useconfirm";
 
 const profile = store.state.profile;
 const router = useRouter();
@@ -47,6 +49,7 @@ const currentId = ref(0);
 const isEditing = ref(false);
 const title = ref("Criar notícia");
 const service = new NewsRest();
+const confirm = useConfirm();
 
 onMounted(() => {
   verifyId();
@@ -89,10 +92,25 @@ function convertBuffer(preBuffer) {
 
 function save() {
   loading.value = true;
+
   if (isEditing.value) {
     updateItem();
   } else {
     createItem();
+  }
+}
+
+function isToday() {
+  const today = new Date();
+
+  if (
+    item.value.SendDate.getDate() === today.getDate() &&
+    item.value.SendDate.getMonth() === today.getMonth() &&
+    item.value.SendDate.getFullYear() === today.getFullYear()
+  ) {
+    confirmDate();
+  } else {
+    save();
   }
 }
 
@@ -122,5 +140,20 @@ function updateItem() {
       }, 200);
     })
     .finally(() => (loading.value = false));
+}
+function confirmDate() {
+  confirm.require({
+    message:
+      "A data selecionada para postagem da notícia será hoje, notícias já postadas não podem ser editadas!",
+    header: "Confirmar deleção",
+    icon: "pi pi-exclamation-triangle",
+    rejectClass: "p-button-secondary p-button-outlined",
+    acceptClass: "btn-primary",
+    rejectLabel: "Cancelar",
+    acceptLabel: "Salvar",
+    accept: () => {
+      save();
+    },
+  });
 }
 </script>

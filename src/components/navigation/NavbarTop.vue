@@ -6,36 +6,42 @@
       <LogoProject title-size="md" />
       <div class="align-items-center d-flex font-weight-bold pl-3">
         <div class="flex items-center justify-center gap-4" v-if="auth?.login">
-          <!-- <router-link
-            to="/profile"
-            class="d-flex align-items-center justify-content-center"
-          >
-            <i class="pi pi-user pr-2" style="color: #708090"></i>
-            <div class="mr-2 mr-lg-3 text-decoration-none">
-              {{ auth.login }}
-            </div>
-          </router-link> -->
           <div class="wrapper-sign-out relative">
-            <i @click="showMenu = true" class="pi pi-cog cursor-pointer"></i>
+            <i
+              @click="toggleMenu()"
+              title="configurações"
+              class="pi pi-cog cursor-pointer text-[22px]"
+            ></i>
             <div
               v-if="showMenu"
-              ref="menu"
+              ref="menuRef"
               class="absolute right-[0px] top-0 bg-white p-2 w-[150px] shadow-lg"
             >
-              <Button
-                class="btn-simple w-full p-2 hover:!text-black"
-                icon="pi pi-cog"
-                label="Editar perfil"
-              ></Button>
-              <Button
-                class="btn-simple w-full p-2 mt-2 hover:!text-black"
-                icon="pi pi-sign-out"
-                label="Sair"
-              ></Button>
+              <router-link
+                to="/profile"
+                class="d-flex align-items-center justify-content-center"
+              >
+                <Button
+                  class="btn-simple w-full p-2 hover:!text-black"
+                  icon="pi pi-cog"
+                  label="Editar perfil"
+                ></Button>
+              </router-link>
+              <router-link
+                to="/profile"
+                class="d-flex align-items-center justify-content-center"
+              >
+                <Button
+                  class="btn-simple w-full p-2 mt-2 hover:!text-black"
+                  icon="pi pi-sign-out"
+                  label="Sair"
+                  @click="signOut"
+                ></Button>
+              </router-link>
             </div>
           </div>
         </div>
-        <router-link to="/login" v-else> Login </router-link>
+        <router-link v-else to="/login"> Login </router-link>
       </div>
     </div>
 
@@ -84,6 +90,7 @@ const authUser = computed(() => store.state.profile);
 
 const signOut = () => store.dispatch("SIGN_OUT");
 const showMenu = ref(false);
+const menuRef = ref<HTMLElement | null>(null);
 
 const active = computed({
   set(val) {
@@ -117,21 +124,28 @@ const itemsRoutes = computed(() =>
   })
 );
 
-const menuRef = ref<HTMLElement | null>(null);
-
 const handleClickOutside = (event: MouseEvent) => {
+  console.log(event.target, menuRef.value);
   if (menuRef.value && !menuRef.value.contains(event.target as Node)) {
     showMenu.value = false;
+    removeClick();
   }
 };
 
-onMounted(() => {
-  document.addEventListener("click", handleClickOutside);
-});
+function toggleMenu() {
+  showMenu.value = !showMenu.value;
+  setTimeout(() => addClick(), 200);
+}
 
 onBeforeUnmount(() => {
-  document.removeEventListener("click", handleClickOutside);
+  removeClick();
 });
+function addClick() {
+  document.addEventListener("click", handleClickOutside);
+}
+function removeClick() {
+  document.removeEventListener("click", handleClickOutside);
+}
 </script>
 
 <style lang="scss" scoped>
