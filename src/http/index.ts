@@ -39,7 +39,8 @@ httpClient.interceptors.response.use(
     } else if (error.response.status == 404) {
       toast.error("Recurso não encontrado");
     } else if (error.response.status == 403) {
-      console.log(error.response);
+      toast.error(error.response.data.error);
+    } else if (error.response.status == 400) {
       toast.error(error.response.data.error);
     }
 

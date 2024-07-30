@@ -6,7 +6,7 @@
       <LogoProject title-size="md" />
       <div class="align-items-center d-flex font-weight-bold pl-3">
         <div class="flex items-center justify-center gap-4" v-if="auth?.login">
-          <router-link
+          <!-- <router-link
             to="/profile"
             class="d-flex align-items-center justify-content-center"
           >
@@ -14,14 +14,25 @@
             <div class="mr-2 mr-lg-3 text-decoration-none">
               {{ auth.login }}
             </div>
-          </router-link>
-          <div @click="signOut" class="wrapper-sign-out">
-            <router-link to="/login">
-              <font-awesome-icon
-                class="text-danger"
-                icon="fa-solid fa-sign-out"
-              />
-            </router-link>
+          </router-link> -->
+          <div class="wrapper-sign-out relative">
+            <i @click="showMenu = true" class="pi pi-cog cursor-pointer"></i>
+            <div
+              v-if="showMenu"
+              ref="menu"
+              class="absolute right-[0px] top-0 bg-white p-2 w-[150px] shadow-lg"
+            >
+              <Button
+                class="btn-simple w-full p-2 hover:!text-black"
+                icon="pi pi-cog"
+                label="Editar perfil"
+              ></Button>
+              <Button
+                class="btn-simple w-full p-2 mt-2 hover:!text-black"
+                icon="pi pi-sign-out"
+                label="Sair"
+              ></Button>
+            </div>
           </div>
         </div>
         <router-link to="/login" v-else> Login </router-link>
@@ -56,9 +67,8 @@
 import TabMenu from "primevue/tabmenu";
 import LogoProject from "@/components/videntity/LogoProject.vue";
 import { modulesSystem } from "@/constants";
-import { ref } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
-import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import routes from "@/router/routes";
 
@@ -73,6 +83,7 @@ const auth = computed(() => store.state.auth);
 const authUser = computed(() => store.state.profile);
 
 const signOut = () => store.dispatch("SIGN_OUT");
+const showMenu = ref(false);
 
 const active = computed({
   set(val) {
@@ -105,6 +116,22 @@ const itemsRoutes = computed(() =>
     return v;
   })
 );
+
+const menuRef = ref<HTMLElement | null>(null);
+
+const handleClickOutside = (event: MouseEvent) => {
+  if (menuRef.value && !menuRef.value.contains(event.target as Node)) {
+    showMenu.value = false;
+  }
+};
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
 </script>
 
 <style lang="scss" scoped>

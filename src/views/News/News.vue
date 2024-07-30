@@ -65,6 +65,7 @@ const items = ref([]);
 const loading = ref(false);
 const loadingTable = ref(false);
 const service = new NewsRest();
+const today = new Date();
 const params = ref({
   pageNumber: 0,
   limit: limit.value,
@@ -94,7 +95,7 @@ function getAll() {
 function adjustmentItemsValue() {
   if (items.value !== null) {
     items.value.Items.forEach((element) => {
-      element.actions = ["edit", "delete"];
+      element.actions = getIfEditItem(element.SendDate);
     });
     numberResultsFound.value = items.value.Items.length;
   }
@@ -108,6 +109,11 @@ function searchItems(searchTerm) {
     loadingTable.value = true;
     getAll();
   }
+}
+function getIfEditItem(date) {
+  let currentDate = new Date(date);
+  console.log(currentDate > today);
+  return currentDate < today ? ["delete"] : ["edit", "delete"];
 }
 
 function handlePageChange(page) {
