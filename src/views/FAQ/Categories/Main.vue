@@ -40,6 +40,7 @@
         @onGetAll="getAll"
         :service="service"
         :id="currentId"
+        :current-category="currentCategory"
       />
     </div>
   </div>
@@ -65,6 +66,7 @@ const items = ref([]);
 const loading = ref(false);
 const numberResultsFound = ref(0);
 const currentId = ref(-1);
+const currentCategory = ref({});
 
 const params = ref({
   pageNumber: 0,
@@ -95,10 +97,11 @@ function adjustmentItemsValue() {
 }
 
 function deleteItem(data) {
+  console.log("data", data);
   const id = data.id;
   loading.value = true;
   service
-    .deleteCategoriesById(id)
+    .deleteCategoriesById(id, data.Operation)
     .then(() => {
       toast.success("Categoria deletada!");
     })
@@ -111,6 +114,7 @@ function closeModal() {
 }
 function openModalEditItem(data) {
   currentId.value = data.id;
+  currentCategory.value = { title: data.title, description: data.description };
   openModalFormCategory.value = true;
 }
 function closeModalFormCategory() {

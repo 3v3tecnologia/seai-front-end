@@ -34,8 +34,10 @@ export class FAQRest {
     const result = await http.post(`v1/faq/categories`, data);
     return result.data;
   }
-  async deleteCategoriesById(id: number): Promise<any> {
-    const result = await http.delete(`v1/faq/categories/${id}`);
+  async deleteCategoriesById(id: number, Operation: string): Promise<any> {
+    const result = await http.delete(`v1/faq/categories/${id}`, {
+      data: { Operation },
+    });
     return result.data;
   }
   async updateCategory(id: number, data: any): Promise<any> {

@@ -45,16 +45,35 @@
       </Column>
     </DataTable>
   </div>
-  <ConfirmDialog />
+  <ConfirmDialog>
+    <template #message="slotProps">
+      <div class="flex flex-col items-center w-full gap-4">
+        <p>{{ slotProps.message.message }}</p>
+        <div
+          class="form-group form-group-text text-left p-float-label mt-2 w-full"
+        >
+          <Textarea
+            name="categoryDescription"
+            aria-describedby="culture-name-help"
+            v-model="Operation"
+            :class="`w-full`"
+            required
+          />
+          <label class="font-weight-bold">Motivo para deletar</label>
+        </div>
+      </div>
+    </template>
+  </ConfirmDialog>
 </template>
 <script setup>
-import { defineProps, defineEmits } from "vue";
+import { defineProps, defineEmits, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useConfirm } from "primevue/useconfirm";
 import moment from "moment";
 
 const confirm = useConfirm();
 const router = useRouter();
+const Operation = ref("");
 const props = defineProps({
   dataValue: {
     type: Array,
@@ -137,7 +156,8 @@ function confirmDelete(data) {
     rejectLabel: "Cancelar",
     acceptLabel: "Deletar",
     accept: () => {
-      emit("onDeleteItem", data);
+      data.Operation = Operation.value;
+      emit("onDeleteItem", data, Operation.value);
     },
   });
 }
