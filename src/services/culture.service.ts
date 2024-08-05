@@ -13,8 +13,10 @@ export class CultureRest {
   async update(id: number, data: any): Promise<any> {
     return await http.put(`v2/management/crop/${id}`, data);
   }
-  async delete(id: number, data: any): Promise<any> {
-    return await http.delete(`v2/management/crop/${id}`, data);
+  async delete(id: number, Operation: string): Promise<any> {
+    return await http.delete(`v2/management/crop/${id}`, {
+      data: { Operation },
+    });
   }
   async getStudiesByBasin(basinId: number): Promise<any> {
     return await http.get(`v2/management/studies/${basinId}`);

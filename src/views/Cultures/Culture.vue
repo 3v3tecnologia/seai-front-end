@@ -49,9 +49,10 @@ function getCulture() {
     loading.value = false;
   });
 }
-function deleteCulture(id) {
+function deleteCulture(data) {
+  console.log(data);
   restCulture
-    .delete(id)
+    .delete(data.id, data.Operation)
     .then(() => {
       toast.success("Cultura deletada");
     })

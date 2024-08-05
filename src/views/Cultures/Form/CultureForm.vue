@@ -42,6 +42,19 @@
           />
           <label for="culture-name" class="font-weight-bold">Nome</label>
         </div>
+        <div
+          v-if="isEditing"
+          class="form-group form-group-text text-left p-float-label mt-8 w-[30%] min-w-[300px]"
+        >
+          <Textarea
+            name="categoryDescription"
+            aria-describedby="culture-name-help"
+            v-model="culture.Operation"
+            :class="`w-full`"
+            required
+          />
+          <label class="font-weight-bold">Motivo para edição</label>
+        </div>
         <div class="mt-4">
           <CreateFarmDap
             :cycleError="cycleError"
