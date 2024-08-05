@@ -27,7 +27,12 @@
       v-if="!loading"
       class="w-full xl:w-[65%] flex justify-start bg-white p-4 px-8 rounded-md mt-8 h-[60vh] overflow-auto overflow-x-auto"
     >
-      <Form v-if="user" :user="user" :emailError="emailError" />
+      <Form
+        v-if="user"
+        :user="user"
+        :emailError="emailError"
+        :operationError="operationError"
+      />
     </div>
   </div>
 </template>
@@ -43,6 +48,7 @@ const user = ref();
 
 const loading = ref(true);
 const emailError = ref({ text: "", data: false });
+const operationError = ref({ text: "", data: false });
 const userId = ref(0);
 const isEditing = ref(false);
 const title = ref("Criar usuário");
@@ -85,11 +91,25 @@ function getUserById(id) {
 }
 
 function save() {
+  emailError.value.data = false;
+  operationError.value.data = false;
+
+  // Validar e-mail
   if (user.value.email === "" || !validateEmail()) {
     emailError.value.data = true;
     emailError.value.text =
       user.value.email === "" ? "Campo obrigatório" : "E-mail inválido";
     return;
+  }
+
+  // Validar operação se estiver editando
+  if (isEditing.value) {
+    const operationValidationError = validateOperation();
+    if (operationValidationError) {
+      operationError.value.data = true;
+      operationError.value.text = operationValidationError;
+      return;
+    }
   }
 
   loading.value = true;
@@ -136,5 +156,11 @@ function updateUser() {
     .catch((err) => {
       toast.error(err.response.data.error);
     });
+}
+function validateOperation() {
+  if (!user.value.Operation) {
+    return "Campo obrigatório";
+  }
+  return "";
 }
 </script>

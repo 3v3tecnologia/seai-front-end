@@ -86,12 +86,6 @@
         >
       </div>
     </div>
-    <Button
-      :disabled="!isFormValid"
-      label="Salvar"
-      class="btn-success mt-4"
-      @click="submitForm"
-    />
   </form>
 </template>
 
