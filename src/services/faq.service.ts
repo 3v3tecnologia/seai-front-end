@@ -17,8 +17,10 @@ export class FAQRest {
     const result = await http.put(`v1/faq/${id}`, data);
     return result.data;
   }
-  async deleteById(id: number): Promise<any> {
-    const result = await http.delete(`v1/faq/${id}`);
+  async deleteById(id: number, Operation: string): Promise<any> {
+    const result = await http.delete(`v1/faq/${id}`, {
+      data: { Operation },
+    });
     return result.data;
   }
 

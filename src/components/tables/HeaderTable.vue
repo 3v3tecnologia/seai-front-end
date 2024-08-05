@@ -71,6 +71,10 @@ function onSearchItem() {
   emit("onSearchItem", searchTerm.value);
 }
 function onSelectItem(select, index) {
-  emit("onSelectItem", select.paramsName, selected.value[index].Id);
+  emit(
+    "onSelectItem",
+    select.paramsName,
+    selected.value[index].Id || selected.value[index].id
+  );
 }
 </script>

@@ -19,6 +19,7 @@
           icon="pi pi-save"
           label="Salvar pergunta"
           class="btn-success"
+          :disabled="!isFormValid"
           @click="save()"
         ></Button>
       </div>
@@ -33,6 +34,8 @@
         :categories="categories"
         :categories-rest="service"
         @on-get-all-categories="getCategories"
+        @update-validation="updateValidation"
+        :edit-mode="isEditing"
       />
     </div>
   </div>
@@ -54,6 +57,12 @@ const currentId = ref(0);
 const isEditing = ref(false);
 const title = ref("Criar pergunta");
 const service = new FAQRest();
+
+const isFormValid = ref(false);
+
+function updateValidation(isValid) {
+  isFormValid.value = isValid;
+}
 
 onMounted(() => {
   verifyId();

@@ -66,7 +66,7 @@
   </ConfirmDialog>
 </template>
 <script setup>
-import { defineProps, defineEmits, ref } from "vue";
+import { defineProps, defineEmits, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useConfirm } from "primevue/useconfirm";
 import moment from "moment";
@@ -152,16 +152,31 @@ function confirmDelete(data) {
     header: "Confirmar deleção",
     icon: "pi pi-exclamation-triangle",
     rejectClass: "p-button-secondary p-button-outlined",
-    acceptClass: "btn-danger",
+    acceptClass: "btn-danger blocked",
     rejectLabel: "Cancelar",
     acceptLabel: "Deletar",
     accept: () => {
       data.Operation = Operation.value;
-      emit("onDeleteItem", data, Operation.value);
+      emit("onDeleteItem", data);
     },
   });
+  setTimeout(() => {
+    updateButtonState();
+  }, 200);
 }
 function convertDate(date) {
   return moment(date).format("DD/MM/YYYY");
 }
+// Função para habilitar ou desabilitar o botão com a classe "blocked"
+function updateButtonState() {
+  const button = document.querySelector(".blocked");
+  if (button) {
+    button.disabled = Operation.value.trim() === "";
+  }
+}
+
+// Watch para a variável Operation
+watch(Operation, () => {
+  updateButtonState();
+});
 </script>

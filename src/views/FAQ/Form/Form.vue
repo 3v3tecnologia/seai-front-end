@@ -13,8 +13,12 @@
           v-model="info.question"
           :class="`w-full`"
           required
+          @blur="markAsTouched('question')"
         />
         <label class="font-weight-bold">Pergunta</label>
+        <small v-if="isTouched.question && !info.question" class="text-red-500"
+          >Campo obrigatório</small
+        >
       </div>
       <div
         class="form-group form-group-text text-left p-float-label mt-2 w-[50%]"
@@ -26,6 +30,7 @@
           :suggestions="filteredCategories"
           @complete="search"
           class="w-full"
+          @blur="markAsTouched('category')"
         >
           <template v-slot:empty>
             <div class="w-full p-2 flex flex-col items-center gap-2">
@@ -40,20 +45,50 @@
           </template>
         </AutoComplete>
         <label class="font-weight-bold">Categoria</label>
+        <small v-if="isTouched.category && !info.category" class="text-red-500"
+          >Campo obrigatório</small
+        >
       </div>
     </div>
     <div class="w-full flex gap-4 mt-4">
       <div
         class="form-group form-group-text text-left p-float-label mt-2 w-full"
       >
-        <Textarea v-model="info.answer" rows="5" class="w-full" />
+        <Textarea
+          v-model="info.answer"
+          rows="5"
+          class="w-full"
+          @blur="markAsTouched('answer')"
+        />
         <label class="font-weight-bold">Resposta</label>
+        <small v-if="isTouched.answer && !info.answer" class="text-red-500"
+          >Campo obrigatório</small
+        >
+      </div>
+    </div>
+    <div class="w-full flex gap-4 mt-4" v-if="editMode">
+      <div
+        class="form-group form-group-text text-left p-float-label mt-2 w-full"
+      >
+        <Textarea
+          v-model="info.Operation"
+          rows="3"
+          class="w-full"
+          @blur="markAsTouched('Operation')"
+        />
+        <label class="font-weight-bold">Motivo para edição</label>
+        <small
+          v-if="isTouched.Operation && !info.Operation"
+          class="text-red-500"
+          >Campo obrigatório</small
+        >
       </div>
     </div>
   </form>
 </template>
+
 <script setup>
-import { onMounted, ref, defineProps, defineEmits } from "vue";
+import { onMounted, ref, defineProps, defineEmits, computed, watch } from "vue";
 import { FAQRest } from "@/services/faq.service";
 
 const props = defineProps({
@@ -69,13 +104,40 @@ const props = defineProps({
     type: FAQRest,
     required: true,
   },
+  editMode: {
+    type: Boolean,
+    default: false,
+  },
+});
+const isTouched = ref({
+  question: false,
+  category: false,
+  answer: false,
+  Operation: false,
 });
 
 const filteredCategories = ref([]);
 const showAddButton = ref(true);
 
 const info = ref({});
-const emit = defineEmits(["onGetAllCategories"]);
+const emit = defineEmits(["onGetAllCategories", "update-validation"]);
+
+const isFormValid = computed(() => {
+  if (props.editMode) {
+    return (
+      info.value.question &&
+      info.value.category &&
+      info.value.answer &&
+      info.value.Operation
+    );
+  } else {
+    return info.value.question && info.value.category && info.value.answer;
+  }
+});
+
+watch(isFormValid, (newValue) => {
+  emit("update-validation", newValue);
+});
 
 onMounted(() => {
   info.value = props.item;
@@ -91,7 +153,6 @@ const search = (event) => {
       )
     : props.categories;
 
-  console.log(filteredCategories.value.length);
   if (filteredCategories.value.length === 0) {
     showAddButton.value = true;
   }
@@ -116,5 +177,8 @@ function addCategory() {
 
 function onGetAllCategories() {
   emit("onGetAllCategories");
+}
+function markAsTouched(field) {
+  isTouched.value[field] = true;
 }
 </script>

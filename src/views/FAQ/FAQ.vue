@@ -12,6 +12,8 @@
       <HeaderTable
         @onSearchItem="searchItems"
         :searchPlaceholder="'Pesquisar por título'"
+        :selectItems="[categoriesSelect]"
+        @onSelectItem="selectFaq"
       >
         <div class="flex gap-3">
           <Button
@@ -78,6 +80,7 @@ const router = useRouter();
 
 const limit = ref(7);
 const items = ref([]);
+const categories = ref([]);
 const loading = ref(false);
 const hiddenPagination = ref(false);
 const loadingTable = ref(false);
@@ -89,11 +92,28 @@ const params = ref({
   limit: limit.value,
   name: null,
 });
+const categoriesSelect = ref({
+  placeholder: "Filtrar por categoria",
+  optionLabel: "title",
+  paramsName: "id_category",
+  items: [],
+});
 
 onMounted(() => {
   loading.value = true;
-  getAllFAQ();
+  getAllCategories();
 });
+
+function getAllCategories() {
+  service.getAllCategories().then((res) => {
+    categories.value = res.data;
+    categoriesSelect.value.items = [
+      { title: "Todos", Id: 0 },
+      ...categories.value,
+    ];
+    getAllFAQ();
+  });
+}
 
 function getAllFAQ() {
   service.getAll(params.value).then((res) => {
@@ -134,11 +154,18 @@ function searchItems(searchTerm) {
   }
 }
 
+function selectFaq(paramsName, paramsValue) {
+  resetPagination();
+  params.value[paramsName] = paramsValue != 0 ? paramsValue : null;
+  console.log(paramsName, paramsValue);
+  getAllFAQ();
+}
+
 function deleteItem(data) {
   const id = data.id;
   loading.value = true;
   service
-    .deleteById(id)
+    .deleteById(id, data.Operation)
     .then(() => {
       toast.success("Pergunta deletada!");
     })
