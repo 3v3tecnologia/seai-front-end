@@ -3,7 +3,7 @@
     v-model:visible="visible"
     modal
     :header="title"
-    :style="{ width: '40rem' }"
+    :style="{ width: '50rem' }"
     :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
     @hide="closeModal()"
   >
@@ -79,6 +79,7 @@ const emit = defineEmits(["onCloseModal", "onSaveRead"]);
 const editMode = ref(false);
 const isEmpty = ref(false);
 const isFormValid = ref(false);
+const stationComponent = ref(null);
 
 const read = ref({});
 
@@ -133,7 +134,8 @@ function saveRead() {
   emit("onSaveRead", props.readData);
 }
 function handleSave() {
-  if (this.$refs.stationComponent.validateForm()) {
+  console.log(isFormValid.value);
+  if (isFormValid.value) {
     saveRead();
   }
 }

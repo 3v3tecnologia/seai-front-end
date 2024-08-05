@@ -228,6 +228,7 @@ function updatePluvRead(data) {
       toast.success("Leitura salva com sucesso!");
     })
     .catch((e) => {
+      loadingRead.value = false;
       toast.error(e.response.data.error);
     })
     .finally(() => {
