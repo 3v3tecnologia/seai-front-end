@@ -12,10 +12,11 @@
           mode="decimal"
           :min="0"
           :useGrouping="false"
+          :showButtons="true"
         />
-        <label for="altitude" class="font-weight-bold"
-          >Altitude ({{ read.Altitude.Unit }})</label
-        >
+        <label for="altitude" class="font-weight-bold">
+          Altitude ({{ read.Altitude.Unit }})
+        </label>
       </div>
       <div class="form-group form-group-text p-float-label w-1/2">
         <InputNumber
@@ -27,16 +28,18 @@
           :disabled="!editMode"
           :min-fraction-digits="1"
           mode="decimal"
-          :min="0"
+          :min="50"
+          :max="400"
           :useGrouping="false"
           required
+          :showButtons="true"
         />
-        <label for="totalRadiation" class="font-weight-bold"
-          >Radiação total ({{ read.TotalRadiation.Unit }})</label
-        >
-        <small v-if="!read.TotalRadiation.Value" class="p-error"
-          >Campo obrigatório</small
-        >
+        <label for="totalRadiation" class="font-weight-bold">
+          Radiação total ({{ read.TotalRadiation.Unit }})
+        </label>
+        <small v-if="!read.TotalRadiation.Value" class="p-error">
+          Campo obrigatório
+        </small>
       </div>
     </div>
     <div class="flex w-full gap-4">
@@ -46,24 +49,22 @@
           aria-describedby="averageRelativeHumidity-help"
           v-model="read.AverageRelativeHumidity.Value"
           class="w-full"
-          :class="{
-            'p-invalid': !read.AverageRelativeHumidity.Value,
-          }"
+          :class="{ 'p-invalid': !read.AverageRelativeHumidity.Value }"
           :disabled="!editMode"
           :min-fraction-digits="1"
           mode="decimal"
-          :min="0"
+          :min="5"
+          :max="100"
           :useGrouping="false"
           required
+          :showButtons="true"
         />
-        <label for="averageRelativeHumidity" class="font-weight-bold"
-          >Umidade relativa média ({{
-            read.AverageRelativeHumidity.Unit
-          }})</label
-        >
-        <small v-if="!read.AverageRelativeHumidity.Value" class="p-error"
-          >Campo obrigatório</small
-        >
+        <label for="averageRelativeHumidity" class="font-weight-bold">
+          Umidade relativa média ({{ read.AverageRelativeHumidity.Unit }})
+        </label>
+        <small v-if="!read.AverageRelativeHumidity.Value" class="p-error">
+          Campo obrigatório
+        </small>
       </div>
       <div class="form-group form-group-text p-float-label w-1/2">
         <InputNumber
@@ -71,24 +72,24 @@
           aria-describedby="averageAtmosphericTemperature-help"
           v-model="read.AverageAtmosphericTemperature.Value"
           class="w-full"
-          :class="{
-            'p-invalid': !read.AverageAtmosphericTemperature.Value,
-          }"
+          :class="{ 'p-invalid': !read.AverageAtmosphericTemperature.Value }"
           :disabled="!editMode"
           :min-fraction-digits="1"
           mode="decimal"
           :min="0"
+          :max="60"
           :useGrouping="false"
           required
+          :showButtons="true"
         />
-        <label for="averageAtmosphericTemperature" class="font-weight-bold"
-          >Temperatura atmosférica média ({{
+        <label for="averageAtmosphericTemperature" class="font-weight-bold">
+          Temperatura atmosférica média ({{
             read.AverageAtmosphericTemperature.Unit
-          }})</label
-        >
-        <small v-if="!read.AverageAtmosphericTemperature.Value" class="p-error"
-          >Campo obrigatório</small
-        >
+          }})
+        </label>
+        <small v-if="!read.AverageAtmosphericTemperature.Value" class="p-error">
+          Campo obrigatório
+        </small>
       </div>
     </div>
     <div class="flex w-full gap-4">
@@ -102,16 +103,18 @@
           :disabled="!editMode"
           :min-fraction-digits="1"
           mode="decimal"
-          :min="0"
+          :min="500"
+          :max="1200"
           :useGrouping="false"
           required
+          :showButtons="true"
         />
-        <label for="atmosphericPressure" class="font-weight-bold"
-          >Pressão atmosférica ({{ read.AtmosphericPressure.Unit }})</label
-        >
-        <small v-if="!read.AtmosphericPressure.Value" class="p-error"
-          >Campo obrigatório</small
-        >
+        <label for="atmosphericPressure" class="font-weight-bold">
+          Pressão atmosférica ({{ read.AtmosphericPressure.Unit }})
+        </label>
+        <small v-if="!read.AtmosphericPressure.Value" class="p-error">
+          Campo obrigatório
+        </small>
       </div>
       <div class="form-group form-group-text p-float-label w-1/2">
         <InputNumber
@@ -124,15 +127,17 @@
           :min-fraction-digits="1"
           mode="decimal"
           :min="0"
+          :max="20"
           :useGrouping="false"
           required
+          :showButtons="true"
         />
-        <label for="windVelocity" class="font-weight-bold"
-          >Velocidade do vento ({{ read.WindVelocity.Unit }})</label
-        >
-        <small v-if="!read.WindVelocity.Value" class="p-error"
-          >Campo obrigatório</small
-        >
+        <label for="windVelocity" class="font-weight-bold">
+          Velocidade do vento ({{ read.WindVelocity.Unit }})
+        </label>
+        <small v-if="!read.WindVelocity.Value" class="p-error">
+          Campo obrigatório
+        </small>
       </div>
     </div>
     <div class="flex w-full gap-4">
@@ -142,24 +147,24 @@
           aria-describedby="minAtmosphericTemperature-help"
           v-model="read.MinAtmosphericTemperature.Value"
           class="w-full"
-          :class="{
-            'p-invalid': !read.MinAtmosphericTemperature.Value,
-          }"
+          :class="{ 'p-invalid': !read.MinAtmosphericTemperature.Value }"
           :disabled="!editMode"
           :min-fraction-digits="1"
           mode="decimal"
           :min="0"
+          :max="60"
           :useGrouping="false"
           required
+          :showButtons="true"
         />
-        <label for="minAtmosphericTemperature" class="font-weight-bold"
-          >Temperatura Atmosférica min. ({{
+        <label for="minAtmosphericTemperature" class="font-weight-bold">
+          Temperatura Atmosférica min. ({{
             read.MinAtmosphericTemperature.Unit
-          }})</label
-        >
-        <small v-if="!read.MinAtmosphericTemperature.Value" class="p-error"
-          >Campo obrigatório</small
-        >
+          }})
+        </label>
+        <small v-if="!read.MinAtmosphericTemperature.Value" class="p-error">
+          Campo obrigatório
+        </small>
       </div>
       <div class="form-group form-group-text p-float-label w-1/2">
         <InputNumber
@@ -167,24 +172,24 @@
           aria-describedby="maxAtmosphericTemperature-help"
           v-model="read.MaxAtmosphericTemperature.Value"
           class="w-full"
-          :class="{
-            'p-invalid': !read.MaxAtmosphericTemperature.Value,
-          }"
+          :class="{ 'p-invalid': !read.MaxAtmosphericTemperature.Value }"
           :disabled="!editMode"
           :min-fraction-digits="1"
           mode="decimal"
           :min="0"
+          :max="60"
           :useGrouping="false"
           required
+          :showButtons="true"
         />
-        <label for="maxAtmosphericTemperature" class="font-weight-bold"
-          >Temperatura Atmosférica máx ({{
+        <label for="maxAtmosphericTemperature" class="font-weight-bold">
+          Temperatura Atmosférica máx. ({{
             read.MaxAtmosphericTemperature.Unit
-          }})</label
-        >
-        <small v-if="!read.MaxAtmosphericTemperature.Value" class="p-error"
-          >Campo obrigatório</small
-        >
+          }})
+        </label>
+        <small v-if="!read.MaxAtmosphericTemperature.Value" class="p-error">
+          Campo obrigatório
+        </small>
       </div>
     </div>
     <div class="flex w-full gap-4">
@@ -198,16 +203,18 @@
           :disabled="!editMode"
           :min-fraction-digits="1"
           mode="decimal"
-          :min="0"
+          :min="5"
+          :max="100"
           :useGrouping="false"
           required
+          :showButtons="true"
         />
-        <label for="minRelativeHumidity" class="font-weight-bold"
-          >Umidade relativa min. ({{ read.MinRelativeHumidity.Unit }})</label
-        >
-        <small v-if="!read.MinRelativeHumidity.Value" class="p-error"
-          >Campo obrigatório</small
-        >
+        <label for="minRelativeHumidity" class="font-weight-bold">
+          Umidade relativa min. ({{ read.MinRelativeHumidity.Unit }})
+        </label>
+        <small v-if="!read.MinRelativeHumidity.Value" class="p-error">
+          Campo obrigatório
+        </small>
       </div>
       <div class="form-group form-group-text p-float-label w-1/2">
         <InputNumber
@@ -219,16 +226,18 @@
           :disabled="!editMode"
           mode="decimal"
           :min-fraction-digits="1"
-          :min="0"
+          :min="5"
+          :max="100"
           :useGrouping="false"
           required
+          :showButtons="true"
         />
-        <label for="maxRelativeHumidity" class="font-weight-bold"
-          >Umidade relativa máx. ({{ read.MaxRelativeHumidity.Unit }})</label
-        >
-        <small v-if="!read.MaxRelativeHumidity.Value" class="p-error"
-          >Campo obrigatório</small
-        >
+        <label for="maxRelativeHumidity" class="font-weight-bold">
+          Umidade relativa máx. ({{ read.MaxRelativeHumidity.Unit }})
+        </label>
+        <small v-if="!read.MaxRelativeHumidity.Value" class="p-error">
+          Campo obrigatório
+        </small>
       </div>
     </div>
     <div class="form-group form-group-text p-float-label w-full">
@@ -242,10 +251,11 @@
         :min-fraction-digits="1"
         :min="0"
         :useGrouping="false"
+        :showButtons="true"
       />
-      <label for="et0" class="font-weight-bold"
-        >ET0 ({{ read.Et0.Unit }})</label
-      >
+      <label for="et0" class="font-weight-bold">
+        ET0 ({{ read.Et0.Unit }})
+      </label>
     </div>
   </form>
 </template>
@@ -269,15 +279,15 @@ const props = defineProps({
 
 const isFormValid = computed(() => {
   return (
-    read.value.TotalRadiation?.Value > 0 &&
-    read.value.AverageRelativeHumidity?.Value > 0 &&
-    read.value.AverageAtmosphericTemperature?.Value > 0 &&
-    read.value.AtmosphericPressure?.Value > 0 &&
-    read.value.WindVelocity?.Value > 0 &&
-    read.value.MinAtmosphericTemperature?.Value > 0 &&
-    read.value.MaxAtmosphericTemperature?.Value > 0 &&
-    read.value.MinRelativeHumidity?.Value > 0 &&
-    read.value.MaxRelativeHumidity?.Value > 0
+    read.value.TotalRadiation?.Value !== null &&
+    read.value.AverageRelativeHumidity?.Value !== null &&
+    read.value.AverageAtmosphericTemperature?.Value !== null &&
+    read.value.AtmosphericPressure?.Value !== null &&
+    read.value.WindVelocity?.Value !== null &&
+    read.value.MinAtmosphericTemperature?.Value !== null &&
+    read.value.MaxAtmosphericTemperature?.Value !== null &&
+    read.value.MinRelativeHumidity?.Value !== null &&
+    read.value.MaxRelativeHumidity?.Value !== null
   );
 });
 
@@ -314,7 +324,7 @@ function getDefaultRead() {
     },
     AtmosphericPressure: {
       Unit: "°C",
-      Value: 0.0,
+      Value: 500.0,
     },
     AverageAtmosphericTemperature: {
       Unit: "°C",
@@ -322,7 +332,7 @@ function getDefaultRead() {
     },
     AverageRelativeHumidity: {
       Unit: "%",
-      Value: 0.0,
+      Value: 5.0,
     },
     Et0: {
       Unit: "mm",
@@ -334,7 +344,7 @@ function getDefaultRead() {
     },
     MaxRelativeHumidity: {
       Unit: "%",
-      Value: 0.0,
+      Value: 5.0,
     },
     MinAtmosphericTemperature: {
       Unit: "°C",
@@ -342,23 +352,16 @@ function getDefaultRead() {
     },
     MinRelativeHumidity: {
       Unit: "%",
-      Value: 0.0,
+      Value: 5.0,
     },
     TotalRadiation: {
       Unit: "W/m",
-      Value: 0.0,
+      Value: 50.0,
     },
     WindVelocity: {
       Unit: "m/s",
       Value: 0.0,
     },
   };
-}
-
-function handleSubmit() {
-  submitted.value = true;
-  if (isFormValid.value) {
-    emit("onSaveRead", read.value);
-  }
 }
 </script>
