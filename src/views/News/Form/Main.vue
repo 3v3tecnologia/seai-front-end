@@ -20,6 +20,7 @@
           label="Salvar notícia"
           class="btn-success"
           @click="isToday()"
+          :disabled="!isFormValid"
         ></Button>
       </div>
     </div>
@@ -27,7 +28,7 @@
       v-if="!loading"
       class="w-full xl:w-[65%] flex flex-col justify-start bg-white p-4 px-8 pb-8 rounded-md mt-8 min-h-[25vh] max-h-[70vh] overflow-auto overflow-x-auto"
     >
-      <Form v-if="item" :item="item" />
+      <Form v-if="item" :item="item" @update-validation="updateValidation" />
     </div>
   </div>
   <ConfirmDialog />
@@ -50,7 +51,11 @@ const isEditing = ref(false);
 const title = ref("Criar notícia");
 const service = new NewsRest();
 const confirm = useConfirm();
+const isFormValid = ref(false);
 
+function updateValidation(isValid) {
+  isFormValid.value = isValid;
+}
 onMounted(() => {
   verifyId();
 });

@@ -41,7 +41,7 @@ export default [
     props: cultureUpdate,
   },
 ].map((r) => {
-  r.meta.navBarTab = 8;
+  r.meta.navBarTab = 3;
 
   return r;
 });

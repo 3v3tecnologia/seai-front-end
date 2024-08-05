@@ -24,7 +24,7 @@ export default [
     component: FormFaq,
   },
 ].map((r) => {
-  r.meta.navBarTab = 12;
+  r.meta.navBarTab = 4;
 
   return r;
 });
