@@ -26,7 +26,7 @@ export default [
     props: routeProps.newsletter.update,
   },
 ].map((r) => {
-  r.meta.navBarTab = 3;
+  r.meta.navBarTab = 2;
 
   return r;
 });

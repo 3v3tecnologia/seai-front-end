@@ -112,7 +112,6 @@ function searchItems(searchTerm) {
 }
 function getIfEditItem(date) {
   let currentDate = new Date(date);
-  console.log(currentDate > today);
   return currentDate < today ? ["delete"] : ["edit", "delete"];
 }
 
@@ -133,7 +132,7 @@ function deleteItem(data) {
   const id = data.Id;
   loading.value = true;
   service
-    .deleteById(id)
+    .deleteById(id, data.Operation)
     .then(() => {
       toast.success("Notícia deletada!");
     })

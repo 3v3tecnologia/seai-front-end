@@ -24,15 +24,34 @@
       </div>
     </div>
   </div>
-  <ConfirmDialog />
+  <ConfirmDialog>
+    <template #message="slotProps">
+      <div class="flex flex-col items-center w-full gap-4">
+        <p>{{ slotProps.message.message }}</p>
+        <div
+          class="form-group form-group-text text-left p-float-label mt-2 w-full"
+        >
+          <Textarea
+            name="categoryDescription"
+            aria-describedby="culture-name-help"
+            v-model="Operation"
+            :class="`w-full`"
+            required
+          />
+          <label class="font-weight-bold">Motivo para deletar</label>
+        </div>
+      </div>
+    </template>
+  </ConfirmDialog>
 </template>
 <script setup>
-import { defineProps, defineEmits } from "vue";
+import { defineProps, defineEmits, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useConfirm } from "primevue/useconfirm";
 
 const router = useRouter();
 const confirm = useConfirm();
+const Operation = ref("");
 
 const props = defineProps({
   cultures: {
@@ -65,9 +84,23 @@ function confirmDelete(id) {
       onDelete(id);
     },
   });
+  setTimeout(() => {
+    updateButtonState();
+  }, 200);
 }
 
 function onDelete(id) {
-  emit("onDelete", id);
+  emit("onDelete", { id: id, Operation: Operation.value });
 }
+function updateButtonState() {
+  const button = document.querySelector(".blocked");
+  if (button) {
+    button.disabled = Operation.value.trim() === "";
+  }
+}
+
+// Watch para a variável Operation
+watch(Operation, () => {
+  updateButtonState();
+});
 </script>

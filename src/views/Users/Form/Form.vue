@@ -36,6 +36,17 @@
         <label for="user-type" class="font-weight-bold">Tipo de usuário</label>
       </div>
     </div>
+    <div class="w-full flex gap-4 mt-4" v-if="userInfo.id">
+      <div
+        class="form-group form-group-text text-left p-float-label mt-2 w-full"
+      >
+        <Textarea v-model="userInfo.Operation" rows="3" class="w-full" />
+        <label class="font-weight-bold">Motivo para edição</label>
+        <small v-if="operationError.data" class="text-danger">{{
+          operationError.text
+        }}</small>
+      </div>
+    </div>
     <div class="mt-4">
       <h3 class="text-[20px] font-bold">Acessos</h3>
     </div>
@@ -78,6 +89,10 @@ const props = defineProps({
     required: true,
   },
   emailError: {
+    type: Object,
+    required: true,
+  },
+  operationError: {
     type: Object,
     required: true,
   },

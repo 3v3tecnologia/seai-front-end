@@ -35,6 +35,19 @@
         />
         <label class="font-weight-bold">Descrição</label>
       </div>
+      <div
+        v-if="editMode"
+        class="form-group form-group-text text-left p-float-label mt-2 w-full"
+      >
+        <Textarea
+          name="categoryDescription"
+          aria-describedby="culture-name-help"
+          v-model="category.Operation"
+          :class="`w-full`"
+          required
+        />
+        <label class="font-weight-bold">Motivo para edição</label>
+      </div>
       <div class="mt-2 w-full flex justify-end gap-1">
         <Button
           class="btn-danger"
@@ -60,6 +73,10 @@ const props = defineProps({
     type: FAQRest,
     required: true,
   },
+  currentCategory: {
+    type: Object,
+    default: () => ({ title: "", description: "" }),
+  },
 });
 const category = ref({
   title: "",
@@ -71,14 +88,15 @@ onMounted(() => {
   if (props.id >= 0) {
     editMode.value = true;
     title.value = "Editar categoria";
+    console.log(props.currentCategory);
     getCategoryById();
   }
 });
 
 function getCategoryById() {
-  props.service.getCategoryById(props.id).then((response) => {
-    category.value = response.data;
-  });
+  console.log(props.currentCategory);
+  category.value.title = props.currentCategory.title;
+  category.value.description = props.currentCategory.description;
 }
 
 function save() {

@@ -13,8 +13,12 @@
           v-model="info.Title"
           :class="`w-full`"
           required
+          @blur="markAsTouched('Title')"
         />
         <label class="font-weight-bold">Título</label>
+        <small v-if="isTouched.Title && !info.Title" class="text-red-500"
+          >Campo obrigatório</small
+        >
       </div>
       <div
         class="form-group form-group-text text-left p-float-label mt-2 w-[50%]"
@@ -26,8 +30,12 @@
           showIcon
           class="w-full"
           :min-date="new Date()"
+          @blur="markAsTouched('SendDate')"
         />
         <label class="font-weight-bold">Data para envio</label>
+        <small v-if="isTouched.SendDate && !info.SendDate" class="text-red-500"
+          >Campo obrigatório</small
+        >
       </div>
     </div>
     <div class="w-full flex gap-4 mt-4">
@@ -40,8 +48,14 @@
           v-model="info.Description"
           :class="`w-full`"
           required
+          @blur="markAsTouched('Description')"
         />
         <label class="font-weight-bold">Descrição</label>
+        <small
+          v-if="isTouched.Description && !info.Description"
+          class="text-red-500"
+          >Campo obrigatório</small
+        >
       </div>
     </div>
     <Editor
@@ -49,11 +63,34 @@
       v-model="info.Data"
       editorStyle="height: 320px"
       :modules="editorModules"
+      @blur="markAsTouched('Data')"
     />
+    <small v-if="isTouched.Data && !info.Data" class="text-red-500"
+      >Campo obrigatório</small
+    >
+    <div class="w-full flex gap-4 mt-4" v-if="item.Id">
+      <div
+        class="form-group form-group-text text-left p-float-label mt-2 w-full"
+      >
+        <Textarea
+          v-model="info.Operation"
+          rows="3"
+          class="w-full"
+          @blur="markAsTouched('Operation')"
+        />
+        <label class="font-weight-bold">Motivo para edição</label>
+        <small
+          v-if="isTouched.Operation && !info.Operation"
+          class="text-red-500"
+          >Campo obrigatório</small
+        >
+      </div>
+    </div>
   </form>
 </template>
+
 <script setup>
-import { onMounted, ref, defineProps } from "vue";
+import { onMounted, ref, defineProps, computed, defineEmits, watch } from "vue";
 
 const props = defineProps({
   item: {
@@ -61,6 +98,9 @@ const props = defineProps({
     required: true,
   },
 });
+
+const emit = defineEmits(["update-validation"]);
+
 const editorModules = ref({
   toolbar: [
     ["bold", "italic", "underline", "strike"], // toggled buttons
@@ -77,6 +117,40 @@ const editorModules = ref({
 });
 
 const info = ref({});
+const isTouched = ref({
+  Title: false,
+  SendDate: false,
+  Description: false,
+  Data: false,
+  Operation: false,
+});
+
+const isFormValid = computed(() => {
+  return (
+    info.value.Title &&
+    info.value.SendDate &&
+    info.value.Description &&
+    info.value.Data &&
+    (!info.value.Id || info.value.Operation)
+  );
+});
+
+watch(isFormValid, (newValue) => {
+  emit("update-validation", newValue);
+});
+
+function markAsTouched(field) {
+  isTouched.value[field] = true;
+}
+
+function submitForm() {
+  if (isFormValid.value) {
+    // Lógica de submissão do formulário
+    console.log("Formulário enviado com sucesso!", info.value);
+  } else {
+    console.log("Por favor, preencha todos os campos obrigatórios.");
+  }
+}
 
 onMounted(() => {
   info.value = props.item;
@@ -85,6 +159,7 @@ onMounted(() => {
     : new Date();
 });
 </script>
+
 <style lang="scss">
 .news-form {
   .p-editor-toolbar {
