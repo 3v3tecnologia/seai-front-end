@@ -73,7 +73,7 @@ function getCategories() {
   service
     .getAllCategories()
     .then((response) => {
-      categories.value = response.data;
+      categories.value = response.data ?? [];
     })
     .catch((error) => {
       console.log(error);

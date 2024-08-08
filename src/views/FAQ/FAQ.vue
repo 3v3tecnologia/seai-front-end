@@ -106,21 +106,28 @@ onMounted(() => {
 
 function getAllCategories() {
   service.getAllCategories().then((res) => {
-    categories.value = res.data;
-    categoriesSelect.value.items = [
-      { title: "Todos", Id: 0 },
-      ...categories.value,
-    ];
+    if (res.data) {
+      categories.value = res.data;
+      categoriesSelect.value.items = [
+        { title: "Todos", Id: 0 },
+        ...categories.value,
+      ];
+    }
     getAllFAQ();
   });
 }
 
 function getAllFAQ() {
-  service.getAll(params.value).then((res) => {
-    items.value = res.data;
-    adjustmentItemsValue();
-    loading.value = false;
-  });
+  service
+    .getAll(params.value)
+    .then((res) => {
+      items.value = res.data;
+      adjustmentItemsValue();
+      loading.value = false;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 }
 
 function adjustmentItemsValue() {

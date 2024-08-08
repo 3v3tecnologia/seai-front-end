@@ -147,6 +147,7 @@ onMounted(() => {
 const search = (event) => {
   // showAddButton.value = false;
   const query = event.query.toLowerCase();
+
   filteredCategories.value = query
     ? props.categories.filter((category) =>
         category.title.toLowerCase().includes(query)
