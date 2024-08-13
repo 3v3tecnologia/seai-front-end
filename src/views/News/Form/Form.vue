@@ -173,7 +173,6 @@ onMounted(() => {
 });
 
 function selectLocalImage(quill) {
-  console.log("select local image");
   const input = document.createElement("input");
   input.setAttribute("type", "file");
   input.click();

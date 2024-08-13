@@ -49,8 +49,10 @@ import { ref, onMounted } from "vue";
 import { usersTable } from "@/utils/tables/users";
 import { UsersRest } from "@/services/users.service";
 import moment from "moment";
-import { useRouter, isNavigationFailure } from "vue-router";
+import { useRouter } from "vue-router";
 import { toast } from "vue3-toastify";
+import store from "@/store";
+const profile = store.state.profile;
 
 const router = useRouter();
 
@@ -81,7 +83,6 @@ onMounted(() => {
   loading.value = true;
   getAllUsers();
   usersSelects.value.push(usersTypes.value);
-  console.log("r", router);
 });
 
 function getAllUsers() {
@@ -98,9 +99,9 @@ function adjustmentUsersValue() {
     users.value.Items.forEach((element) => {
       element.type = tradutionType(element.type);
       element.createdAt = convertDate(element.createdAt);
-      element.actions = ["edit", "delete"];
+      element.actions = profile.id === element.id ? [] : ["edit", "delete"];
     });
-    users.value.Items[0].actions = ["edit"];
+
     numberResultsFound.value = users.value.Items.length;
   }
 }
