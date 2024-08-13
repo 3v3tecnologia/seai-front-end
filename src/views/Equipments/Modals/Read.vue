@@ -134,7 +134,6 @@ function saveRead() {
   emit("onSaveRead", props.readData);
 }
 function handleSave() {
-  console.log(isFormValid.value);
   if (isFormValid.value) {
     saveRead();
   }

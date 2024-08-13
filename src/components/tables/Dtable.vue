@@ -31,7 +31,7 @@
           <InputSwitch
             v-else-if="col.type === 'switch'"
             v-model="slotProps.data[col.field]"
-            @change="switchItem(slotProps.data)"
+            @change="handleSwitchChange(slotProps.data, col.field)"
           />
         </template>
       </Column>
@@ -78,6 +78,7 @@ import moment from "moment";
 const confirm = useConfirm();
 const router = useRouter();
 const Operation = ref("");
+
 const props = defineProps({
   dataValue: {
     type: Array,
@@ -118,10 +119,6 @@ function getValue(data, field) {
   } else {
     return data[field];
   }
-}
-
-function switchItem(item) {
-  emit("onSwitchItem", item);
 }
 
 function goTo(route) {
@@ -183,4 +180,25 @@ function updateButtonState() {
 watch(Operation, () => {
   updateButtonState();
 });
+function handleSwitchChange(item, fieldName) {
+  console.log(item, fieldName); // Armazenar o valor temporário do switch
+
+  confirm.require({
+    message: "Por favor, informe o motivo para alterar o valor do switch.",
+    header: "Confirmar Alteração",
+    icon: "pi pi-exclamation-triangle",
+    rejectClass: "p-button-secondary p-button-outlined",
+    acceptClass: "btn-danger blocked",
+    rejectLabel: "Cancelar",
+    acceptLabel: "Confirmar",
+    accept: () => {
+      item.Operation = Operation.value;
+      emit("onSwitchItem", item);
+    },
+    reject: () => {
+      // Reverter a alteração
+      item[fieldName] = !item[fieldName]; // Reverter o valor do switch
+    },
+  });
+}
 </script>

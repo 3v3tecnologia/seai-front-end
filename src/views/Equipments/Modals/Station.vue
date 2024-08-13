@@ -1,5 +1,13 @@
 <template>
   <form class="flex mt-12 flex-wrap gap-8 w-full" v-if="!loading">
+    <div
+      class="form-group form-group-text text-left p-float-label mt-2 w-full"
+      v-if="editMode"
+    >
+      <Textarea v-model="read.Operation" rows="3" class="w-full" />
+      <label class="font-weight-bold">Motivo para edição</label>
+      <small v-if="!read.Operation" class="p-error"> Campo obrigatório </small>
+    </div>
     <div class="flex w-full gap-4">
       <div class="form-group form-group-text p-float-label w-1/2">
         <InputNumber
