@@ -144,9 +144,7 @@ function updateStartValues() {
   for (let i = 0; i < KCs.value.length; i++) {
     if (i > 0) {
       const previousEnd = KCs.value[i - 1].End;
-      if (KCs.value[i].Start <= previousEnd) {
-        KCs.value[i].Start = previousEnd + 1;
-      }
+      KCs.value[i].Start = previousEnd + 1;
     }
     if (KCs.value[i].End <= KCs.value[i].Start) {
       KCs.value[i].End = KCs.value[i].Start + 1;

@@ -28,10 +28,10 @@
       class="w-full xl:w-[65%] flex justify-start bg-white p-4 px-8 rounded-md mt-8 h-[60vh] overflow-auto overflow-x-auto"
     >
       <Form
-        v-if="user"
         :user="user"
         :emailError="emailError"
         :operationError="operationError"
+        @update:user="setUser"
       />
     </div>
   </div>
@@ -42,10 +42,9 @@ import Form from "./Form.vue";
 import { UsersRest } from "@/services/users.service";
 import { toast } from "vue3-toastify";
 import { useRouter } from "vue-router";
+
 const router = useRouter();
-
-const user = ref();
-
+const user = ref({});
 const loading = ref(true);
 const emailError = ref({ text: "", data: false });
 const operationError = ref({ text: "", data: false });
@@ -60,10 +59,8 @@ onMounted(() => {
 });
 
 function verifyId() {
-  console.log("mds", router.currentRoute.value.params.id);
   if (router.currentRoute.value.params.id) {
     const idAsNumber = Number(router.currentRoute.value.params.id);
-    console.log(idAsNumber);
     if (!isNaN(idAsNumber)) {
       userId.value = idAsNumber;
       isEditing.value = true;
@@ -72,12 +69,13 @@ function verifyId() {
     } else {
       goTo("create-user");
     }
+  } else {
+    loading.value = false;
   }
 }
 
 function getUserById(id) {
   loading.value = true;
-  console.log(id);
   userRest
     .getById(id)
     .then((response) => {
@@ -94,7 +92,6 @@ function save() {
   emailError.value.data = false;
   operationError.value.data = false;
 
-  // Validar e-mail
   if (user.value.email === "" || !validateEmail()) {
     emailError.value.data = true;
     emailError.value.text =
@@ -102,7 +99,6 @@ function save() {
     return;
   }
 
-  // Validar operação se estiver editando
   if (isEditing.value) {
     const operationValidationError = validateOperation();
     if (operationValidationError) {
@@ -131,7 +127,7 @@ function goTo(routeName) {
 
 function createUser() {
   userRest
-    .create(user.value)
+    .create(filterModules(user.value))
     .then(() => {
       goTo("users");
       setTimeout(() => {
@@ -146,7 +142,7 @@ function createUser() {
 
 function updateUser() {
   userRest
-    .update(userId.value, user.value)
+    .update(userId.value, filterModules(user.value))
     .then(() => {
       toast.success("Usuário atualizado com sucesso");
       setTimeout(() => {
@@ -155,12 +151,34 @@ function updateUser() {
     })
     .catch((err) => {
       toast.error(err.response.data.error);
-    });
+    })
+    .finally(() => (loading.value = false));
 }
+
 function validateOperation() {
   if (!user.value.Operation) {
     return "Campo obrigatório";
   }
   return "";
+}
+
+// Atualizar o valor de user com base no evento do filho
+function setUser(newUser) {
+  user.value = newUser;
+}
+function filterModules(data) {
+  var filteredModules = {};
+
+  for (var key in data.modules) {
+    if (Object.prototype.hasOwnProperty.call(data.modules, key)) {
+      filteredModules[key] = {
+        id: data.modules[key].id,
+        read: data.modules[key].read,
+        write: data.modules[key].write,
+      };
+    }
+  }
+  data.modules = filteredModules;
+  return data;
 }
 </script>

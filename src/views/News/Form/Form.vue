@@ -59,12 +59,15 @@
       </div>
     </div>
     <Editor
+      ref="quillEditor"
       class="w-full"
       v-model="info.Data"
       editorStyle="height: 320px"
       :modules="editorModules"
       @blur="markAsTouched('Data')"
-    />
+    >
+    </Editor>
+
     <small v-if="isTouched.Data && !info.Data" class="text-red-500"
       >Campo obrigatório</small
     >
@@ -90,7 +93,16 @@
 </template>
 
 <script setup>
-import { onMounted, ref, defineProps, computed, defineEmits, watch } from "vue";
+import {
+  onMounted,
+  ref,
+  defineProps,
+  computed,
+  defineEmits,
+  watch,
+  nextTick,
+} from "vue";
+import Quill from "quill";
 
 const props = defineProps({
   item: {
@@ -101,6 +113,15 @@ const props = defineProps({
 
 const emit = defineEmits(["update-validation"]);
 
+const info = ref({});
+const isTouched = ref({
+  Title: false,
+  SendDate: false,
+  Description: false,
+  Data: false,
+  Operation: false,
+});
+const quillEditor = ref(null);
 const editorModules = ref({
   toolbar: [
     ["bold", "italic", "underline", "strike"], // toggled buttons
@@ -112,17 +133,9 @@ const editorModules = ref({
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
     [{ color: [] }, { background: [] }], // dropdown with defaults from theme
     [{ align: [] }],
+    ["image"],
     ["clean"], // remove formatting button
   ],
-});
-
-const info = ref({});
-const isTouched = ref({
-  Title: false,
-  SendDate: false,
-  Description: false,
-  Data: false,
-  Operation: false,
 });
 
 const isFormValid = computed(() => {
@@ -143,21 +156,43 @@ function markAsTouched(field) {
   isTouched.value[field] = true;
 }
 
-function submitForm() {
-  if (isFormValid.value) {
-    // Lógica de submissão do formulário
-    console.log("Formulário enviado com sucesso!", info.value);
-  } else {
-    console.log("Por favor, preencha todos os campos obrigatórios.");
-  }
-}
-
 onMounted(() => {
   info.value = props.item;
   info.value.SendDate = info.value.SendDate
     ? new Date(info.value.SendDate)
     : new Date();
+  setTimeout(() => {
+    if (quillEditor.value) {
+      const quill = quillEditor.value.quill; // Acessa a instância do Quill
+      const toolbar = quill.getModule("toolbar");
+      toolbar.addHandler("image", () => {
+        selectLocalImage(quill);
+      });
+    }
+  }, 500);
 });
+
+function selectLocalImage(quill) {
+  const input = document.createElement("input");
+  input.setAttribute("type", "file");
+  input.click();
+
+  input.onchange = () => {
+    const file = input.files[0];
+
+    if (file.size > 1024 * 1024) {
+      alert("A imagem deve ter no máximo 1MB");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const range = quill.getSelection();
+      quill.insertEmbed(range.index, "image", e.target.result);
+    };
+    reader.readAsDataURL(file);
+  };
+}
 </script>
 
 <style lang="scss">

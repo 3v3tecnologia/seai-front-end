@@ -1,7 +1,6 @@
 <template>
   <form
     class="flex w-full max-w-[1600px] min-w-[700px] gap-4 flex-col items-start"
-    v-if="user"
   >
     <div class="w-full flex gap-4 mt-4">
       <div
@@ -81,7 +80,7 @@
   </form>
 </template>
 <script setup>
-import { onMounted, ref, defineProps } from "vue";
+import { onMounted, ref, defineProps, defineEmits, watch } from "vue";
 
 const props = defineProps({
   user: {
@@ -98,8 +97,9 @@ const props = defineProps({
   },
 });
 
-const userInfo = ref({});
+const emit = defineEmits(["update:user"]);
 
+const userInfo = ref({});
 const modules = ref([]);
 const moduleTranslations = ref({
   user: "Usuário",
@@ -123,31 +123,70 @@ const select = ref([
 ]);
 
 onMounted(() => {
-  userInfo.value = props.user;
+  if (props.user.id) {
+    userInfo.value = props.user;
+    initializeUserInfo();
+  } else {
+    setDefaultUserInfo();
+  }
+});
 
-  for (const [key, item] of Object.entries(props.user.modules)) {
+function createDefaultModules() {
+  // Cria um objeto com as chaves de moduleTranslations e valores padrão
+  const defaultModules = {};
+  let idCounter = 1;
+  for (const [key, value] of Object.entries(moduleTranslations.value)) {
+    defaultModules[key] = {
+      id: idCounter++, // Incrementa o id para cada módulo
+      read: false,
+      write: false,
+    };
+  }
+  return defaultModules;
+}
+
+function initializeUserInfo() {
+  for (const [key, item] of Object.entries(userInfo.value.modules)) {
     item.name = getModuleName(key);
     item.disabled = false;
     modules.value.push(item);
   }
-});
+}
+
+function setDefaultUserInfo() {
+  userInfo.value = {
+    email: "",
+    emailDisabled: false,
+    type: "standard",
+    Operation: "",
+    modules: createDefaultModules(),
+  };
+  console.log(userInfo.value);
+  initializeUserInfo();
+}
 
 function getModuleName(key) {
   return moduleTranslations.value[key] || key;
 }
 
 function setAdmin() {
-  modules.value.forEach((module) => {
+  Object.keys(modules.value).forEach((key) => {
     if (userInfo.value.type === "admin") {
-      module.write = true;
-      module.read = true;
+      modules.value[key].write = true;
+      modules.value[key].read = true;
     } else {
-      module.write = false;
-      module.read = false;
+      modules.value[key].write = false;
+      modules.value[key].read = false;
     }
   });
 }
+
+// Watcher para emitir evento quando userInfo mudar
+watch(userInfo, (newValue) => {
+  emit("update:user", newValue);
+});
 </script>
+
 <style>
 .invalidInput {
   border: 1px solid rgb(117, 0, 0) !important;

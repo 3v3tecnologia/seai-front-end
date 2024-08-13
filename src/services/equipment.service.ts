@@ -9,9 +9,9 @@ export class EquipmentRest {
   }
   async enableEquipment(
     id: number,
-    enable: boolean
+    data: any
   ): Promise<EquipmentsWithPagination> {
-    return await http.put(`v1/equipments/${id}`, { Enable: enable });
+    return await http.put(`v1/equipments/${id}`, data);
   }
   async getLatestEquipmentMeasurements(
     equipmentId: number,

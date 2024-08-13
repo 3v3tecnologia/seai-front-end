@@ -135,7 +135,6 @@ function adjustmentEquipmentValue() {
     });
 }
 function capitalizeText(text) {
-  console.log(text);
   return text
     .split(" ")
     .map((word) =>
@@ -188,7 +187,11 @@ function resetPagination() {
   }, 1);
 }
 function updateEquipment(equipment) {
-  equipmentRest.enableEquipment(equipment.Id, equipment.Enable);
+  const data = {
+    Enable: equipment.Enable,
+    Operation: equipment.Operation,
+  };
+  equipmentRest.enableEquipment(equipment.Id, data);
 }
 function openModal(data) {
   currentEquipment.value = data;
@@ -252,6 +255,7 @@ function updateStationRead(data) {
     AtmosphericPressure: data.AtmosphericPressure.Value,
     WindVelocity: data.WindVelocity.Value,
     Et0: data.Et0.Value,
+    Operation: data.Operation,
   };
   equipmentRest
     .updateStationRead(data.IdRead, station)
@@ -261,6 +265,8 @@ function updateStationRead(data) {
     })
     .catch((e) => {
       toast.error(e.response.data.error);
+      loadingTable.value = false;
+      loadingRead.value = false;
     });
 }
 </script>
