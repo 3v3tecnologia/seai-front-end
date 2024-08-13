@@ -107,6 +107,7 @@ export const modulesSystem = {
   equipments: "equipments",
   studies: "studies",
   newsletter: "newsletter",
+  logs: "logs",
 };
 
 export const modulesSystemLevel = {
