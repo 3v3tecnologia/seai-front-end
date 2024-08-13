@@ -144,7 +144,7 @@ function goTo(data = null) {
 function deleteUser(data) {
   const id = data.id;
   usersRest
-    .deleteById(id)
+    .deleteById(id, data.Operation)
     .then(() => {
       toast.success("Usuário deletado");
       getAllUsers();

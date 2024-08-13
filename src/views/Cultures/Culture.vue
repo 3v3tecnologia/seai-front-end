@@ -50,7 +50,6 @@ function getCulture() {
   });
 }
 function deleteCulture(data) {
-  console.log(data);
   restCulture
     .delete(data.id, data.Operation)
     .then(() => {

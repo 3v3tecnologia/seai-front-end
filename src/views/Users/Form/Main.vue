@@ -142,7 +142,7 @@ function createUser() {
 
 function updateUser() {
   userRest
-    .update(userId.value, user.value)
+    .update(userId.value, filterModules(user.value))
     .then(() => {
       toast.success("Usuário atualizado com sucesso");
       setTimeout(() => {
@@ -178,13 +178,7 @@ function filterModules(data) {
       };
     }
   }
-
-  return {
-    email: data.email,
-    emailDisabled: data.emailDisabled,
-    type: data.type,
-    Operation: data.Operation,
-    modules: filteredModules,
-  };
+  data.modules = filteredModules;
+  return data;
 }
 </script>

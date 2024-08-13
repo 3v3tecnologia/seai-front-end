@@ -19,8 +19,10 @@ export class UsersRest {
     const result = await http.get(`v1/user/${id}`);
     return result.data;
   }
-  async deleteById(id: number): Promise<any> {
-    const result = await http.delete(`v1/user/${id}`);
+  async deleteById(id: number, Operation: string): Promise<any> {
+    const result = await http.delete(`v1/user/${id}`, {
+      data: { Operation },
+    });
     return result.data;
   }
 }
