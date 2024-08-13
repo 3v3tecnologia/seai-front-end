@@ -9,8 +9,8 @@
       <template #start="slotProps">
         <p class="hidden md:block">
           <span class="capitalize">{{ itemsName }}</span>
-          {{ getStartedIndexItem(slotProps.state.page, currentTotal) }} a
-          {{ getEndIndexItem(slotProps.state.page, currentTotal) }} de
+          {{ getStartedIndexItem(slotProps.state.page) }} a
+          {{ getEndIndexItem(slotProps.state.page) }} de
           {{ totalRecords }}
         </p>
         <p class="block md:hidden">
@@ -66,11 +66,12 @@ function calculatePagesButtonsMax() {
 function handlePageChange(page) {
   emit("onHandlePageChange", page.page + 1);
 }
-function getStartedIndexItem(page, total) {
-  return page * total + 1;
+function getStartedIndexItem(page) {
+  return page * props.rows + 1;
 }
-function getEndIndexItem(page, total) {
-  return total * (page + 1);
+function getEndIndexItem(page) {
+  const result = props.rows * (page + 1);
+  return result > props.totalRecords ? props.totalRecords : result;
 }
 </script>
 <style type="text/css">

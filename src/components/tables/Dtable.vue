@@ -8,7 +8,11 @@
         :header="col.header"
       >
         <template #body="slotProps">
-          <p v-if="col.type === 'text'" class="truncate ...">
+          <p
+            :title="getValue(slotProps.data, col.field)"
+            v-if="col.type === 'text'"
+            class="max-w-[200px] truncate ..."
+          >
             {{ getValue(slotProps.data, col.field) }}
           </p>
           <p v-if="col.type === 'date'" class="truncate ...">

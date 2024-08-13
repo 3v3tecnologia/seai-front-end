@@ -12,6 +12,7 @@ import equipments from "@/router/routes/equipments";
 import account from "@/router/routes/account";
 import faq from "./faq";
 import home from "./home";
+import logs from "./logs";
 
 export default [
   ...account,
@@ -25,6 +26,7 @@ export default [
   ...study,
   ...faq,
   ...home,
+  ...logs,
   {
     path: "/:catchAll(.*)",
     meta: {
