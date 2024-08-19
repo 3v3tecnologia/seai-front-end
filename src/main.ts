@@ -26,6 +26,7 @@ import Editor from "primevue/editor";
 import AutoComplete from "primevue/autocomplete";
 import Textarea from "primevue/textarea";
 import Checkbox from "primevue/checkbox";
+import MultiSelect from "primevue/multiselect";
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -124,4 +125,5 @@ createApp(App)
   .component("AutoComplete", AutoComplete)
   .component("Textarea", Textarea)
   .component("Checkbox", Checkbox)
+  .component("MultiSelect", MultiSelect)
   .mount("#app");

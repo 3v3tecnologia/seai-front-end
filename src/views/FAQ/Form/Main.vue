@@ -103,7 +103,6 @@ function getItemById(id) {
       loading.value = false;
     })
     .catch(() => {
-      console.log("Failed to get item");
       goTo("form-faq");
     });
 }

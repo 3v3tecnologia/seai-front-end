@@ -104,7 +104,6 @@ function createOrgan() {
       }, 200);
     })
     .catch((err) => {
-      console.log(err);
       toast.error(err.message);
     })
     .finally(() => (loading.value = false));

@@ -26,13 +26,26 @@ export class CultureRest {
       data: studies,
     });
   }
-  async getWeightByBasin(basinId: number): Promise<any> {
-    const result = await http.get(`v2/management/weights/${basinId}`);
+  async getWeightByBasin(basinIds: string, year: number): Promise<any> {
+    const result = await http.get(
+      `v2/census/weights/basin/${year}/${basinIds}`
+    );
     return result.data;
   }
-  async createWeightsByBasin(basinId: number, weights: any): Promise<any> {
-    return await http.post(`v2/management/weights/${basinId}`, {
-      data: weights,
+  async getGraphs(basinIds: number[], year: number): Promise<any> {
+    const result = await http.post(`v2/census/water-cut`, {
+      basin_ids: basinIds,
+      year: year,
     });
+    return result.data;
+  }
+  async calculate(basinIds: number[]): Promise<any> {
+    const result = await http.post(`v2/census/weights/basin/calculate`, {
+      basin_ids: basinIds,
+    });
+    return result.data;
+  }
+  async createWeightsByBasin(weights: any): Promise<any> {
+    return await http.post(`v2/census/weights/basin`, weights);
   }
 }

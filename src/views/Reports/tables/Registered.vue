@@ -64,7 +64,6 @@ function getAll() {
   service
     .getRegistered()
     .then((res) => {
-      console.log(res);
       items.value = res.data;
       adjustmentItemsValue();
     })

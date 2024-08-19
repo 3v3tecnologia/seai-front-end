@@ -164,7 +164,6 @@ function searchItems(searchTerm) {
 function selectFaq(paramsName, paramsValue) {
   resetPagination();
   params.value[paramsName] = paramsValue != 0 ? paramsValue : null;
-  console.log(paramsName, paramsValue);
   getAllFAQ();
 }
 

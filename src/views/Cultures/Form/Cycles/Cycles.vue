@@ -154,7 +154,6 @@ function updateStartValues() {
 
 function addKC() {
   let i = KCs.value.length - 1;
-  console.log(KCs.value);
   const newKC = {
     Title: "",
     Start: i < 0 ? 0 : KCs.value[i].End + 1,
@@ -165,7 +164,6 @@ function addKC() {
   if (newKC.End <= newKC.Start) {
     newKC.End = newKC.Start + 1;
   }
-  console.log(newKC);
   KCs.value.push(newKC);
 }
 

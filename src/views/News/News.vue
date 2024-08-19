@@ -81,7 +81,6 @@ function getAll() {
   service
     .getAll(params.value)
     .then((res) => {
-      console.log(items.value);
       if (res.data) {
         items.value = res.data;
         adjustmentItemsValue();

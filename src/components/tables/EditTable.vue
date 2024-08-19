@@ -8,43 +8,70 @@
         :header="col.header"
       >
         <template #body="slotProps">
-          <p
-            :title="getValue(slotProps.data, col.field)"
-            v-if="col.type === 'text' || col.type === 'number'"
-            class="max-w-[200px] truncate ..."
-          >
-            {{ getValue(slotProps.data, col.field) }}
-          </p>
-          <p v-if="col.type === 'date'" class="truncate ...">
-            {{ convertDate(getValue(slotProps.data, col.field)) }}
-          </p>
-          <button class="bg-black text-white" v-else-if="col.type === 'button'">
-            {{ getValue(slotProps.data, col.field) }}
-          </button>
-          <a
-            class="text-blue-400 cursor-pointer hover:text-blue-700"
-            v-else-if="col.type === 'link'"
-            @click="goTo(slotProps.data.router)"
-          >
-            {{ getValue(slotProps.data, col.field) }}
-          </a>
-          <InputSwitch
-            v-else-if="col.type === 'switch'"
-            v-model="slotProps.data[col.field]"
-            @change="handleSwitchChange(slotProps.data, col.field)"
-          />
-        </template>
-      </Column>
-      <Column field="actions" header="Ações">
-        <template #body="slotProps">
-          <div class="flex gap-4">
-            <i
-              v-for="(action, i) in slotProps.data.actions"
-              :key="i"
-              :class="['cursor-pointer', getIcon(action)]"
-              @click="getAction(slotProps.data, action)"
-            ></i>
-          </div>
+          <template v-if="col.type === 'text'">
+            <InputText
+              v-if="col.editable"
+              v-model="slotProps.data[col.field]"
+              class="max-w-[100px] truncate ..."
+            />
+            <p
+              v-else
+              :title="getValue(slotProps.data, col.field)"
+              class="max-w-[200px] truncate ..."
+            >
+              {{ getValue(slotProps.data, col.field) }}
+            </p>
+          </template>
+          <template v-else-if="col.type === 'number'">
+            <div
+              v-if="col.editable"
+              class="form-group form-group-number p-float-label"
+            >
+              <InputNumber
+                v-model.number="slotProps.data[col.field]"
+                id="kc"
+                aria-describedby="kc-help"
+                showButtons
+                :min="0"
+              />
+            </div>
+            <p
+              v-else
+              :title="getValue(slotProps.data, col.field)"
+              class="max-w-[200px] truncate ..."
+            >
+              {{ getValue(slotProps.data, col.field) }}
+            </p>
+          </template>
+          <template v-if="col.type === 'date'">
+            <Calendar
+              v-model="slotProps.data[col.field]"
+              dateFormat="dd/mm/yy"
+              class="truncate ..."
+            />
+          </template>
+          <template v-if="col.type === 'button'">
+            <button
+              class="bg-black text-white"
+              @click="handleButtonClick(slotProps.data, col.field)"
+            >
+              {{ slotProps.data[col.field] }}
+            </button>
+          </template>
+          <template v-if="col.type === 'link'">
+            <a
+              class="text-blue-400 cursor-pointer hover:text-blue-700"
+              @click="goTo(slotProps.data.router)"
+            >
+              {{ slotProps.data[col.field] }}
+            </a>
+          </template>
+          <template v-if="col.type === 'switch'">
+            <InputSwitch
+              v-model="slotProps.data[col.field]"
+              @change="handleSwitchChange(slotProps.data, col.field)"
+            />
+          </template>
         </template>
       </Column>
     </DataTable>
@@ -200,3 +227,12 @@ function handleSwitchChange(item, fieldName) {
   });
 }
 </script>
+<style lang="scss">
+.form-group-number {
+  width: 20%;
+  min-width: 120px;
+  input {
+    width: 50%;
+  }
+}
+</style>

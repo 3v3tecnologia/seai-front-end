@@ -97,7 +97,6 @@ function adjustmentItemsValue() {
 }
 
 function deleteItem(data) {
-  console.log("data", data);
   const id = data.id;
   loading.value = true;
   service
