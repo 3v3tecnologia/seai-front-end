@@ -75,7 +75,7 @@ const handleSubmit = (e) => {
   e.preventDefault();
 
   const action = props.isLogging ? "LOGIN_USER" : "SEND_EMAIL_CHANGE_PASSWORD";
-
+  console.log(form.value);
   store
     .dispatch(action, form.value)
     .then((r) => {

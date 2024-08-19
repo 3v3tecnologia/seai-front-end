@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col justify-center mt-4">
+  <div class="flex flex-col w-full justify-center items-end mt-4">
     <PrimaryButton :text="mainItem.text" />
-    <div class="flex align-items-center justify-center mt-2">
+    <div class="flex justify-center mt-2">
       <router-link
         :to="secondaryItem.routeName"
         class="text-[#002040] text-[12px] hover:text-[#355b81]"
@@ -24,7 +24,7 @@ const props = defineProps({
 
 const texts = [
   {
-    text: "Entrar",
+    text: "Login",
     routeName: "/login",
   },
   {
