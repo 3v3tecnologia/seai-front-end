@@ -88,13 +88,11 @@ onMounted(() => {
   if (props.id >= 0) {
     editMode.value = true;
     title.value = "Editar categoria";
-    console.log(props.currentCategory);
     getCategoryById();
   }
 });
 
 function getCategoryById() {
-  console.log(props.currentCategory);
   category.value.title = props.currentCategory.title;
   category.value.description = props.currentCategory.description;
 }

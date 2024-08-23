@@ -3,7 +3,8 @@ import { Locations } from "@/interfaces/Locations.interface";
 
 export class CensusRest {
   async getLocations(): Promise<Locations> {
-    return await http.get(`v1/census/locations`);
+    const result = await http.get(`v2/census/basin`);
+    return result.data;
   }
   async getRegistered(): Promise<any> {
     const result = await http.get(`v1/census/census-takers/basin`);

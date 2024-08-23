@@ -54,7 +54,6 @@ onMounted(() => {
 
 function verifyId() {
   if (router.currentRoute.value.params.id) {
-    console.log(router.currentRoute.value.params.id);
     currentId.value = router.currentRoute.value.params.id;
     isEditing.value = true;
     title.value = "Editar rotina";
@@ -77,7 +76,6 @@ function getItemById(id) {
     .getById(id)
     .then((response) => {
       item.value = response.data;
-      console.log(item.value);
       loading.value = false;
     })
     .catch(() => {

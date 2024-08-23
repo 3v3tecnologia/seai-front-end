@@ -188,7 +188,6 @@ function verifyCycles() {
     result = true;
   } else {
     for (const cycle of cultureCycle.value) {
-      console.log(cycle);
       if (
         !cycle.Title ||
         cycle.Start === null ||
@@ -196,7 +195,6 @@ function verifyCycles() {
         cycle.KC === null ||
         cycle.Increment === null
       ) {
-        console.log("entrou no if");
         result = true;
       }
     }

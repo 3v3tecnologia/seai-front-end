@@ -151,6 +151,7 @@ function initializeUserInfo() {
     item.disabled = false;
     modules.value.push(item);
   }
+  setAdmin();
 }
 
 function setDefaultUserInfo() {
@@ -161,7 +162,6 @@ function setDefaultUserInfo() {
     Operation: "",
     modules: createDefaultModules(),
   };
-  console.log(userInfo.value);
   initializeUserInfo();
 }
 
@@ -174,9 +174,12 @@ function setAdmin() {
     if (userInfo.value.type === "admin") {
       modules.value[key].write = true;
       modules.value[key].read = true;
+      modules.value[key].disabled = false;
     } else {
       modules.value[key].write = false;
       modules.value[key].read = false;
+      console.log(key);
+      modules.value[0].disabled = true;
     }
   });
 }

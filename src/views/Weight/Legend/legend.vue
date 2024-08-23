@@ -1,20 +1,23 @@
 <template>
-  <div class="w-full bg-white flex flex-col p-8">
-    <div class="w-[200px]">
-      <h2 class="text-left text-[20px]">Legendas:</h2>
-    </div>
-    <div class="w-full flex gap-8 mt-4">
-      <p class="text-left text-[16px]">
-        <strong>SP:</strong> Segurança Produtiva
+  <div class="w-full flex flex-col p-4 pt-2">
+    <div class="w-full flex gap-8 mt-2 text-[#003B66] justify-between">
+      <p
+        v-for="(item, index) in items"
+        :key="index"
+        class="text-left text-[14px]"
+      >
+        <strong>{{ item.abbr }}:</strong> {{ item.description }}
       </p>
-      <p class="text-left text-[16px]">
-        <strong>SE:</strong> Segurança Econômica
-      </p>
-      <p class="text-left text-[16px]">
-        <strong>SH:</strong> Segurança Hídrica
-      </p>
-      <p class="text-left text-[16px]"><strong>SS:</strong> Segurança Social</p>
     </div>
   </div>
 </template>
-<script setup></script>
+
+<script setup>
+const items = [
+  { abbr: "CC", description: "Ciclo cultura" },
+  { abbr: "SP", description: "Segurança Produtiva" },
+  { abbr: "SE", description: "Segurança Econômica" },
+  { abbr: "SH", description: "Segurança Hídrica" },
+  { abbr: "SS", description: "Segurança Social" },
+];
+</script>

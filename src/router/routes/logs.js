@@ -8,7 +8,7 @@ export default [
     meta: {
       ShowNav: true,
       title: "Logs",
-      // modulesNeeded: [modulesSystem.logs, modulesSystemLevel.read],
+      modulesNeeded: [modulesSystem.logs, modulesSystemLevel.read],
     },
     component: Logs,
   },

@@ -120,7 +120,6 @@ function getAllLogs() {
       items.value = response.data;
       adjustmentItemsValue();
       loading.value = false;
-      console.log(items.value.Items);
     })
     .catch((error) => {
       loading.value = false;
@@ -188,7 +187,6 @@ function handlePageChange(page) {
 function selectItems(paramsName, paramsValue) {
   resetPagination();
   params.value[paramsName] = paramsValue != 0 ? paramsValue : null;
-  console.log(paramsName, paramsValue);
   getAllLogs();
 }
 function resetPagination() {
@@ -201,7 +199,6 @@ function resetPagination() {
 }
 function openModal(data) {
   currentItems.value = data;
-  console.log("Open modal", data);
   showModal.value = true;
 }
 </script>

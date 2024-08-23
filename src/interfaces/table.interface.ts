@@ -4,6 +4,5 @@ export default interface TableInfo {
   field: string;
   subField?: string;
   type: string;
+  editable?: boolean;
 }
-
-
