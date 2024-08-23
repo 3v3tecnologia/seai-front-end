@@ -159,9 +159,10 @@ export const store = createStore({
       clearToken();
       commit("SET_USER", null);
     },
-    async ["SEND_EMAIL_CHANGE_PASSWORD"](context, { email }) {
+    async ["SEND_EMAIL_CHANGE_PASSWORD"](context, { login }) {
+      console.log(login);
       try {
-        await http.post(`v1/login/password/forgot`, { email });
+        await http.post(`v1/user/password/forgot`, { email: login });
         toast.success("Email de recuperação enviado com sucesso");
       } catch (e) {
         toast.error("Falha ao enviar email de recuperação");

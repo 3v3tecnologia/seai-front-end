@@ -4,11 +4,11 @@
 
     <!-- <LogoProject /> -->
 
-    <h3 class="mb-3">Recuperar conta</h3>
+    <h3>Recuperar conta</h3>
 
     <p>Enviaremos os dados por email para a recuperação de sua conta</p>
 
-    <AuthForm :is-logging="false">
+    <AuthForm :is-logging="false" class="mt-4">
       <ButtonsAuth :is-logging="false" />
       <div class="mt-5 text-center">
         Caso venha a surgir algum problema ou dúvida, por favor entre em contato

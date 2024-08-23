@@ -1,5 +1,11 @@
 <template>
-  <div class="home p-4">
+  <div
+    v-if="loading"
+    class="fixed top-0 left-0 flex justify-center items-center w-screen h-screen bg-white z-50"
+  >
+    <ProgressSpinner />
+  </div>
+  <div v-else class="home p-4">
     <div class="py-4" />
 
     <div class="py-3" />
@@ -95,26 +101,38 @@ const form = ref({
 });
 
 const submitted = ref(false);
+const loading = ref(false);
 const requiredField = "Campo obrigatório";
 const service = new UsersRest();
 const router = useRouter();
 const code = ref("");
 
 onMounted(() => {
-  code.value = router.currentRoute.value.params.token;
-  if (!code.value) {
-    router.push("login");
+  const tkn = localStorage.getItem("tkn");
+  loading.value = true;
+  if (tkn) {
+    localStorage.clear();
+    window.location.reload();
+  } else {
+    code.value = router.currentRoute.value.params.token;
+    localStorage.clear();
+    if (!code.value) {
+      router.push("login");
+    }
+    loading.value = false;
   }
 });
 
 const register = () => {
   submitted.value = true;
   if (isValid()) {
-    console.log("Profile data:", form.value);
-    service.completeRegister(form.value, code.value).then((res) => {
-      toast.success("Conta criada com sucesso!");
-      router.push("login");
-    });
+    service
+      .completeRegister(form.value, code.value)
+      .then((res) => {
+        toast.success("Conta criada com sucesso!");
+        router.push("login");
+      })
+      .finally(() => (loading.value = false));
   }
 };
 
