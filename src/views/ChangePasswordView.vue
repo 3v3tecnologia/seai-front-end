@@ -1,95 +1,167 @@
 <template>
-  <div class="home">
-    <FormWrapper title="Mudar senha" @submit="handleSubmit">
-      <template v-if="!changedPassword" v-slot:content>
-        <div class="mb-3 mt-4">
-          Com objetivo de protejer a sua conta, tenha certeza que sua senha
-          possui:
+  <div class="w-full h-[60vh] flex justify-center items-center">
+    <div
+      class="container mx-auto bg-white p-4 rounded-md w-full lg:w-[50%] min-w-[350px]"
+    >
+      <div class=""><h2>Trocar Senha</h2></div>
+
+      <form @submit.prevent="onSubmit" class="w-full flex flex-col gap-8 mt-4">
+        <div
+          v-if="!hasCode"
+          class="form-group form-group-text text-left p-float-label mt-2 w-full"
+        >
+          <Password
+            id="current-password"
+            v-model="form.currentPassword"
+            class="w-full"
+            required
+            toggleMask
+            :feedback="false"
+          />
+          <label for="current-password" class="font-weight-bold"
+            >Senha Atual</label
+          >
+          <small v-if="submitted && !form.currentPassword" class="p-error">
+            {{ requiredField }}
+          </small>
         </div>
+        <div class="w-full flex gap-4">
+          <div
+            class="form-group form-group-text text-left p-float-label mt-2 w-full"
+          >
+            <Password
+              id="new-password"
+              v-model="form.password"
+              class="w-full"
+              required
+              toggleMask
+              :feedback="true"
+              @focus="onFocus('password')"
+            />
+            <label for="new-password" class="font-weight-bold"
+              >Nova Senha</label
+            >
+            <small v-if="touched.password && !isPasswordValid" class="p-error">
+              A senha deve ter mais de 6 caracteres e conter letras.
+            </small>
+            <small v-if="submitted && !form.password" class="p-error">
+              {{ requiredField }}
+            </small>
+          </div>
 
-        <ul>
-          <li>Mais de 6 caracteres</li>
-          <li>Contém letras, números e símbolos</li>
-          <li>Não combina com seu login, nome</li>
-        </ul>
-
-        <div class="py-2"></div>
-        <BaseInput
-          label="Nova senha"
-          v-model="form.password"
-          placeholder="Sua nova senha"
-          input-type="password"
-          input-required
+          <div
+            class="form-group form-group-text text-left p-float-label mt-2 w-full"
+          >
+            <Password
+              id="confirm-password"
+              v-model="form.confirmPassword"
+              class="w-full"
+              required
+              toggleMask
+              :feedback="false"
+            />
+            <label for="confirm-password" class="font-weight-bold"
+              >Confirmar Senha</label
+            >
+            <small v-if="submitted && !form.confirmPassword" class="p-error">
+              {{ requiredField }}
+            </small>
+            <small
+              v-if="form.password !== form.confirmPassword"
+              class="p-error"
+            >
+              As senhas não coincidem.
+            </small>
+          </div>
+        </div>
+        <Button
+          :disabled="!isFormValid() || loading"
+          label="Salvar"
+          type="submit"
+          class="w-50 btn-primary mt-3"
         />
-
-        <BaseInput
-          label="Confirmar nova senha"
-          v-model="form.confirmPassword"
-          placeholder="Confirme sua nova senha"
-          input-type="password"
-          input-required
-        />
-      </template>
-      <template v-else v-slot:content>
-        <div class="pt-3 pb-5">Senha trocada com sucesso.</div>
-      </template>
-
-      <template v-slot:buttons>
-        <PrimaryButton
-          :text="`${changedPassword ? 'Realizar login' : 'Salvar senha'}`"
-        />
-      </template>
-    </FormWrapper>
-
-    <div class="py-5"></div>
+      </form>
+    </div>
   </div>
 </template>
 
-<script lang="ts" setup>
-import LogoProject from "@/components/videntity/LogoProject.vue";
-import BaseInput from "@/components/form/BaseInput.vue";
-import PrimaryButton from "@/components/form/PrimaryButton.vue";
-import FormWrapper from "@/components/form/FormWrapper.vue";
-import { defineProps } from "vue";
-import { ref } from "vue";
-import type { Ref } from "vue";
-import { useStore } from "vuex";
+<script setup>
+import { ref, computed, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { validatePasswords } from "@/helpers/charts";
+import { UsersRest } from "@/services/users.service";
+import { toast } from "vue3-toastify";
 
-const router = useRouter();
+const form = ref({
+  currentPassword: "",
+  password: "",
+  confirmPassword: "",
+});
+const touched = ref({
+  password: false,
+});
+
+const service = new UsersRest();
+const requiredField = "Este campo é obrigatório.";
+const submitted = ref(false);
+const loading = ref(false);
+
 const currentRoute = useRoute();
-const store = useStore();
+const router = useRouter();
 
-const form: Ref = ref({});
-const changedPassword: Ref = ref(false);
-const token = ref(currentRoute.query.token || "");
+const hasCode = computed(() => {
+  return currentRoute.params.code;
+});
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-
-  if (changedPassword.value === true) {
-    return router.push({ name: "login" });
+onMounted(() => {
+  if (!hasCode.value && !localStorage.getItem("tkn")) {
+    router.push("/login");
   }
+});
+const isPasswordValid = computed(() => {
+  return form.value.password.length > 6 && /[a-zA-Z]/.test(form.value.password);
+});
 
-  const password = form.value.password;
-  const confirmPassword = form.value.password;
+function isFormValid() {
+  const passwordValid =
+    form.value.password &&
+    form.value.confirmPassword &&
+    form.value.password === form.value.confirmPassword;
 
-  const isValidPassword = validatePasswords(form.value);
+  const currentPasswordValid = hasCode.value || form.value.currentPassword;
 
-  if (!isValidPassword) {
-    return;
+  return passwordValid && currentPasswordValid && isPasswordValid;
+}
+
+const onFocus = (field) => {
+  touched.value[field] = true;
+};
+const onSubmit = () => {
+  submitted.value = true;
+
+  if (isFormValid()) {
+    loading.value = true;
+    console.log(hasCode.value);
+    service
+      .changePassword(form.value, hasCode.value)
+      .then(() => {
+        toast.success("senha alterada!");
+        router.push("login");
+      })
+      .finally(() => (loading.value = false));
+  } else {
+    console.error("Verifique os campos de senha.");
   }
-
-  store
-    .dispatch("CHANGE_PASSWORD", {
-      confirmPassword,
-      password,
-      token: token.value,
-    })
-    .then(() => {
-      changedPassword.value = true;
-    })
-    .catch(console.error);
 };
 </script>
+
+<style scoped>
+.validation-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0.5rem 0;
+}
+
+.text-danger {
+  color: red;
+}
+</style>

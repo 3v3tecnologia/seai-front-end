@@ -140,11 +140,13 @@ function save() {
 }
 
 function createCulture() {
+  culture.value.IsPermanent = false;
+  culture.value.Cycles = cultureCycle.value;
   cultureRest
     .create(culture.value)
     .then((response) => {
       const { data } = response;
-      createCycle(data.data);
+      // createCycle(data.data);
     })
     .finally(() => {
       loadButton.value = false;

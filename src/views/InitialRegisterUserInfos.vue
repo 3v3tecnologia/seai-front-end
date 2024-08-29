@@ -123,8 +123,8 @@ onMounted(() => {
   }
 });
 
-const register = () => {
-  submitted.value = true;
+function register() {
+  console.log("register");
   if (isValid()) {
     service
       .completeRegister(form.value, code.value)
@@ -134,7 +134,7 @@ const register = () => {
       })
       .finally(() => (loading.value = false));
   }
-};
+}
 
 const isValid = () => {
   return (
