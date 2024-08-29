@@ -28,7 +28,7 @@ export default [
     props: routeProps.profile,
   },
   {
-    path: "/change-password",
+    path: "/change-password/:code?",
     name: "change-password",
     meta: {
       title: `Trocar senha`,
