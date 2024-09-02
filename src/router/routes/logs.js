@@ -12,7 +12,4 @@ export default [
     },
     component: Logs,
   },
-].map((r) => {
-  r.meta.navBarTab = 5;
-  return r;
-});
+];

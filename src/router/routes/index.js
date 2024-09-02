@@ -13,6 +13,7 @@ import account from "@/router/routes/account";
 import faq from "./faq";
 import home from "./home";
 import logs from "./logs";
+import BI from "./bi";
 
 export default [
   ...account,
@@ -27,6 +28,7 @@ export default [
   ...faq,
   ...home,
   ...logs,
+  ...BI,
   {
     path: "/:catchAll(.*)",
     meta: {
