@@ -158,6 +158,7 @@ function confirmDelete(data) {
     acceptLabel: "Deletar",
     accept: () => {
       data.Operation = Operation.value;
+      Operation.value = "";
       emit("onDeleteItem", data);
     },
   });

@@ -1,8 +1,8 @@
 <template>
   <div class="position-relative w-100 mt-8">
-    <div class="w-full flex gap-4 items-center">
+    <div class="w-full flex gap-4 items-center mb-10">
       <div class="col-2">
-        <h3 class="text-left">Ciclos</h3>
+        <h3 class="text-left">Estágios:</h3>
       </div>
       <div class="flex flex-row gap-4">
         <Button
@@ -37,7 +37,7 @@
         <small class="text-danger">Preencha todos os campos obrigatórios</small>
       </div>
     </div>
-    <form class="mt-16 flex flex-wrap gap-8" v-for="(kc, i) in KCs" :key="i">
+    <form class="mt-4 flex flex-wrap gap-8" v-for="(kc, i) in KCs" :key="i">
       <div class="form-group form-group-text p-float-label">
         <InputText
           id="estagio"
@@ -47,12 +47,12 @@
         />
         <label for="estagio" class="font-weight-bold">Nome do estágio</label>
       </div>
-      <div class="form-group form-group-number p-float-label">
+      <div class="form-group form-group-number p-float-label w-[100px]">
         <InputNumber
           v-model="kc.Start"
           id="kc"
           aria-describedby="kc-help"
-          :class="`w-100 ${
+          :class="`w-full ${
             cycleError && kc.Start === null ? 'invalidInput' : ''
           }`"
           showButtons
@@ -61,12 +61,12 @@
         />
         <label for="kc" class="font-weight-bold">Início</label>
       </div>
-      <div class="form-group form-group-number p-float-label">
+      <div class="form-group form-group-number p-float-label w-[100px]">
         <InputNumber
           v-model="kc.End"
           id="kc"
           aria-describedby="kc-help"
-          :class="`w-100 ${
+          :class="`w-full ${
             cycleError && kc.End === null ? 'invalidInput' : ''
           }`"
           showButtons
@@ -74,12 +74,14 @@
         />
         <label for="kc" class="font-weight-bold">Fim</label>
       </div>
-      <div class="form-group form-group-number p-float-label">
+      <div class="form-group form-group-number p-float-label w-[100px]">
         <InputNumber
           v-model="kc.KC"
           id="kc"
           aria-describedby="kc-help"
-          :class="`w-100 ${cycleError && kc.KC === null ? 'invalidInput' : ''}`"
+          :class="`w-full ${
+            cycleError && kc.KC === null ? 'invalidInput' : ''
+          }`"
           showButtons
           mode="decimal"
           :min-fraction-digits="1"
@@ -87,12 +89,12 @@
         />
         <label for="kc" class="font-weight-bold">KC</label>
       </div>
-      <div class="form-group form-group-increment p-float-label">
+      <div class="form-group form-group-number p-float-label w-[100px]">
         <InputNumber
           v-model="kc.Increment"
           id="kc"
           aria-describedby="kc-help"
-          :class="` ${
+          :class="`w-full ${
             cycleError && kc.Increment === null ? 'invalidInput' : ''
           }`"
           showButtons
@@ -193,8 +195,7 @@ function removeKC() {
   }
   .form-group-increment {
     width: 18%;
-    min-width: 120px;
-
+    min-width: 50px;
     input {
       width: 50%;
     }

@@ -1,9 +1,13 @@
 <template>
   <div
-    class="bg-white w-[23.45%] min-w-[320px] p-4 pb-2 shadow-md rounded-tl-xl rounded-br-xl"
+    class="bg-white w-[23.45%] min-w-[320px] h-[60px] p-4 pb-2 shadow-md rounded-tl-xl rounded-br-xl relative"
     v-for="(culture, i) in cultures"
     :key="i"
   >
+    <div
+      v-if="culture.IsPermanent"
+      class="h-[60px] w-[8px] bg-[#104770] absolute top-0 left-0 rounded-tl-xl"
+    ></div>
     <div class="flex flex-row justify-between">
       <h1 class="text-xl text-left font-bold mb-4 w-[82%] truncate ...">
         {{ culture.Name }}

@@ -20,6 +20,10 @@
       v-else
       class="w-full max-w-[1600px] px-4 min-w-[350px] flex flex-wrap flex-row gap-8 mt-10"
     >
+      <div class="w-full flex gap-2">
+        <div class="w-[20px] h-[20px] bg-[#104770]"></div>
+        <h2 class="text-[16px] font-[500]">Cultura Perene</h2>
+      </div>
       <CultureCard :cultures="cultures" @onDelete="deleteCulture" />
     </div>
   </div>

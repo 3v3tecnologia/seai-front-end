@@ -1,4 +1,15 @@
 <template>
+  <ModalPermanent
+    v-if="showModal"
+    :show-modal="showModal"
+    :start-points="cultureCycle"
+    :initialStartPoint="culture.CycleRestartPoint ?? null"
+    @on-close-modal="
+      showModal = false;
+      loadButton = false;
+    "
+    @on-save-culture="verifySaveOrUpdate"
+  />
   <div class="w-full flex flex-col justify-center items-center">
     <ProgressSpinner v-if="loading" />
     <div
@@ -43,6 +54,24 @@
           <label for="culture-name" class="font-weight-bold">Nome</label>
         </div>
         <div
+          class="form-group form-group-text text-left mt-4"
+          :title="
+            cultureCycle.length === 1
+              ? 'Adicione um segundo estágio para habilitar'
+              : ''
+          "
+        >
+          <Checkbox
+            :binary="true"
+            v-model="isPermanent"
+            inputId="is-permanent"
+            class="mr-2"
+          />
+          <label for="is-permanent" :class="`font-weight-bold cursor-pointer`">
+            Cultura perene
+          </label>
+        </div>
+        <div
           v-if="isEditing"
           class="form-group form-group-text text-left p-float-label mt-8 w-[30%] min-w-[300px]"
         >
@@ -68,7 +97,8 @@
 </template>
 <script setup>
 import CreateFarmDap from "./Cycles/Cycles.vue";
-import { ref } from "vue";
+import ModalPermanent from "./Modal/Permanent.vue";
+import { ref, watch } from "vue";
 import { CultureRest } from "@/services/culture.service";
 import { CycleRest } from "@/services/cycle.service";
 import { onMounted } from "vue";
@@ -86,6 +116,18 @@ const cultureCycle = ref([]);
 const cultureId = ref(0);
 const title = ref("Criar cultura");
 const isEditing = ref(false);
+const isPermanent = ref(false);
+const showModal = ref(false);
+
+watch(
+  cultureCycle,
+  (newValue) => {
+    if (newValue.length === 1) {
+      isPermanent.value = false;
+    }
+  },
+  { deep: true }
+);
 
 onMounted(() => {
   verifyId();
@@ -107,18 +149,30 @@ function verifyId() {
 
 function getCultureById(id) {
   loading.value = true;
-  cultureRest.getById(id).then((response) => {
-    const { data } = response;
-    culture.value = data.data;
-    getCycleByCultureId(id);
-  });
+  cultureRest
+    .getById(id)
+    .then((response) => {
+      const { data } = response;
+      culture.value = data.data;
+      cultureCycle.value = culture.value.Cycles;
+      isPermanent.value = culture.value.IsPermanent;
+      updateCycleRestartPoint();
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 }
-function getCycleByCultureId(id) {
-  cycleRest.getByCultureId(id).then((response) => {
-    const { data } = response;
-    cultureCycle.value = data.data;
-    loading.value = false;
-  });
+
+function updateCycleRestartPoint() {
+  const index = culture.value.Cycles.findIndex(
+    (cycle) => cycle.Id === culture.value.CycleRestartPoint
+  );
+
+  if (index !== -1) {
+    culture.value.CycleRestartPoint = index;
+  } else {
+    culture.value.CycleRestartPoint = null;
+  }
 }
 
 function saveCycle(cycle) {
@@ -132,16 +186,28 @@ function save() {
     loadButton.value = false;
     return;
   }
-  if (isEditing.value) {
-    updateCulture();
+  if (isPermanent.value) {
+    showModal.value = true;
   } else {
-    createCulture();
+    showModal.value = false;
+    verifySaveOrUpdate();
+  }
+}
+function verifySaveOrUpdate(CycleRestartPoint = -1) {
+  if (isEditing.value) {
+    updateCulture(CycleRestartPoint);
+  } else {
+    createCulture(CycleRestartPoint);
   }
 }
 
-function createCulture() {
-  culture.value.IsPermanent = false;
+function createCulture(CycleRestartPoint) {
   culture.value.Cycles = cultureCycle.value;
+  culture.value.IsPermanent = isPermanent.value;
+  if (isPermanent.value) culture.value.CycleRestartPoint = CycleRestartPoint;
+  else {
+    delete culture.value.CycleRestartPoint;
+  }
   cultureRest
     .create(culture.value)
     .then((response) => {
@@ -153,7 +219,7 @@ function createCulture() {
     });
 }
 
-function updateCulture() {
+function updateCulture(CycleRestartPoint) {
   cultureRest
     .update(cultureId.value, culture.value)
     .then(() => {
