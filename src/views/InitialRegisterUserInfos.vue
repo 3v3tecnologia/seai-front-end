@@ -7,82 +7,109 @@
   </div>
   <div v-else class="home p-4">
     <div class="py-4" />
-
     <div class="py-3" />
     <div
       class="container mx-auto bg-white p-4 rounded-md w-full lg:w-[50%] min-w-[350px]"
     >
       <h4 class="text-[25px] mt-10">Completar Cadastro</h4>
-      <form @submit.prevent="register" class="w-full flex flex-col mt-10 pb-8">
-        <div class="form-group form-group-text text-left p-float-label w-full">
-          <InputText id="name" v-model="form.name" class="w-full" required />
-          <label for="name" class="font-weight-bold">Nome completo*</label>
-          <small v-if="submitted && !form.name" class="p-error">{{
-            requiredField
-          }}</small>
-        </div>
 
-        <div
-          class="form-group form-group-text text-left p-float-label mt-2 w-full"
+      <!-- Exibir formulário de cadastro ou mensagem de sucesso -->
+      <template v-if="!registerSuccess">
+        <form
+          @submit.prevent="register"
+          class="w-full flex flex-col mt-10 pb-8"
         >
-          <InputText id="login" v-model="form.login" class="w-full" required />
-          <label for="login" class="font-weight-bold">Username*</label>
-          <small v-if="submitted && !form.login" class="p-error">{{
-            requiredField
-          }}</small>
-        </div>
-
-        <div
-          class="form-group form-group-text text-left p-float-label mt-2 w-full"
-        >
-          <Password
-            id="password"
-            v-model="form.password"
-            class="w-full"
-            required
-            toggleMask
-            :feedback="false"
-          />
-          <label for="password" class="font-weight-bold">Senha</label>
-          <small v-if="submitted && !form.password" class="p-error">{{
-            requiredField
-          }}</small>
-        </div>
-
-        <div
-          class="form-group form-group-text text-left p-float-label mt-2 w-full"
-        >
-          <Password
-            id="confirmPassword"
-            v-model="form.confirmPassword"
-            class="w-full"
-            required
-            toggleMask
-            :feedback="false"
-          />
-          <label for="confirmPassword" class="font-weight-bold"
-            >Confirmar Senha</label
+          <div
+            class="form-group form-group-text text-left p-float-label w-full"
           >
-          <small v-if="submitted && !form.confirmPassword" class="p-error">{{
-            requiredField
-          }}</small>
-          <small
-            v-if="submitted && form.password !== form.confirmPassword"
-            class="p-error"
-            >As senhas não estão iguais.</small
-          >
-        </div>
+            <InputText id="name" v-model="form.name" class="w-full" required />
+            <label for="name" class="font-weight-bold">Nome completo*</label>
+            <small v-if="submitted && !form.name" class="p-error">{{
+              requiredField
+            }}</small>
+          </div>
 
-        <div
-          class="form-group form-group-text text-left mt-4 w-full flex justify-end"
-        >
+          <div
+            class="form-group form-group-text text-left p-float-label mt-2 w-full"
+          >
+            <InputText
+              id="login"
+              v-model="form.login"
+              class="w-full"
+              required
+            />
+            <label for="login" class="font-weight-bold">Username*</label>
+            <small v-if="submitted && !form.login" class="p-error">{{
+              requiredField
+            }}</small>
+          </div>
+
+          <div
+            class="form-group form-group-text text-left p-float-label mt-2 w-full"
+          >
+            <Password
+              id="password"
+              v-model="form.password"
+              class="w-full"
+              required
+              toggleMask
+              :feedback="false"
+            />
+            <label for="password" class="font-weight-bold">Senha</label>
+            <small v-if="submitted && !form.password" class="p-error">{{
+              requiredField
+            }}</small>
+          </div>
+
+          <div
+            class="form-group form-group-text text-left p-float-label mt-2 w-full"
+          >
+            <Password
+              id="confirmPassword"
+              v-model="form.confirmPassword"
+              class="w-full"
+              required
+              toggleMask
+              :feedback="false"
+            />
+            <label for="confirmPassword" class="font-weight-bold"
+              >Confirmar Senha</label
+            >
+            <small v-if="submitted && !form.confirmPassword" class="p-error">{{
+              requiredField
+            }}</small>
+            <small
+              v-if="submitted && form.password !== form.confirmPassword"
+              class="p-error"
+              >As senhas não estão iguais.</small
+            >
+          </div>
+
+          <div
+            class="form-group form-group-text text-left mt-4 w-full flex justify-end"
+          >
+            <Button
+              label="Cadastrar"
+              type="submit"
+              class="w-[200px] btn-primary"
+            />
+          </div>
+        </form>
+      </template>
+
+      <!-- Mensagem de sucesso e botão para login -->
+      <template v-else>
+        <div class="text-center mt-10">
+          <p class="text-lg font-semibold text-green-600">
+            Cadastro realizado com sucesso!
+          </p>
           <Button
-            label="Cadastrar"
-            type="submit"
-            class="w-[200px] btn-primary"
+            label="Login"
+            class="mt-4 btn-primary"
+            @click="redirectToLogin"
           />
         </div>
-      </form>
+      </template>
     </div>
   </div>
 </template>
@@ -106,6 +133,7 @@ const requiredField = "Campo obrigatório";
 const service = new UsersRest();
 const router = useRouter();
 const code = ref("");
+const registerSuccess = ref(false); // Novo estado para controle do sucesso
 
 onMounted(() => {
   const tkn = localStorage.getItem("tkn");
@@ -124,13 +152,12 @@ onMounted(() => {
 });
 
 function register() {
-  console.log("register");
   if (isValid()) {
     service
       .completeRegister(form.value, code.value)
       .then((res) => {
         toast.success("Conta criada com sucesso!");
-        router.push("login");
+        registerSuccess.value = true; // Define o sucesso do cadastro
       })
       .finally(() => (loading.value = false));
   }
@@ -145,7 +172,13 @@ const isValid = () => {
     form.value.password === form.value.confirmPassword
   );
 };
+
+// Função para redirecionar para a página de login
+function redirectToLogin() {
+  router.push("login");
+}
 </script>
+
 <style lang="scss">
 form {
   gap: 15px;

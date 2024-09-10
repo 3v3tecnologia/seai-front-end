@@ -183,7 +183,7 @@ watch(Operation, () => {
 });
 function handleSwitchChange(item, fieldName) {
   confirm.require({
-    message: "Por favor, informe o motivo para alterar o valor do switch.",
+    message: "Por favor, informe o motivo para alterar o status.",
     header: "Confirmar Alteração",
     icon: "pi pi-exclamation-triangle",
     rejectClass: "p-button-secondary p-button-outlined",
