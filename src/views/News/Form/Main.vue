@@ -81,18 +81,10 @@ function getItemById(id) {
     .then((response) => {
       item.value = response.data;
       loading.value = false;
-      convertBuffer(item.value.Data.data);
     })
     .catch(() => {
       goTo("form-newsletter");
     });
-}
-
-function convertBuffer(preBuffer) {
-  const buffer = new Uint8Array(preBuffer);
-  const decoder = new TextDecoder("utf-8");
-  const result = decoder.decode(buffer);
-  item.value.Data = result;
 }
 
 function save() {
