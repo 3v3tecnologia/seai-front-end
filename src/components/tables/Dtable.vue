@@ -192,6 +192,7 @@ function handleSwitchChange(item, fieldName) {
     acceptLabel: "Confirmar",
     accept: () => {
       item.Operation = Operation.value;
+      Operation.value = "";
       emit("onSwitchItem", item);
     },
     reject: () => {
