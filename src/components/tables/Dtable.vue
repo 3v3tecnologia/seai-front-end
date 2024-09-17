@@ -63,7 +63,7 @@
             :class="`w-full`"
             required
           />
-          <label class="font-weight-bold">Motivo para deletar</label>
+          <label class="font-weight-bold">Motivo para alterar</label>
         </div>
       </div>
     </template>
@@ -173,7 +173,7 @@ function convertDate(date) {
 function updateButtonState() {
   const button = document.querySelector(".blocked");
   if (button) {
-    button.disabled = Operation.value.trim() === "";
+    button.disabled = Operation.value.trim().length < 6;
   }
 }
 
@@ -195,9 +195,14 @@ function handleSwitchChange(item, fieldName) {
       emit("onSwitchItem", item);
     },
     reject: () => {
-      // Reverter a alteração
+      item[fieldName] = !item[fieldName]; // Reverter o valor do switch
+    },
+    onHide: () => {
       item[fieldName] = !item[fieldName]; // Reverter o valor do switch
     },
   });
+  setTimeout(() => {
+    updateButtonState();
+  }, 200);
 }
 </script>
