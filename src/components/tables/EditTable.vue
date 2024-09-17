@@ -33,6 +33,8 @@
                 aria-describedby="kc-help"
                 showButtons
                 :min="0"
+                :minFractionDigits="1"
+                mode="decimal"
               />
             </div>
             <p
