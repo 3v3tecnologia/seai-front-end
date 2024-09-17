@@ -119,16 +119,6 @@ const isEditing = ref(false);
 const isPermanent = ref(false);
 const showModal = ref(false);
 
-watch(
-  cultureCycle,
-  (newValue) => {
-    if (newValue.length === 1) {
-      isPermanent.value = false;
-    }
-  },
-  { deep: true }
-);
-
 onMounted(() => {
   verifyId();
 });
@@ -194,36 +184,41 @@ function save() {
   }
 }
 function verifySaveOrUpdate(CycleRestartPoint = -1) {
-  if (isEditing.value) {
-    updateCulture(CycleRestartPoint);
-  } else {
-    createCulture(CycleRestartPoint);
-  }
-}
-
-function createCulture(CycleRestartPoint) {
   culture.value.Cycles = cultureCycle.value;
   culture.value.IsPermanent = isPermanent.value;
   if (isPermanent.value) culture.value.CycleRestartPoint = CycleRestartPoint;
   else {
     delete culture.value.CycleRestartPoint;
   }
+  if (isEditing.value) {
+    updateCulture();
+  } else {
+    createCulture();
+  }
+}
+
+function createCulture() {
   cultureRest
     .create(culture.value)
-    .then((response) => {
-      const { data } = response;
-      // createCycle(data.data);
+    .then(() => {
+      toast.success("Cultura criada com sucesso!");
+      setTimeout(() => {
+        goTo();
+      }, 500);
     })
     .finally(() => {
       loadButton.value = false;
     });
 }
 
-function updateCulture(CycleRestartPoint) {
+function updateCulture() {
   cultureRest
     .update(cultureId.value, culture.value)
     .then(() => {
-      createCycle(cultureId.value);
+      toast.success("Cultura alterada+ com sucesso!");
+      setTimeout(() => {
+        goTo();
+      }, 500);
     })
     .finally(() => {
       loadButton.value = false;
