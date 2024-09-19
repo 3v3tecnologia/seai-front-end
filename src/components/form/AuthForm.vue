@@ -1,4 +1,3 @@
-<!-- eslint-disable prettier/prettier -->
 <template>
   <FormWrapper @submit="handleSubmit">
     <template v-slot:content>
@@ -13,7 +12,7 @@
             :class="`w-full`"
             required
           />
-          <label class="font-weight-bold">Login</label>
+          <label class="font-weight-bold">E-mail</label>
         </div>
         <div
           class="form-group form-group-text text-left p-float-label mt-8 w-full"
@@ -39,7 +38,10 @@
             :class="`w-full`"
             required
           />
-          <label class="font-weight-bold">Login</label>
+          <label class="font-weight-bold">E-mail</label>
+          <small v-if="!isEmailValid" class="text-red-500"
+            >E-mail inválido</small
+          >
         </div>
       </span>
     </template>
@@ -51,7 +53,7 @@
 </template>
 
 <script lang="ts" setup>
-import BaseInut from "./BaseInput.vue";
+import BaseInput from "./BaseInput.vue";
 import FormWrapper from "./FormWrapper.vue";
 import { defineProps } from "vue";
 import { ref } from "vue";
@@ -71,8 +73,20 @@ const form: Ref = ref({
   password: "",
 });
 
-const handleSubmit = (e) => {
+const isEmailValid: Ref<boolean> = ref(true);
+
+const validateEmail = (email: string) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+const handleSubmit = (e: any) => {
   e.preventDefault();
+  isEmailValid.value = validateEmail(form.value.login);
+
+  if (!isEmailValid.value) {
+    return;
+  }
 
   const action = props.isLogging ? "LOGIN_USER" : "SEND_EMAIL_CHANGE_PASSWORD";
   console.log(form.value);
