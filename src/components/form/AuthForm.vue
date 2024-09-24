@@ -84,7 +84,7 @@ const handleSubmit = (e: any) => {
   e.preventDefault();
   isEmailValid.value = validateEmail(form.value.login);
 
-  if (!isEmailValid.value) {
+  if (!props.isLogging && !isEmailValid.value) {
     return;
   }
 
