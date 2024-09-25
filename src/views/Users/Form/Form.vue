@@ -151,7 +151,6 @@ function initializeUserInfo() {
     item.disabled = false;
     modules.value.push(item);
   }
-  setAdmin();
 }
 
 function setDefaultUserInfo() {
