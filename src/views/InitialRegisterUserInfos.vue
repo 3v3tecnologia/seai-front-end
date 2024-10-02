@@ -106,7 +106,7 @@
           <Button
             label="Login"
             class="mt-4 btn-primary"
-            @click="redirectToLogin"
+            @click="redirectToLogin()"
           />
         </div>
       </template>

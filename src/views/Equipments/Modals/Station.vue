@@ -223,9 +223,7 @@
           @blur="touchedFields.MinAtmosphericTemperature = true"
         />
         <label for="minAtmosphericTemperature" class="font-weight-bold">
-          Temperatura do ar min. ({{
-            read.MinAtmosphericTemperature.Unit
-          }})
+          Temperatura do ar min. ({{ read.MinAtmosphericTemperature.Unit }})
         </label>
         <small
           v-if="
