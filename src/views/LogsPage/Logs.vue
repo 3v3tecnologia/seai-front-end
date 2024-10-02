@@ -138,7 +138,6 @@ function getAllUsers() {
       loadingUsers.value = false;
     })
     .catch((error) => {
-      console.error(error);
       loadingUsers.value = false;
     });
 }

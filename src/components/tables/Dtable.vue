@@ -1,6 +1,11 @@
 <template>
   <div class="bg-white w-full min-h-[50vh]">
-    <DataTable :value="dataValue" tableStyle="min-width: 50rem">
+    <DataTable
+      scrollable
+      scrollHeight="500px"
+      :value="dataValue"
+      tableStyle="min-width: 50rem"
+    >
       <Column
         v-for="col of infoTable"
         :key="col.field"
@@ -74,6 +79,7 @@ import { defineProps, defineEmits, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useConfirm } from "primevue/useconfirm";
 import moment from "moment";
+import DataTable from "primevue/datatable";
 
 const confirm = useConfirm();
 const router = useRouter();
@@ -167,7 +173,7 @@ function confirmDelete(data) {
   }, 200);
 }
 function convertDate(date) {
-  return moment(date).format("DD/MM/YYYY");
+  return moment(date).format("DD/MM/YYYY - HH:mm");
 }
 // Função para habilitar ou desabilitar o botão com a classe "blocked"
 function updateButtonState() {
@@ -207,3 +213,8 @@ function handleSwitchChange(item, fieldName) {
   }, 200);
 }
 </script>
+<style>
+.p-datatable-thead {
+  background-color: rgb(0, 0, 0) !important;
+}
+</style>

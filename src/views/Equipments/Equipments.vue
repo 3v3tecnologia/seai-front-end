@@ -224,6 +224,7 @@ function updateRead(data) {
 function updatePluvRead(data) {
   const pluv = {
     Precipitation: data.Precipitation.Value,
+    Operation: data.Operation,
   };
   equipmentRest
     .updatePluvRead(data.IdRead, pluv)

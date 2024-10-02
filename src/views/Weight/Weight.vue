@@ -50,10 +50,7 @@
       >
         <ProgressSpinner />
       </div>
-      <div
-        v-else
-        class="mt-6 h-[56vh] min-h-[500px] max-h-[1000px] bg-white overflow-auto"
-      >
+      <div v-else class="mt-6 h-[56vh] min-h-[500px] max-h-[1000px] bg-white">
         <Edition
           v-if="weights && weights.length > 0 && editMode"
           :weights="weights"

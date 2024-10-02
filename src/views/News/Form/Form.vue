@@ -126,6 +126,7 @@ const editorModules = ref({
   toolbar: [
     ["bold", "italic", "underline", "strike"], // toggled buttons
     ["blockquote"], // remove 'code-block' to remove the code button
+    ["link"],
     [{ header: 1 }, { header: 2 }], // custom button values
     [{ list: "ordered" }, { list: "bullet" }],
     [{ script: "sub" }, { script: "super" }], // superscript/subscript

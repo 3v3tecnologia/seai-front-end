@@ -60,6 +60,8 @@
           :readData="readData"
           :editMode="editMode"
           :date="read.Time"
+          @update:isFormValid="isFormValid = $event"
+          ref="pluvComponent"
         />
       </span>
     </div>
