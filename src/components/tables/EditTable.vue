@@ -1,6 +1,11 @@
 <template>
   <div class="bg-white w-full min-h-[50vh]">
-    <DataTable :value="dataValue" tableStyle="min-width: 50rem">
+    <DataTable
+      scrollable
+      scrollHeight="500px"
+      :value="dataValue"
+      tableStyle="min-width: 50rem"
+    >
       <Column
         v-for="col of infoTable"
         :key="col.field"
