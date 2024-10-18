@@ -7,7 +7,7 @@ WORKDIR /usr/src/frontend
 COPY package*.json ./
 
 # instala dependências do projeto
-RUN npm install
+RUN npm ci
 
 # copia arquivos e pastas para o diretório atual de trabalho (pasta 'app')
 COPY . .
