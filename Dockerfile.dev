@@ -1,4 +1,4 @@
-FROM node:lts-alpine
+FROM node:lts-bullseye
 
 # faz da pasta 'app' o diretório atual de trabalho
 WORKDIR /usr/src/frontend

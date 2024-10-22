@@ -2,23 +2,25 @@ import axios, { AxiosInstance } from "axios";
 import { toast } from "vue3-toastify";
 
 const extractBaseUrl = () => {
-  // const urlObj = new URL(window.location.href);
-  const urlObj = new URL("http://seai.3v3.farm");
-  // const urlObj = new URL("http://localhost");
+  const API_URL = process.env.VUE_APP_API_URL || "http://localhost:8080";
+  const urlObj = new URL(API_URL);
 
   return [
     urlObj.protocol,
     urlObj.hostname,
     `${urlObj.protocol}//${urlObj.hostname}`,
+    urlObj.port,
   ];
 };
 
 const urlBase = extractBaseUrl();
 const serverUrlBase = urlBase[2];
 
-const serverPort = 80;
+const serverPort = urlBase[3];
+
 // const serverPort = 4201;
 const baseURL = `${serverUrlBase}:${serverPort}/api/`;
+console.log("baseURL ", baseURL);
 
 const httpClient: AxiosInstance = axios.create({
   baseURL,
