@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile.dev
     container_name: "seai-gov"
     restart: always
+    env_file:
+      - ./.env
     ports:
       - "3000:8080"
     volumes:
