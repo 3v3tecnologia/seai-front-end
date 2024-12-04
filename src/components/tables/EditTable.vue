@@ -38,6 +38,8 @@
                 aria-describedby="kc-help"
                 showButtons
                 :min="0"
+                :max="1"
+                :step="0.1"
                 :minFractionDigits="1"
                 mode="decimal"
               />
