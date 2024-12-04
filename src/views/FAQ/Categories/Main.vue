@@ -28,7 +28,7 @@
       </div>
       <ProgressSpinner v-if="loading" />
       <Table
-        v-else
+        v-else-if="!loading && !openModalFormCategory"
         :service="service"
         :items="items"
         @on-delete-item="deleteItem"
