@@ -146,7 +146,6 @@ function getCultureById(id) {
       culture.value = data.data;
       cultureCycle.value = culture.value.Cycles;
       isPermanent.value = culture.value.IsPermanent;
-      updateCycleRestartPoint();
     })
     .finally(() => {
       loading.value = false;
