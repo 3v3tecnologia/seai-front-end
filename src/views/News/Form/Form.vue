@@ -145,7 +145,7 @@ const isFormValid = computed(() => {
     info.value.SendDate &&
     info.value.Description &&
     info.value.Data &&
-    (!info.value.Id || info.value.Operation)
+    (!info.value.Id || String(info.value.Operation).length > 6)
   );
 });
 

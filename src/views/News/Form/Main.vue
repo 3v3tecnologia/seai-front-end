@@ -26,7 +26,7 @@
     </div>
     <div
       v-if="!loading"
-      class="w-full xl:w-[65%] flex flex-col justify-start bg-white p-4 px-8 pb-8 rounded-md mt-8 min-h-[25vh] max-h-[70vh]"
+      class="w-full xl:w-[65%] flex flex-col justify-start bg-white p-4 px-8 pb-8 rounded-md mt-8 min-h-[25vh] max-h-[72vh]"
     >
       <Form v-if="item" :item="item" @update-validation="updateValidation" />
     </div>
