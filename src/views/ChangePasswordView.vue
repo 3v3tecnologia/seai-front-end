@@ -145,7 +145,9 @@ const onSubmit = () => {
       .changePassword(form.value, hasCode.value)
       .then(() => {
         toast.success("senha alterada!");
-        router.push("login");
+        setTimeout(() => {
+          router.push("/login");
+        }, 1000);
       })
       .finally(() => (loading.value = false));
   } else {
