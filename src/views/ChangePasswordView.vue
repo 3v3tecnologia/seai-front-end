@@ -5,82 +5,102 @@
     >
       <div class=""><h2>Trocar Senha</h2></div>
 
-      <form @submit.prevent="onSubmit" class="w-full flex flex-col gap-8 mt-4">
-        <div
-          v-if="!hasCode"
-          class="form-group form-group-text text-left p-float-label mt-2 w-full"
+      <template v-if="!registerSuccess">
+        <form
+          @submit.prevent="onSubmit"
+          class="w-full flex flex-col gap-8 mt-4"
         >
-          <Password
-            id="current-password"
-            v-model="form.currentPassword"
-            class="w-full"
-            required
-            toggleMask
-            :feedback="false"
-          />
-          <label for="current-password" class="font-weight-bold"
-            >Senha Atual</label
-          >
-          <small v-if="submitted && !form.currentPassword" class="p-error">
-            {{ requiredField }}
-          </small>
-        </div>
-        <div class="w-full flex gap-4">
           <div
+            v-if="!hasCode"
             class="form-group form-group-text text-left p-float-label mt-2 w-full"
           >
             <Password
-              id="new-password"
-              v-model="form.password"
-              class="w-full"
-              required
-              toggleMask
-              :feedback="true"
-              @focus="onFocus('password')"
-            />
-            <label for="new-password" class="font-weight-bold"
-              >Nova Senha</label
-            >
-            <small v-if="touched.password && !isPasswordValid" class="p-error">
-              A senha deve ter mais de 6 caracteres e conter letras.
-            </small>
-            <small v-if="submitted && !form.password" class="p-error">
-              {{ requiredField }}
-            </small>
-          </div>
-
-          <div
-            class="form-group form-group-text text-left p-float-label mt-2 w-full"
-          >
-            <Password
-              id="confirm-password"
-              v-model="form.confirmPassword"
+              id="current-password"
+              v-model="form.currentPassword"
               class="w-full"
               required
               toggleMask
               :feedback="false"
             />
-            <label for="confirm-password" class="font-weight-bold"
-              >Confirmar Senha</label
+            <label for="current-password" class="font-weight-bold"
+              >Senha Atual</label
             >
-            <small v-if="submitted && !form.confirmPassword" class="p-error">
+            <small v-if="submitted && !form.currentPassword" class="p-error">
               {{ requiredField }}
             </small>
-            <small
-              v-if="form.password !== form.confirmPassword"
-              class="p-error"
-            >
-              As senhas não coincidem.
-            </small>
           </div>
+          <div class="w-full flex gap-4">
+            <div
+              class="form-group form-group-text text-left p-float-label mt-2 w-full"
+            >
+              <Password
+                id="new-password"
+                v-model="form.password"
+                class="w-full"
+                required
+                toggleMask
+                :feedback="true"
+                @focus="onFocus('password')"
+              />
+              <label for="new-password" class="font-weight-bold"
+                >Nova Senha</label
+              >
+              <small
+                v-if="touched.password && !isPasswordValid"
+                class="p-error"
+              >
+                A senha deve ter mais de 6 caracteres e conter letras.
+              </small>
+              <small v-if="submitted && !form.password" class="p-error">
+                {{ requiredField }}
+              </small>
+            </div>
+
+            <div
+              class="form-group form-group-text text-left p-float-label mt-2 w-full"
+            >
+              <Password
+                id="confirm-password"
+                v-model="form.confirmPassword"
+                class="w-full"
+                required
+                toggleMask
+                :feedback="false"
+              />
+              <label for="confirm-password" class="font-weight-bold"
+                >Confirmar Senha</label
+              >
+              <small v-if="submitted && !form.confirmPassword" class="p-error">
+                {{ requiredField }}
+              </small>
+              <small
+                v-if="form.password !== form.confirmPassword"
+                class="p-error"
+              >
+                As senhas não coincidem.
+              </small>
+            </div>
+          </div>
+          <Button
+            :disabled="!isFormValid() || loading"
+            label="Salvar"
+            type="submit"
+            class="w-50 btn-primary mt-3"
+          />
+        </form>
+      </template>
+      <template v-else>
+        <div class="text-center mt-10">
+          <p class="text-lg font-semibold text-green-600">
+            Senha alterada com sucesso!
+          </p>
+          <Button
+            label="Login"
+            class="mt-4 btn-primary"
+            @click="redirectToLogin()"
+          />
         </div>
-        <Button
-          :disabled="!isFormValid() || loading"
-          label="Salvar"
-          type="submit"
-          class="w-50 btn-primary mt-3"
-        />
-      </form>
+      </template>
     </div>
   </div>
 </template>
@@ -107,6 +127,7 @@ const loading = ref(false);
 
 const currentRoute = useRoute();
 const router = useRouter();
+const registerSuccess = ref(false);
 
 const hasCode = computed(() => {
   return currentRoute.params.code;
@@ -114,7 +135,7 @@ const hasCode = computed(() => {
 
 onMounted(() => {
   if (!hasCode.value && !localStorage.getItem("tkn")) {
-    router.push("/login");
+    redirectToLogin();
   }
 });
 const isPasswordValid = computed(() => {
@@ -145,15 +166,16 @@ const onSubmit = () => {
       .changePassword(form.value, hasCode.value)
       .then(() => {
         toast.success("senha alterada!");
-        setTimeout(() => {
-          router.push("/login");
-        }, 1000);
+        registerSuccess.value = true;
       })
       .finally(() => (loading.value = false));
   } else {
     console.error("Verifique os campos de senha.");
   }
 };
+function redirectToLogin() {
+  router.push("/login");
+}
 </script>
 
 <style scoped>

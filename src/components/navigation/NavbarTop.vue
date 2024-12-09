@@ -115,7 +115,6 @@ const itemsRoutes = computed(() =>
 );
 
 const handleClickOutside = (event: MouseEvent) => {
-  console.log(event.target, menuRef.value);
   if (menuRef.value && !menuRef.value.contains(event.target as Node)) {
     showMenu.value = false;
     removeClick();

@@ -133,7 +133,7 @@ const requiredField = "Campo obrigatório";
 const service = new UsersRest();
 const router = useRouter();
 const code = ref("");
-const registerSuccess = ref(false); // Novo estado para controle do sucesso
+const registerSuccess = ref(false);
 
 onMounted(() => {
   const tkn = localStorage.getItem("tkn");
