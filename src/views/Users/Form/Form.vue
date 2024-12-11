@@ -51,7 +51,7 @@
     </div>
 
     <div
-      class="w-full flex gap-5 items-center mt-2"
+      class="w-full flex gap-5 items-center mt-2 pb-2"
       v-for="(module, i) in modules"
       :key="i"
     >
@@ -107,8 +107,8 @@ const moduleTranslations = ref({
   faq: "FAQ",
   crop: "Cultura",
   equipments: "Equipamentos",
-  studies: "Estudos",
   newsletter: "Newsletter",
+  business_analysis: "Análises de dados",
 });
 
 const select = ref([
