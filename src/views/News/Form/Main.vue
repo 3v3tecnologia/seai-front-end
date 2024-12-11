@@ -8,7 +8,7 @@
       class="w-full xl:w-[65%] max-w-[1600px] flex justify-between items-center mt-4"
     >
       <h1 class="text-left text-[22px] font-[500]">{{ title }}</h1>
-      <div class="flex gap-4">
+      <div class="flex gap-4" v-if="item">
         <Button
           icon="pi pi-times"
           label="Sair"
@@ -29,6 +29,16 @@
       class="w-full xl:w-[65%] flex flex-col justify-start bg-white p-4 px-8 pb-8 rounded-md mt-8 min-h-[25vh] max-h-[72vh]"
     >
       <Form v-if="item" :item="item" @update-validation="updateValidation" />
+      <div v-else>
+        <p class="text-center text-[16px] font-[500]">
+          Nenhuma notícia encontrada.
+        </p>
+        <Button
+          label="Sair"
+          class="btn-primary mt-4"
+          @click="goTo('newsletter')"
+        ></Button>
+      </div>
     </div>
   </div>
   <ConfirmDialog />
@@ -142,7 +152,7 @@ function confirmDate() {
   confirm.require({
     message:
       "A data selecionada para postagem da notícia será hoje, notícias já postadas não podem ser editadas!",
-    header: "Confirmar deleção",
+    header: "Confirmar postagem da notícia",
     icon: "pi pi-exclamation-triangle",
     rejectClass: "p-button-secondary p-button-outlined",
     acceptClass: "btn-primary",
