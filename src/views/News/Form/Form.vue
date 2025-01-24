@@ -103,6 +103,8 @@ import {
   nextTick,
 } from "vue";
 import Quill from "quill";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 const props = defineProps({
   item: {
@@ -145,7 +147,7 @@ const isFormValid = computed(() => {
     info.value.SendDate &&
     info.value.Description &&
     info.value.Data &&
-    (!info.value.Id || info.value.Operation)
+    (!info.value.Id || String(info.value.Operation).length > 6)
   );
 });
 
@@ -162,6 +164,7 @@ onMounted(() => {
   info.value.SendDate = info.value.SendDate
     ? new Date(info.value.SendDate)
     : new Date();
+  checkSendDate();
   setTimeout(() => {
     if (quillEditor.value) {
       const quill = quillEditor.value.quill; // Acessa a instância do Quill
@@ -172,6 +175,14 @@ onMounted(() => {
     }
   }, 500);
 });
+function checkSendDate() {
+  const currentDate = new Date();
+  if (info.value.SendDate < currentDate) {
+    alert("Não é possível editar notícias já postadas");
+    // Redireciona o usuário para a página /newsletter
+    router.push("/newsletter");
+  }
+}
 
 function selectLocalImage(quill) {
   const input = document.createElement("input");

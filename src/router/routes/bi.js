@@ -8,6 +8,10 @@ export default [
     meta: {
       ShowNav: true,
       title: "Análise de dados",
+      modulesNeeded: [
+        modulesSystem.business_analysis,
+        modulesSystemLevel.write,
+      ],
     },
     component: BI,
   },

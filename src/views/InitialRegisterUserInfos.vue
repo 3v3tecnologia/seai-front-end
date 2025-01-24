@@ -133,7 +133,7 @@ const requiredField = "Campo obrigatório";
 const service = new UsersRest();
 const router = useRouter();
 const code = ref("");
-const registerSuccess = ref(false); // Novo estado para controle do sucesso
+const registerSuccess = ref(false);
 
 onMounted(() => {
   const tkn = localStorage.getItem("tkn");
@@ -145,7 +145,7 @@ onMounted(() => {
     code.value = router.currentRoute.value.params.token;
     localStorage.clear();
     if (!code.value) {
-      router.push("login");
+      redirectToLogin();
     }
     loading.value = false;
   }
@@ -157,7 +157,7 @@ function register() {
       .completeRegister(form.value, code.value)
       .then((res) => {
         toast.success("Conta criada com sucesso!");
-        registerSuccess.value = true; // Define o sucesso do cadastro
+        registerSuccess.value = true;
       })
       .finally(() => (loading.value = false));
   }
@@ -175,7 +175,7 @@ const isValid = () => {
 
 // Função para redirecionar para a página de login
 function redirectToLogin() {
-  router.push("login");
+  router.push("/login");
 }
 </script>
 

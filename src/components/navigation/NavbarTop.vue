@@ -18,17 +18,7 @@
               class="absolute right-[0px] top-0 bg-white p-2 w-[150px] shadow-lg"
             >
               <router-link
-                to="/profile"
-                class="d-flex align-items-center justify-content-center"
-              >
-                <Button
-                  class="btn-simple w-full p-2 hover:!text-black"
-                  icon="pi pi-cog"
-                  label="Editar perfil"
-                ></Button>
-              </router-link>
-              <router-link
-                to="/profile"
+                to=""
                 class="d-flex align-items-center justify-content-center"
               >
                 <Button
@@ -125,7 +115,6 @@ const itemsRoutes = computed(() =>
 );
 
 const handleClickOutside = (event: MouseEvent) => {
-  console.log(event.target, menuRef.value);
   if (menuRef.value && !menuRef.value.contains(event.target as Node)) {
     showMenu.value = false;
     removeClick();

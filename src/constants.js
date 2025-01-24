@@ -108,6 +108,7 @@ export const modulesSystem = {
   studies: "studies",
   newsletter: "newsletter",
   logs: "logs",
+  business_analysis: "business_analysis",
 };
 
 export const modulesSystemLevel = {

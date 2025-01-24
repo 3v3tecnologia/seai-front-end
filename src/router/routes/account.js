@@ -18,15 +18,15 @@ export default [
     },
     component: AuthView,
   },
-  {
-    path: "/profile",
-    name: "profile",
-    meta: {
-      title: `Perfil`,
-    },
-    component: BaseForm,
-    props: routeProps.profile,
-  },
+  // {
+  //   path: "/profile",
+  //   name: "profile",
+  //   meta: {
+  //     title: `Perfil`,
+  //   },
+  //   component: BaseForm,
+  //   props: routeProps.profile,
+  // },
   {
     path: "/change-password/:code?",
     name: "change-password",
